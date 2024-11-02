@@ -1,6 +1,6 @@
 const SaleLegalCardModel = require("../../models/saleLegalCard.model");
 const SaleDepPaintCardModel = require("../../models/saleDepPaintCard.model");
-const SaleDepProvideCardModel = require("../../models/saleDepProviderCard.model");
+const SaleDepProvideCardModel = require("../../models/saleDepProvideCard.model");
 
 // const fileService = require("./file.service");
 

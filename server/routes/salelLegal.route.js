@@ -9,6 +9,7 @@ router.get("/legal_all", saleLegalController.getAll);
 router.post("/legal_create", authMiddleware, saleLegalController.create);
 router.delete("/legal_delete/:id", authMiddleware, saleLegalController.delete);
 router.post("/legal_confirm", saleLegalController.confirm);
+router.post("/legal_export_excel", saleLegalController.export_excel);
 router.put(
   "/legal_edit/:id",
   authMiddleware,

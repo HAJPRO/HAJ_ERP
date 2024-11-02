@@ -1,4 +1,5 @@
 const SaleLegalService = require("../services/saleLegal.service.js");
+const XLSX = require("xlsx");
 
 class saleLegalController {
   async getModel(req, res, next) {
@@ -37,9 +38,8 @@ class saleLegalController {
     }
   }
   async confirm(req, res, next) {
-
     try {
-      const ID = req.body.id
+      const ID = req.body.id;
       const data = await SaleLegalService.confirm(ID);
       res.status(200).json(data);
     } catch (error) {
@@ -60,6 +60,16 @@ class saleLegalController {
   async getOne(req, res, next) {
     try {
       const data = await SaleLegalService.getOne(req.params.id);
+      res.status(200).json(data);
+    } catch (error) {
+      next(error);
+    }
+  }
+  async export_excel(req, res, next) {
+    try {
+      const ID = req.body.id;
+      const data = await SaleLegalService.export_excel(ID);
+      console.log(data);
       res.status(200).json(data);
     } catch (error) {
       next(error);

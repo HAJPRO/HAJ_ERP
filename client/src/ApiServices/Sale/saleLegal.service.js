@@ -10,6 +10,10 @@ export const SaleLegalService = {
     let url = "sale/legal_create";
     return api.post(url, data);
   },
+  export_excel(id) {
+    let url = "sale/legal_export_excel";
+    return api.post(url, id);
+  },
   confirm(id) {
     let url = "sale/legal_confirm";
     return api.post(url, id);

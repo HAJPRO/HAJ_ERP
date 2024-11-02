@@ -84,7 +84,7 @@ onMounted(async () => {
           to="/explore/sale/legal/create"
           class="inline-flex text-[13px] items-center ml-2 px-4 py-2 mb-1 text-sm font-medium text-center text-red hover:border-b-2 border-solid border-[#36d887] bg-[#e4e9e9] text-bold rounded focus:ring-4 focus:outline-none"
         >
-          <i class="fa-solid fa-info mr-2 fa-xm"></i> Taminot
+          <i class="fa-solid fa-info mr-2 fa-xm"></i> Bo'yoq
           <div class="flex flex-shrink-0 ml-2">
             <span
               class="inline-flex items-center justify-center h-5 text-xs font-medium text-white bg-[#36d887] px-2 rounded"
@@ -380,5 +380,22 @@ onMounted(async () => {
       </div>
     </template>
   </el-dialog>
+
+  <!-- //PAGANATION PAGANATION PAGANATION PAGANATION// -->
+  <div class="flex justify-between mt-2 bg-white p-2 shadow-md">
+    <div></div>
+    <div class="block">
+      <el-pagination
+        @size-change="handleSizeChange"
+        @current-change="handleCurrentChange"
+        :current-page.sync="currentPage1"
+        :page-size="100"
+        layout="total, prev, pager, next"
+        :total="1000"
+      >
+      </el-pagination>
+    </div>
+  </div>
+  <!-- //////// -->
 </template>
 <style></style>

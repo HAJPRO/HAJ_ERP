@@ -68,11 +68,23 @@ const routes = [
         name: "pain",
         component: () => import("../pages/Explore/Paint/PlanEco/plan.vue"),
       },
-       //Taminot bolimi
-       {
+      //Taminot bolimi
+      {
         path: "department/provide/working/plan",
         name: "provide",
         component: () => import("../pages/Explore/Provide/PlanEco/plan.vue"),
+      },
+      //To'quv bolimi
+      {
+        path: "department/weaving/working/plan",
+        name: "weaving",
+        component: () => import("../pages/Explore/Weaving/PlanEco/plan.vue"),
+      },
+      //Yigiruv bolimi
+      {
+        path: "department/spinning/working/plan",
+        name: "spinning",
+        component: () => import("../pages/Explore/Spinning/plan.vue"),
       },
     ],
     beforeEnter(to, from, next) {

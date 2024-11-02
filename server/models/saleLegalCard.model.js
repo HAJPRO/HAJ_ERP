@@ -12,12 +12,17 @@ const SaleLegalCardSchema = new Schema(
     grammaj: { type: Number },
     order_quantity: { type: Number },
     delivery_time: { type: Date, default: Date.now() },
+    in_department_order: { type: String, default: "Sotuv" },
     order_status: { type: String, default: "Tasdiqlanmagan" },
-    process_status: { type: Array, default: "Tasdiqlanmagan" },
+    process_status: { type: Array },
     state: { type: Boolean, default: true },
     dep_paint_data: {
       type: Schema.ObjectId,
       ref: "DepPaintCard",
+    },
+    dep_weaving_data: {
+      type: Schema.ObjectId,
+      ref: "DepWeavingCard",
     },
     dep_provider_data: {
       type: Schema.ObjectId,

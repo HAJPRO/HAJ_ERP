@@ -7,7 +7,9 @@ const SaleDepProviderCardSchema = new Schema(
     color_quantity: { type: Number },
     corbamide_quantity: { type: Number },
     acid_quantity: { type: Number },
-    provider_status: { type: String, default: "Ko'rib chiqilmoqda" },
+    duration_time: { type: Date, default: new Date() },
+    provider_status: { type: String, default: "Yigiruvga yubordi" },
+    process_status: { type: Array, default: "Yigiruvga yubordi" },
     state: { type: Boolean, default: true },
   },
   { timestamps: true }

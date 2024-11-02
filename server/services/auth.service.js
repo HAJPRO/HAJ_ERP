@@ -6,7 +6,7 @@ const tokenService = require("../services/token.service");
 const BaseError = require("../errors/base.error");
 
 class AuthService {
-  async register(email, password) {
+  async register(email, password,department) {
     const existUser = await userModel.findOne({ email });
 
     if (existUser) {
@@ -16,7 +16,7 @@ class AuthService {
     }
 
     const hashPassword = await bcrypt.hash(password, 10);
-    const user = await userModel.create({ email, password: hashPassword });
+    const user = await userModel.create({ email, password: hashPassword,department });
     const userDto = new UserDto(user);
 
     // await mailService.sendMail(email, `${process.env.API_URL}/api/auth/activation/${userDto.id}`)

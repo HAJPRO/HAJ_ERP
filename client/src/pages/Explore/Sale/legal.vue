@@ -26,6 +26,13 @@ const openModalById = (id) => {
   outerVisible.value = true;
   cardId.value = id;
 };
+const Export_Excel = async (id) => {
+  try {
+    const data = await SaleLegalService.export_excel({ id });
+  } catch (error) {
+    console.log(error);
+  }
+};
 const Confirm = async (id) => {
   try {
     const Id = await SaleLegalService.confirm({ id });
@@ -270,6 +277,13 @@ onMounted(async () => {
               class="inline-flex items-center mt-4 ml-2 text-white bg-red-500 hover:bg-red-600 font-medium rounded-md text-sm w-full sm:w-auto px-2 py-3 text-center"
             >
               <i class="text-black fa-sharp fa-solid fa-trash fa-xs"></i>
+            </router-link>
+            <router-link
+              to=""
+              @click="Export_Excel(scope.row._id)"
+              class="inline-flex items-center mt-4 ml-2 text-white bg-yellow-300 hover:bg-yellow-400 font-medium rounded-md text-sm w-full sm:w-auto px-2 py-3 text-center"
+            >
+              <i class="text-black fa-sharp fa-solid fa-file-excel fa-xs"></i>
             </router-link>
           </template>
         </el-table-column>
@@ -568,5 +582,22 @@ onMounted(async () => {
       </div>
     </template>
   </el-dialog>
+
+  <!-- //PAGANATION PAGANATION PAGANATION PAGANATION// -->
+  <div class="flex justify-between mt-2 bg-white p-2 shadow-md">
+    <div></div>
+    <div class="block">
+      <el-pagination
+        @size-change="handleSizeChange"
+        @current-change="handleCurrentChange"
+        :current-page.sync="currentPage1"
+        :page-size="100"
+        layout="total, prev, pager, next"
+        :total="1000"
+      >
+      </el-pagination>
+    </div>
+  </div>
+  <!-- //////// -->
 </template>
 <style></style>

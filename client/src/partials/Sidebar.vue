@@ -157,6 +157,116 @@
             </ul>
           </div>
         </SidebarLinkGroup>
+        <!-- Buyurtmalar-->
+        <div>
+          <h3 class="text-xs uppercase text-slate-500 font-semibold pl-3">
+            <span
+              class="hidden lg:block lg:sidebar-expanded:hidden 2xl:hidden text-center w-6"
+              aria-hidden="true"
+              >•••</span
+            >
+            <span class="lg:hidden lg:sidebar-expanded:block 2xl:block"
+              >Buyurtmalar</span
+            >
+          </h3>
+          <ul class="mt-3">
+            <!-- Sotuv  -->
+            <SidebarLinkGroup
+              v-slot="parentLink"
+              :activeCondition="currentRoute.fullPath.includes('ecommerce')"
+            >
+              <a
+                class="block text-slate-200 truncate transition duration-150"
+                :class="
+                  currentRoute.fullPath.includes('ecommerce')
+                    ? 'hover:text-slate-200'
+                    : 'hover:text-white'
+                "
+                href="#0"
+                @click.prevent="
+                  sidebarExpanded
+                    ? parentLink.handleClick()
+                    : (sidebarExpanded = true)
+                "
+              >
+                <div class="flex items-center justify-between">
+                  <div class="flex items-center">
+                    <img
+                      class="shrink-0 h-7 w-7"
+                      viewBox="0 0 24 24"
+                      src="https://cdn4.iconfinder.com/data/icons/back-to-school-151/64/file-sheet-document-paper-report-512.png"
+                      alt="package-"
+                    />
+                    <span
+                      class="text-sm font-medium ml-3 lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200"
+                      >Sotuv
+                    </span>
+                  </div>
+                  <!-- Icon -->
+                  <div class="flex shrink-0 ml-2">
+                    <svg
+                      class="w-3 h-3 shrink-0 ml-1 fill-current text-slate-400"
+                      :class="parentLink.expanded && 'rotate-180'"
+                      viewBox="0 0 12 12"
+                    >
+                      <path d="M5.9 11.4L.5 6l1.4-1.4 4 4 4-4L11.3 6z" />
+                    </svg>
+                  </div>
+                </div>
+              </a>
+              <div class="lg:hidden lg:sidebar-expanded:block 2xl:block">
+                <ul class="pl-9 mt-1" :class="!parentLink.expanded && 'hidden'">
+                  <router-link
+                    to="/explore/sale/legal"
+                    custom
+                    v-slot="{ href, navigate, isExactActive }"
+                  >
+                    <li class="mb-1 last:mb-0">
+                      <a
+                        class="block transition duration-150 truncate"
+                        :class="
+                          isExactActive
+                            ? 'text-[#36d887]'
+                            : 'text-slate-400 hover:text-slate-200'
+                        "
+                        :href="href"
+                        @click="navigate"
+                      >
+                        <span
+                          class="text-sm font-medium lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200"
+                          >Yuridik</span
+                        >
+                      </a>
+                    </li>
+                  </router-link>
+                  <router-link
+                    to="/explore/sale/physical"
+                    custom
+                    v-slot="{ href, navigate, isExactActive }"
+                  >
+                    <li class="mb-1 last:mb-0">
+                      <a
+                        class="block transition duration-150 truncate"
+                        :class="
+                          isExactActive
+                            ? 'text-[#36d887]'
+                            : 'text-slate-400 hover:text-slate-200'
+                        "
+                        :href="href"
+                        @click="navigate"
+                      >
+                        <span
+                          class="text-sm font-medium lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200"
+                          >Jismoniy</span
+                        >
+                      </a>
+                    </li>
+                  </router-link>
+                </ul>
+              </div>
+            </SidebarLinkGroup>
+          </ul>
+        </div>
 
         <!-- Harakatlar group -->
         <div>
@@ -218,6 +328,135 @@
               </a>
               <div class="lg:hidden lg:sidebar-expanded:block 2xl:block">
                 <ul class="pl-9 mt-1" :class="!parentLink.expanded && 'hidden'">
+                  <div class="mt-1">
+                    <!-- ishlab chiqarish  -->
+                    <SidebarLinkGroup
+                      v-slot="parentLink"
+                      :activeCondition="
+                        currentRoute.fullPath.includes('ecommerce')
+                      "
+                    >
+                      <a
+                        class="block text-slate-200 truncate transition duration-150"
+                        :class="
+                          currentRoute.fullPath.includes('ecommerce')
+                            ? 'hover:text-slate-200'
+                            : 'hover:text-white'
+                        "
+                        href="#0"
+                        @click.prevent="
+                          sidebarExpanded
+                            ? parentLink.handleClick()
+                            : (sidebarExpanded = true)
+                        "
+                      >
+                        <div class="flex items-center justify-between">
+                          <div class="flex items-center">
+                            <span
+                              class="text-sm font-medium lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200"
+                              >Ishlab chiqarish
+                            </span>
+                          </div>
+                          <!-- Icon -->
+                          <div class="flex shrink-0 ml-2">
+                            <svg
+                              class="w-3 h-3 shrink-0 ml-1 fill-current text-slate-400"
+                              :class="parentLink.expanded && 'rotate-180'"
+                              viewBox="0 0 12 12"
+                            >
+                              <path
+                                d="M5.9 11.4L.5 6l1.4-1.4 4 4 4-4L11.3 6z"
+                              />
+                            </svg>
+                          </div>
+                        </div>
+                      </a>
+                      <div
+                        class="lg:hidden lg:sidebar-expanded:block 2xl:block"
+                      >
+                        <ul
+                          class="mt-1"
+                          :class="!parentLink.expanded && 'hidden'"
+                        >
+                          <!-- //kolsa -->
+                          <!-- //Reja iqtisod to'quv -->
+                          <router-link
+                            to="/explore/department/spinning/working/plan"
+                            custom
+                            v-slot="{ href, navigate, isExactActive }"
+                          >
+                            <li class="mb-1 ml-2 last:mb-0">
+                              <a
+                                class="block transition duration-150 truncate"
+                                :class="
+                                  isExactActive
+                                    ? 'text-[#36d887]'
+                                    : 'text-slate-400 hover:text-slate-200'
+                                "
+                                :href="href"
+                                @click="navigate"
+                              >
+                                <span
+                                  class="text-sm font-medium lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200"
+                                  >Reja iqtisod</span
+                                >
+                              </a>
+                            </li>
+                          </router-link>
+                          <!-- // -->
+                          <router-link
+                            to="/explore/products/tuquv/kolsa"
+                            custom
+                            v-slot="{ href, navigate, isExactActive }"
+                          >
+                            <li class="mb-1 last:mb-0">
+                              <a
+                                class="block transition duration-150 truncate"
+                                :class="
+                                  isExactActive
+                                    ? 'text-[#36d887]'
+                                    : 'text-slate-400 hover:text-slate-200'
+                                "
+                                :href="href"
+                                @click="navigate"
+                              >
+                                <span
+                                  class="text-sm font-medium lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200"
+                                  >Kolsa</span
+                                >
+                              </a>
+                            </li>
+                          </router-link>
+                          <!-- // -->
+                          <!-- //opela -->
+                          <router-link
+                            to="/explore/products/tuquv/opelad"
+                            custom
+                            v-slot="{ href, navigate, isExactActive }"
+                          >
+                            <li class="mb-1 last:mb-0">
+                              <a
+                                class="block transition duration-150 truncate"
+                                :class="
+                                  isExactActive
+                                    ? 'text-[#36d887]'
+                                    : 'text-slate-400 hover:text-slate-200'
+                                "
+                                :href="href"
+                                @click="navigate"
+                              >
+                                <span
+                                  class="text-sm font-medium lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200"
+                                  >Opelad</span
+                                >
+                              </a>
+                            </li>
+                          </router-link>
+                          <!-- // -->
+                        </ul>
+                      </div>
+                    </SidebarLinkGroup>
+                  </div>
                   <!-- PAXTA SKLADI -->
                   <router-link
                     to="/explore/products/yigiruv/cotton_sklad"
@@ -396,32 +635,6 @@
               </a>
               <div class="lg:hidden lg:sidebar-expanded:block 2xl:block">
                 <ul class="pl-9 mt-1" :class="!parentLink.expanded && 'hidden'">
-                  <!-- Ip-Polister Sklad -->
-                  <router-link
-                    to="/explore/products/tikuv/ip_skald"
-                    custom
-                    v-slot="{ href, navigate, isExactActive }"
-                  >
-                    <li class="mb-1 last:mb-0">
-                      <a
-                        class="block transition duration-150 truncate"
-                        :class="
-                          isExactActive
-                            ? 'text-[#36d887]'
-                            : 'text-slate-400 hover:text-slate-200'
-                        "
-                        :href="href"
-                        @click="navigate"
-                      >
-                        <span
-                          class="text-sm font-medium lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200"
-                          >Ip-Polister Sklad</span
-                        >
-                      </a>
-                    </li>
-                  </router-link>
-                  <!-- /// -->
-
                   <ul class="mt-1">
                     <!-- ishlab chiqarish  -->
                     <SidebarLinkGroup
@@ -472,14 +685,13 @@
                           class="mt-1"
                           :class="!parentLink.expanded && 'hidden'"
                         >
-                          <!-- //kolsa -->
                           <!-- //Reja iqtisod to'quv -->
                           <router-link
                             to="/explore/department/weaving/working/plan"
                             custom
                             v-slot="{ href, navigate, isExactActive }"
                           >
-                            <li class="mb-1 last:mb-0">
+                            <li class="mb-1 ml-2 last:mb-0">
                               <a
                                 class="block transition duration-150 truncate"
                                 :class="
@@ -576,6 +788,31 @@
                     </li>
                   </router-link>
                   <!-- // -->
+                  <!-- Ip-Polister Sklad -->
+                  <router-link
+                    to="/explore/products/tikuv/ip_skald"
+                    custom
+                    v-slot="{ href, navigate, isExactActive }"
+                  >
+                    <li class="mb-1 last:mb-0">
+                      <a
+                        class="block transition duration-150 truncate"
+                        :class="
+                          isExactActive
+                            ? 'text-[#36d887]'
+                            : 'text-slate-400 hover:text-slate-200'
+                        "
+                        :href="href"
+                        @click="navigate"
+                      >
+                        <span
+                          class="text-sm font-medium lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200"
+                          >Ip-Polister Sklad</span
+                        >
+                      </a>
+                    </li>
+                  </router-link>
+                  <!-- /// -->
                 </ul>
               </div>
             </SidebarLinkGroup>
@@ -710,7 +947,7 @@
                             custom
                             v-slot="{ href, navigate, isExactActive }"
                           >
-                            <li class="mb-1 last:mb-0">
+                            <li class="mb-1 ml-2 ml-2 last:mb-0">
                               <a
                                 class="block transition duration-150 truncate"
                                 :class="
@@ -735,7 +972,7 @@
                             custom
                             v-slot="{ href, navigate, isExactActive }"
                           >
-                            <li class="mb-1 last:mb-0">
+                            <li class="mb-1 ml-2 last:mb-0">
                               <a
                                 class="block transition duration-150 truncate"
                                 :class="
@@ -760,7 +997,7 @@
                             custom
                             v-slot="{ href, navigate, isExactActive }"
                           >
-                            <li class="mb-1 last:mb-0">
+                            <li class="mb-1 ml-2 last:mb-0">
                               <a
                                 class="block transition duration-150 truncate"
                                 :class="
@@ -785,7 +1022,7 @@
                             custom
                             v-slot="{ href, navigate, isExactActive }"
                           >
-                            <li class="mb-1 last:mb-0">
+                            <li class="mb-1 ml-2 last:mb-0">
                               <a
                                 class="block transition duration-150 truncate"
                                 :class="
@@ -810,7 +1047,7 @@
                             custom
                             v-slot="{ href, navigate, isExactActive }"
                           >
-                            <li class="mb-1 last:mb-0">
+                            <li class="mb-1 ml-2 last:mb-0">
                               <a
                                 class="block transition duration-150 truncate"
                                 :class="
@@ -835,7 +1072,7 @@
                             custom
                             v-slot="{ href, navigate, isExactActive }"
                           >
-                            <li class="mb-1 last:mb-0">
+                            <li class="mb-1 ml-2 last:mb-0">
                               <a
                                 class="block transition duration-150 truncate"
                                 :class="
@@ -860,7 +1097,7 @@
                             custom
                             v-slot="{ href, navigate, isExactActive }"
                           >
-                            <li class="mb-1 last:mb-0">
+                            <li class="mb-1 ml-2 last:mb-0">
                               <a
                                 class="block transition duration-150 truncate"
                                 :class="
@@ -885,7 +1122,7 @@
                             custom
                             v-slot="{ href, navigate, isExactActive }"
                           >
-                            <li class="mb-1 last:mb-0">
+                            <li class="mb-1 ml-2 last:mb-0">
                               <a
                                 class="block transition duration-150 truncate"
                                 :class="
@@ -910,7 +1147,7 @@
                             custom
                             v-slot="{ href, navigate, isExactActive }"
                           >
-                            <li class="mb-1 last:mb-0">
+                            <li class="mb-1 ml-2 last:mb-0">
                               <a
                                 class="block transition duration-150 truncate"
                                 :class="
@@ -1112,139 +1349,6 @@
           </ul>
         </div>
 
-        <!-- Xujjatlar-->
-        <div>
-          <h3 class="text-xs uppercase text-slate-500 font-semibold pl-3">
-            <span
-              class="hidden lg:block lg:sidebar-expanded:hidden 2xl:hidden text-center w-6"
-              aria-hidden="true"
-              >•••</span
-            >
-            <span class="lg:hidden lg:sidebar-expanded:block 2xl:block"
-              >Hujjatlar</span
-            >
-          </h3>
-          <ul class="mt-3">
-            <!-- Sotuv  -->
-            <SidebarLinkGroup
-              v-slot="parentLink"
-              :activeCondition="currentRoute.fullPath.includes('ecommerce')"
-            >
-              <a
-                class="block text-slate-200 truncate transition duration-150"
-                :class="
-                  currentRoute.fullPath.includes('ecommerce')
-                    ? 'hover:text-slate-200'
-                    : 'hover:text-white'
-                "
-                href="#0"
-                @click.prevent="
-                  sidebarExpanded
-                    ? parentLink.handleClick()
-                    : (sidebarExpanded = true)
-                "
-              >
-                <div class="flex items-center justify-between">
-                  <div class="flex items-center">
-                    <svg class="shrink-0 h-6 w-6" viewBox="0 0 24 24">
-                      <path
-                        class="fill-current"
-                        :class="
-                          currentRoute.fullPath.includes('ecommerce')
-                            ? 'text-indigo-300'
-                            : 'text-slate-400'
-                        "
-                        d="M13 15l11-7L11.504.136a1 1 0 00-1.019.007L0 7l13 8z"
-                      />
-                      <path
-                        class="fill-current"
-                        :class="
-                          currentRoute.fullPath.includes('ecommerce')
-                            ? 'text-indigo-600'
-                            : 'text-slate-700'
-                        "
-                        d="M13 15L0 7v9c0 .355.189.685.496.864L13 24v-9z"
-                      />
-                      <path
-                        class="fill-current"
-                        :class="
-                          currentRoute.fullPath.includes('ecommerce')
-                            ? 'text-[#36d887]'
-                            : 'text-slate-600'
-                        "
-                        d="M13 15.047V24l10.573-7.181A.999.999 0 0024 16V8l-11 7.047z"
-                      />
-                    </svg>
-                    <span
-                      class="text-sm font-medium ml-3 lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200"
-                      >Sotuv
-                    </span>
-                  </div>
-                  <!-- Icon -->
-                  <div class="flex shrink-0 ml-2">
-                    <svg
-                      class="w-3 h-3 shrink-0 ml-1 fill-current text-slate-400"
-                      :class="parentLink.expanded && 'rotate-180'"
-                      viewBox="0 0 12 12"
-                    >
-                      <path d="M5.9 11.4L.5 6l1.4-1.4 4 4 4-4L11.3 6z" />
-                    </svg>
-                  </div>
-                </div>
-              </a>
-              <div class="lg:hidden lg:sidebar-expanded:block 2xl:block">
-                <ul class="pl-9 mt-1" :class="!parentLink.expanded && 'hidden'">
-                  <router-link
-                    to="/explore/sale/legal"
-                    custom
-                    v-slot="{ href, navigate, isExactActive }"
-                  >
-                    <li class="mb-1 last:mb-0">
-                      <a
-                        class="block transition duration-150 truncate"
-                        :class="
-                          isExactActive
-                            ? 'text-[#36d887]'
-                            : 'text-slate-400 hover:text-slate-200'
-                        "
-                        :href="href"
-                        @click="navigate"
-                      >
-                        <span
-                          class="text-sm font-medium lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200"
-                          >Yuridik</span
-                        >
-                      </a>
-                    </li>
-                  </router-link>
-                  <router-link
-                    to="/explore/sale/physical"
-                    custom
-                    v-slot="{ href, navigate, isExactActive }"
-                  >
-                    <li class="mb-1 last:mb-0">
-                      <a
-                        class="block transition duration-150 truncate"
-                        :class="
-                          isExactActive
-                            ? 'text-[#36d887]'
-                            : 'text-slate-400 hover:text-slate-200'
-                        "
-                        :href="href"
-                        @click="navigate"
-                      >
-                        <span
-                          class="text-sm font-medium lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200"
-                          >Jismoniy</span
-                        >
-                      </a>
-                    </li>
-                  </router-link>
-                </ul>
-              </div>
-            </SidebarLinkGroup>
-          </ul>
-        </div>
         <!-- Hisobotlar group-->
         <div>
           <h3 class="text-xs uppercase text-slate-500 font-semibold pl-3">

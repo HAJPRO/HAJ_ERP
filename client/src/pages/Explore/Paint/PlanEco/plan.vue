@@ -380,5 +380,22 @@ onMounted(async () => {
       </div>
     </template>
   </el-dialog>
+
+  <!-- //PAGANATION PAGANATION PAGANATION PAGANATION// -->
+  <div class="flex justify-between mt-2 bg-white p-2 shadow-md">
+    <div></div>
+    <div class="block">
+      <el-pagination
+        @size-change="handleSizeChange"
+        @current-change="handleCurrentChange"
+        :current-page.sync="currentPage1"
+        :page-size="100"
+        layout="total, prev, pager, next"
+        :total="1000"
+      >
+      </el-pagination>
+    </div>
+  </div>
+  <!-- //////// -->
 </template>
 <style></style>

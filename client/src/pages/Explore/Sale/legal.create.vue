@@ -24,10 +24,10 @@ const getModel = async () => {
   model.value = data.data;
 };
 const Save = async () => {
-  console.log(model.value);
   try {
     const data = await SaleLegalService.create(model.value);
     model.value = {};
+    window.location.href = "/explore/sale/legal";
   } catch (error) {
     console.log(error);
   }
