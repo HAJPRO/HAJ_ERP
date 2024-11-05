@@ -44,11 +44,22 @@ const Confirm = async (id) => {
 const items = ref([]);
 const painting_length = ref();
 const provide_length = ref();
+const filter_order_num = ref("");
 const getAll = async () => {
-  const data = await SaleLegalService.getAll();
-  items.value = data.data.allPosts;
-  painting_length.value = data.data.painting_length.length;
-  provide_length.value = data.data.provide_length.length;
+  if ((filter_order_num.value = "")) {
+    const data = await SaleLegalService.getAll();
+    items.value = data.data.allPosts;
+    // painting_length.value = data.data.painting_length.length;
+    // provide_length.value = data.data.provide_length.length;
+  } else {
+    const data = await SaleLegalService.getAll({
+      order_num: filter_order_num.value,
+    });
+    console.log(filter_order_num.value);
+    items.value = data.data.allPosts;
+    // painting_length.value = data.data.painting_length.length;
+    // provide_length.value = data.data.provide_length.length;
+  }
 };
 onMounted(async () => {
   try {
@@ -70,6 +81,18 @@ onMounted(async () => {
       <div>
         <router-link
           to="/explore/sale/legal/create"
+          class="inline-flex text-[13px] items-center mr-2 px-4 py-2 mb-1 text-sm font-medium text-center text-red hover:border-b-2 border-solid border-[#36d887] bg-[#e4e9e9] text-bold rounded focus:ring-4 focus:outline-none"
+        >
+          <i class="fa-solid fa-info mr-2 fa-xm"></i> Sotuvlar
+          <div class="flex flex-shrink-0 ml-2">
+            <span
+              class="inline-flex items-center justify-center h-5 text-xs font-medium text-white bg-[#36d887] px-2 rounded"
+              >{{ painting_length }}</span
+            >
+          </div>
+        </router-link>
+        <router-link
+          to="/explore/sale/legal/create"
           class="inline-flex text-[13px] items-center px-4 py-2 mb-1 text-sm font-medium text-center text-red hover:border-b-2 border-solid border-[#36d887] bg-[#e4e9e9] text-bold rounded focus:ring-4 focus:outline-none"
         >
           <i class="fa-solid fa-info mr-2 fa-xm"></i> Bo'yoq
@@ -80,18 +103,7 @@ onMounted(async () => {
             >
           </div>
         </router-link>
-        <router-link
-          to="/explore/sale/legal/create"
-          class="inline-flex text-[13px] items-center ml-2 px-4 py-2 mb-1 text-sm font-medium text-center text-red hover:border-b-2 border-solid border-[#36d887] bg-[#e4e9e9] text-bold rounded focus:ring-4 focus:outline-none"
-        >
-          <i class="fa-solid fa-info mr-2 fa-xm"></i> Taminot
-          <div class="flex flex-shrink-0 ml-2">
-            <span
-              class="inline-flex items-center justify-center h-5 text-xs font-medium text-white bg-[#36d887] px-2 rounded"
-              >{{ provide_length }}</span
-            >
-          </div>
-        </router-link>
+
         <router-link
           to="/explore/sale/legal/create"
           class="inline-flex text-[13px] items-center ml-2 px-4 py-2 mb-1 text-sm font-medium text-center text-red hover:border-b-2 border-solid border-[#36d887] bg-[#e4e9e9] text-bold rounded focus:ring-4 focus:outline-none"
@@ -116,7 +128,7 @@ onMounted(async () => {
             >
           </div>
         </router-link>
-        <router-link
+        <!-- <router-link
           to="/explore/sale/legal/create"
           class="inline-flex text-[13px] items-center ml-2 px-4 py-2 mb-1 text-sm font-medium text-center text-red hover:border-b-2 border-solid border-[#36d887] bg-[#e4e9e9] text-bold rounded focus:ring-4 focus:outline-none"
         >
@@ -127,9 +139,32 @@ onMounted(async () => {
               >0</span
             >
           </div>
+        </router-link> -->
+        <router-link
+          to="/explore/sale/legal/create"
+          class="inline-flex text-[13px] items-center ml-2 px-4 py-2 mb-1 text-sm font-medium text-center text-red hover:border-b-2 border-solid border-[#36d887] bg-[#e4e9e9] text-bold rounded focus:ring-4 focus:outline-none"
+        >
+          <i class="fa-solid fa-info mr-2 fa-xm"></i> Taminot
+          <div class="flex flex-shrink-0 ml-2">
+            <span
+              class="inline-flex items-center justify-center h-5 text-xs font-medium text-white bg-[#36d887] px-2 rounded"
+              >{{ provide_length }}</span
+            >
+          </div>
         </router-link>
       </div>
-      <div>
+      <div class="flex flex-wrap">
+        <div class="mr-3 col-span-1">
+          <el-input
+            @input="getAll"
+            v-model="filter_order_num"
+            clearable
+            class="w-[100%]"
+            size="large"
+            type="String"
+            placeholder="Buyutma raqam bo'yicha izla..."
+          />
+        </div>
         <router-link
           to="/explore/sale/legal/create"
           class="inline-flex text-[13px] items-center px-2 py-2 mb-1 text-sm font-medium text-center text-white bg-[#36d887] text-bold rounded focus:ring-4 focus:outline-none"

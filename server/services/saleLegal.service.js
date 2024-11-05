@@ -1,6 +1,7 @@
 const SaleLegalCardModel = require("../models/saleLegalCard.model");
 // const fileService = require("./file.service");
 const XLSX = require("xlsx");
+const excelJs = require("exceljs");
 
 class SaleLegalService {
   async getModel() {
@@ -39,8 +40,26 @@ class SaleLegalService {
     return updatedData;
   }
 
-  async getAll() {
-    const allPosts = await SaleLegalCardModel.find().populate("author");
+  async getAll(num) {
+    if ((num = !" ")) {
+      const allPosts = await SaleLegalCardModel.find({
+        order_number: num,
+      }).populate([
+        "author",
+        "dep_paint_data",
+        "dep_provider_data",
+        "dep_weaving_data",
+      ]);
+      res.json( { allPosts }) ;
+    } else {
+      const allPosts = await SaleLegalCardModel.find().populate([
+        "author",
+        "dep_paint_data",
+        "dep_provider_data",
+        "dep_weaving_data",
+      ]);
+      return { allPosts };
+    }
     const dep_paint_data = await SaleLegalCardModel.find().populate(
       "dep_paint_data"
     );
@@ -74,21 +93,30 @@ class SaleLegalService {
     return data;
   }
 
-  async export_excel(id) {
-    try {
-      const data = await SaleLegalCardModel.findById(id);
-      // let temp = JSON.stringify(data);
-      let ws = XLSX.utils.json_to_sheet(data);
-      let wb = XLSX.utils.book_new(); //new workbook
-      XLSX.utils.book_append_sheet(wb, ws, "sheet1");
-      let down = __dirname + "/public/sale_card.xlsx";
-      XLSX.writeFile(wb, down);
-      res.download(down);
-      return data;
-    } catch (error) {
-      console.log(error);
-    }
-  }
+  // async export_excel(id) {
+  //   try {
+  //     const Data = await SaleLegalCardModel.findById(id);
+  //     // let temp = JSON.stringify(data);
+  //     const data = [
+  //       { name: "samir", age: 25 },
+  //       { name: "saman", age: 30 },
+  //     ];
+  //     const heading = [["name", "age"]];
+  //     let wb = XLSX.utils.book_new(); //new workbook
+  //     let ws = XLSX.utils.json_to_sheet(data);
+  //     XLSX.utils.sheet_add_aoa(ws, heading);
+  //     XLSX.utils.book_append_sheet(wb, ws, "sheet1");
+  //     const buffer = XLSX.write(wb, { bookType: "xlsx", type: "buffer" });
+  //     console.log(buffer);
+  //     // XLSX.writeFile(wb, down);
+  //     res.download(down);
+  //     res.attachment("data.elxs");
+  //     res.send(buffer);
+  //     return data;
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // }
 }
 
 module.exports = new SaleLegalService();

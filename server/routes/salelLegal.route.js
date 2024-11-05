@@ -5,7 +5,7 @@ const saleLegalController = require("../controllers/saleLegal.controller.js");
 
 const router = express.Router();
 router.get("/legal_model", saleLegalController.getModel);
-router.get("/legal_all", saleLegalController.getAll);
+router.post("/legal_all", saleLegalController.getAll);
 router.post("/legal_create", authMiddleware, saleLegalController.create);
 router.delete("/legal_delete/:id", authMiddleware, saleLegalController.delete);
 router.post("/legal_confirm", saleLegalController.confirm);

@@ -6,20 +6,23 @@ const tokenService = require("../services/token.service");
 const BaseError = require("../errors/base.error");
 
 class AuthService {
-  async register(email, password,department) {
-    const existUser = await userModel.findOne({ email });
-
+  async register(username, password, department) {
+    const existUser = await userModel.findOne({ username });
     if (existUser) {
       throw BaseError.BadRequest(
-        `User with existing email ${email} already registered`
+        `User with existing username ${username} already registered`
       );
     }
 
     const hashPassword = await bcrypt.hash(password, 10);
-    const user = await userModel.create({ email, password: hashPassword,department });
+    const user = await userModel.create({
+      username,
+      password: hashPassword,
+      department,
+    });
     const userDto = new UserDto(user);
 
-    // await mailService.sendMail(email, `${process.env.API_URL}/api/auth/activation/${userDto.id}`)
+    // await mailService.sendMail(username, `${process.env.API_URL}/api/auth/activation/${userDto.id}`)
 
     const tokens = tokenService.generateToken({ ...userDto });
 
@@ -39,8 +42,8 @@ class AuthService {
     await user.save();
   }
 
-  async login(email, password) {
-    const user = await userModel.findOne({ email });
+  async login(username, password) {
+    const user = await userModel.findOne({ username });
     if (!user) {
       throw BaseError.BadRequest("User is not defined");
     }

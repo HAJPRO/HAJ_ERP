@@ -9,7 +9,7 @@ const errorMiddleware = require("./middlewares/error.middleware.js");
 const app = express();
 app.use(express.json());
 app.use(cors({ credentials: true, origin: "*" }));
-app.use(express.static(path.resolve(__dirname, "public")));
+app.use(express.static(path.join(__dirname, "./public")));
 app.use(fileUpload({}));
 app.use(cookie({}));
 app.use(errorMiddleware);
@@ -23,6 +23,8 @@ app.use("/api/v1/sale", require("./routes/salelLegal.route.js"));
 app.use("/api/v1/paint", require("./routes/paint/paint.route.js"));
 app.use("/api/v1/provide", require("./routes/provide/provide.route.js"));
 app.use("/api/v1/weaving", require("./routes/weaving/weaving.route.js"));
+app.use("/api/v1/spinning", require("./routes/spinning/spinning.route.js"));
+app.use("/api/v1/admin", require("./routes/admin/admin.route.js"));
 
 const START = async () => {
   try {

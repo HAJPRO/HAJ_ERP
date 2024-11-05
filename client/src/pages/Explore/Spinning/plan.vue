@@ -2,7 +2,7 @@
 import { ref, onMounted } from "vue";
 import Title from "@/components/Title.vue";
 import { PaintService } from "@/ApiServices/Paint/paint.service";
-import { SaleLegalService } from "@/ApiServices/Sale/saleLegal.service";
+import { SpinningService } from "@/ApiServices/Spinning/spinning.service";
 
 import { toast } from "vue3-toastify";
 import { useRouter } from "vue-router";
@@ -25,9 +25,17 @@ const openModalById = (id) => {
   cardId.value = id;
 };
 const model = ref({});
-const getModel = async () => {
-  const data = await PaintService.getModel();
-  model.value = data.data;
+// const getModel = async () => {
+//   const data = await PaintService.getModel();
+//   model.value = data.data;
+// };
+const Confirm = async () => {
+  try {
+    const Id = await SpinningService.confirm({ id: cardId.value });
+    window.location.href = "/explore/department/spinning/working/plan";
+  } catch (error) {
+    console.log(error);
+  }
 };
 const Save = async () => {
   try {
@@ -42,17 +50,18 @@ const Save = async () => {
 };
 
 const items = ref([]);
-const sale_quantitiy = ref();
+const sprinning_quantitiy = ref();
 const provide_quantitiy = ref();
 const getAll = async () => {
-  const data = await PaintService.getAll();
+  const data = await SpinningService.getAll();
   items.value = data.data.allPosts;
-  sale_quantitiy.value = items.value.length;
-  provide_quantitiy.value = data.data.allProvideItems.length;
+  const spinning = data.data.allSpinningItems;
+  sprinning_quantitiy.value = spinning.length;
+  provide_quantitiy.value = data.data.allPosts.length;
 };
 onMounted(async () => {
   try {
-    await getAll(), await getModel();
+    await getAll();
   } catch (err) {
     console.log(err);
   }
@@ -68,7 +77,7 @@ onMounted(async () => {
     </Title>
     <div class="flex justify-between bg-white rounded-md shadow-md p-3">
       <div>
-        <router-link
+        <!-- <router-link
           to="/explore/sale/legal/create"
           class="inline-flex text-[13px] items-center px-4 py-2 mb-1 text-sm font-medium text-center text-red hover:border-b-2 border-solid border-[#36d887] bg-[#e4e9e9] text-bold rounded focus:ring-4 focus:outline-none"
         >
@@ -79,7 +88,7 @@ onMounted(async () => {
               >{{ sale_quantitiy }}</span
             >
           </div>
-        </router-link>
+        </router-link> -->
         <router-link
           to="/explore/sale/legal/create"
           class="inline-flex text-[13px] items-center ml-2 px-4 py-2 mb-1 text-sm font-medium text-center text-red hover:border-b-2 border-solid border-[#36d887] bg-[#e4e9e9] text-bold rounded focus:ring-4 focus:outline-none"
@@ -88,7 +97,20 @@ onMounted(async () => {
           <div class="flex flex-shrink-0 ml-2">
             <span
               class="inline-flex items-center justify-center h-5 text-xs font-medium text-white bg-[#36d887] px-2 rounded"
-              >{{ provide_quantitiy }}</span
+              >{{ provide_quantitiy ? provide_quantitiy : 0 }}</span
+            >
+          </div>
+        </router-link>
+
+        <router-link
+          to="/explore/sale/legal/create"
+          class="inline-flex text-[13px] items-center ml-2 px-4 py-2 mb-1 text-sm font-medium text-center text-red hover:border-b-2 border-solid border-[#36d887] bg-[#e4e9e9] text-bold rounded focus:ring-4 focus:outline-none"
+        >
+          <i class="fa-solid fa-info mr-2 fa-xm"></i> Yigiruv
+          <div class="flex flex-shrink-0 ml-2">
+            <span
+              class="inline-flex items-center justify-center h-5 text-xs font-medium text-white bg-[#36d887] px-2 rounded"
+              >{{ sprinning_quantitiy ? sprinning_quantitiy : 0 }}</span
             >
           </div>
         </router-link>
@@ -104,18 +126,7 @@ onMounted(async () => {
             >
           </div>
         </router-link>
-        <router-link
-          to="/explore/sale/legal/create"
-          class="inline-flex text-[13px] items-center ml-2 px-4 py-2 mb-1 text-sm font-medium text-center text-red hover:border-b-2 border-solid border-[#36d887] bg-[#e4e9e9] text-bold rounded focus:ring-4 focus:outline-none"
-        >
-          <i class="fa-solid fa-info mr-2 fa-xm"></i> Yigiruv
-          <div class="flex flex-shrink-0 ml-2">
-            <span
-              class="inline-flex items-center justify-center h-5 text-xs font-medium text-white bg-[#36d887] px-2 rounded"
-              >0</span
-            >
-          </div>
-        </router-link>
+
         <router-link
           to="/explore/sale/legal/create"
           class="inline-flex text-[13px] items-center ml-2 px-4 py-2 mb-1 text-sm font-medium text-center text-red hover:border-b-2 border-solid border-[#36d887] bg-[#e4e9e9] text-bold rounded focus:ring-4 focus:outline-none"
@@ -280,10 +291,10 @@ onMounted(async () => {
 
   <el-dialog
     v-model="outerVisible"
-    title="Taminot uchun kerakli mahsulotlar qo'shish"
+    title="Ish jarayoniga qabul qilish uchun tasdiqlaysizmi ?"
     width="600"
   >
-    <span>
+    <!-- <span>
       <form
         class="filter-box md:grid md:grid-cols-3 gap-2 sm:flex sm:flex-wrap rounded shadow-md bg-white p-2 mt-1 mb-1 text-[12px]"
       >
@@ -364,7 +375,7 @@ onMounted(async () => {
           />
         </div>
       </form>
-    </span>
+    </span> -->
     <el-dialog
       v-model="innerVisible"
       width="500"
@@ -376,7 +387,7 @@ onMounted(async () => {
     <template #footer>
       <div class="dialog-footer">
         <el-button @click="outerVisible = false">Yopish</el-button>
-        <el-button type="" @click="Save()"> Yuborish </el-button>
+        <el-button type="" @click="Confirm()"> Tasdiqlash </el-button>
       </div>
     </template>
   </el-dialog>

@@ -3,7 +3,7 @@ const { Schema, model } = require("mongoose");
 const SaleDepProviderCardSchema = new Schema(
   {
     author_provider: { type: Schema.ObjectId, ref: "User" },
-    thread_quantity: { type: Number },
+    yarn_quantity: { type: Number },
     color_quantity: { type: Number },
     corbamide_quantity: { type: Number },
     acid_quantity: { type: Number },

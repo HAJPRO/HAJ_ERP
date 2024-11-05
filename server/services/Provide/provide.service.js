@@ -7,10 +7,10 @@ const SaleDepProvideCardModel = require("../../models/saleDepProvideCard.model")
 class DepProvideService {
   async getModel() {
     const model = {
-      yarn: "",
-      color: "",
-      acid: "",
-      corbamite: "",
+      yarn_quantity: "",
+      color_quantity: "",
+      acid_quantity: "",
+      corbamite_quantity: "",
       duration_time: "",
     };
 

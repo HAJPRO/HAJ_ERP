@@ -1,5 +1,7 @@
 const SaleLegalService = require("../services/saleLegal.service.js");
 const XLSX = require("xlsx");
+const path = require("path");
+const saleLegalCardModel = require("../models/saleLegalCard.model.js");
 
 class saleLegalController {
   async getModel(req, res, next) {
@@ -13,7 +15,7 @@ class saleLegalController {
 
   async getAll(req, res, next) {
     try {
-      const allSale = await SaleLegalService.getAll();
+      const allSale = await SaleLegalService.getAll(req.body.order_num);
       res.status(200).json(allSale);
     } catch (error) {
       next(error);
@@ -67,9 +69,22 @@ class saleLegalController {
   }
   async export_excel(req, res, next) {
     try {
-      const ID = req.body.id;
-      const data = await SaleLegalService.export_excel(ID);
-      console.log(data);
+      // const ID = req.body.id;
+      // const Data = await SaleLegalService.export_excel(ID);
+      const data = await saleLegalCardModel.find();
+
+      // const heading = [["name", "age"]];
+      let wb = XLSX.utils.book_new(); //new workbook
+      let ws = XLSX.utils.json_to_sheet(JSON.parse(JSON.stringify(data)));
+      XLSX.utils.sheet_add_aoa(ws, heading);
+      const down = path.join(
+        __dirname,
+        `../public/${Math.floor(Math.random() * 100000)}.xlsx`
+      );
+      XLSX.utils.book_append_sheet(wb, ws, "sheet1");
+      // const buffer = XLSX.write(wb, { bookType: "xlsx", type: "buffer" });
+      XLSX.writeFile(wb, down);
+      res.attachment(down);
       res.status(200).json(data);
     } catch (error) {
       next(error);

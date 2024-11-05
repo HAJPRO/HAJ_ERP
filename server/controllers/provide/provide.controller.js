@@ -1,6 +1,7 @@
 const DepPaintService = require("../../services/Paint/paint.service.js");
 const DepProvideService = require("../../services/Provide/provide.service");
 const SaleLegalCardModel = require("../../models/saleLegalCard.model.js");
+const userModel = require("../../models/user.model.js");
 
 class DepProvideController {
   async getModel(req, res, next) {
@@ -23,13 +24,19 @@ class DepProvideController {
 
   async create(req, res, next) {
     try {
+      const userData = await userModel.findById(req.user.id);
       const data = await DepPaintService.create(req.body.items, req.user.id);
       const LegalDataById = await SaleLegalCardModel.findById(req.body.id);
       const newLegalData = LegalDataById;
-      newLegalData.order_status = "Taminotga yuborildi";
-      newLegalData.process_status.push("Taminotga yuborildi");
+      newLegalData.order_status = "Yigiruvga yuborildi";
+      newLegalData.process_status.push({
+        department: userData.department,
+        author: userData.email,
+        status: "Yigiruvga yuborildi",
+        sent_time: new Date(),
+      });
       if (data._id) {
-        newLegalData.dep_paint_data = data._id;
+        newLegalData.dep_provider_data = data._id;
         const updateDataLegal = await SaleLegalCardModel.findByIdAndUpdate(
           req.body.id,
           newLegalData,

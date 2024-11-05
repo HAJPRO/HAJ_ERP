@@ -4,7 +4,8 @@ const tokenService = require("../services/token.service.js");
 module.exports = function (req, res, next) {
   try {
     const authorization = req.headers.authorization;
-    if (!authorization) {
+    // req.headers["authorization"];
+    if (!authorization & req.query.token & req.body.token) {
       return next(BaseError.UnauthorizedError());
     }
 

@@ -28,7 +28,6 @@ const model = ref({});
 const getModel = async () => {
   const data = await ProvideService.getModel();
   model.value = data.data;
-  console.log(data);
 };
 const Save = async () => {
   try {
@@ -291,10 +290,10 @@ onMounted(async () => {
           <label
             name="resul"
             class="block mb-1 text-[12px] font-medium text-gray-900 dark:text-white"
-            >Pus</label
+            >Ip (kg)</label
           >
           <el-input
-            v-model="model.pus"
+            v-model="model.yarn_quantity"
             clearable
             class="w-[100%]"
             size="smal"
@@ -306,10 +305,10 @@ onMounted(async () => {
           <label
             name="resul"
             class="block mb-1 text-[12px] font-medium text-gray-900 dark:text-white"
-            >Fike</label
+            >Rang (kg)</label
           >
           <el-input
-            v-model="model.fike"
+            v-model="model.color_quantity"
             clearable
             class="w-[100%]"
             size="smal"
@@ -322,10 +321,10 @@ onMounted(async () => {
           <label
             name="resul"
             class="block mb-1 text-[12px] font-medium text-gray-900 dark:text-white"
-            >Rang kodi</label
+            >Korbamid (kg)</label
           >
           <el-input
-            v-model="model.color_code"
+            v-model="model.corbamide_quantity"
             clearable
             class="w-[100%]"
             size="smal"
@@ -337,10 +336,10 @@ onMounted(async () => {
           <label
             name="resul"
             class="block mb-1 text-[12px] font-medium text-gray-900 dark:text-white"
-            >Xom mato miqdori</label
+            >Kislata (kg)</label
           >
           <el-input
-            v-model="model.raw_cloth_quantity"
+            v-model="model.acid_quantity"
             clearable
             class="w-[100%]"
             size="smal"

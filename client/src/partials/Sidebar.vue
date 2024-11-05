@@ -1240,7 +1240,7 @@
                       >
                         <span
                           class="text-sm font-medium lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200"
-                          >Kirimlar ro'yxati</span
+                          >Sklad (xom mato)</span
                         >
                       </a>
                     </li>
@@ -1263,7 +1263,145 @@
                       >
                         <span
                           class="text-sm font-medium lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200"
-                          >Kirim jarayoni</span
+                          >Bichuv</span
+                        >
+                      </a>
+                    </li>
+                  </router-link>
+                  <router-link
+                    to="/explore/products/lab"
+                    custom
+                    v-slot="{ href, navigate, isExactActive }"
+                  >
+                    <li class="mb-1 last:mb-0">
+                      <a
+                        class="block transition duration-150 truncate"
+                        :class="
+                          isExactActive
+                            ? 'text-[#36d887]'
+                            : 'text-slate-400 hover:text-slate-200'
+                        "
+                        :href="href"
+                        @click="navigate"
+                      >
+                        <span
+                          class="text-sm font-medium lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200"
+                          >Tasnif</span
+                        >
+                      </a>
+                    </li>
+                  </router-link>
+                  <router-link
+                    to="/explore/products/lab"
+                    custom
+                    v-slot="{ href, navigate, isExactActive }"
+                  >
+                    <li class="mb-1 last:mb-0">
+                      <a
+                        class="block transition duration-150 truncate"
+                        :class="
+                          isExactActive
+                            ? 'text-[#36d887]'
+                            : 'text-slate-400 hover:text-slate-200'
+                        "
+                        :href="href"
+                        @click="navigate"
+                      >
+                        <span
+                          class="text-sm font-medium lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200"
+                          >Patoklar</span
+                        >
+                      </a>
+                    </li>
+                  </router-link>
+                  <router-link
+                    to="/explore/products/lab"
+                    custom
+                    v-slot="{ href, navigate, isExactActive }"
+                  >
+                    <li class="mb-1 last:mb-0">
+                      <a
+                        class="block transition duration-150 truncate"
+                        :class="
+                          isExactActive
+                            ? 'text-[#36d887]'
+                            : 'text-slate-400 hover:text-slate-200'
+                        "
+                        :href="href"
+                        @click="navigate"
+                      >
+                        <span
+                          class="text-sm font-medium lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200"
+                          >Sifat</span
+                        >
+                      </a>
+                    </li>
+                  </router-link>
+                  <router-link
+                    to="/explore/products/lab"
+                    custom
+                    v-slot="{ href, navigate, isExactActive }"
+                  >
+                    <li class="mb-1 last:mb-0">
+                      <a
+                        class="block transition duration-150 truncate"
+                        :class="
+                          isExactActive
+                            ? 'text-[#36d887]'
+                            : 'text-slate-400 hover:text-slate-200'
+                        "
+                        :href="href"
+                        @click="navigate"
+                      >
+                        <span
+                          class="text-sm font-medium lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200"
+                          >Dazmol</span
+                        >
+                      </a>
+                    </li>
+                  </router-link>
+                  <router-link
+                    to="/explore/products/lab"
+                    custom
+                    v-slot="{ href, navigate, isExactActive }"
+                  >
+                    <li class="mb-1 last:mb-0">
+                      <a
+                        class="block transition duration-150 truncate"
+                        :class="
+                          isExactActive
+                            ? 'text-[#36d887]'
+                            : 'text-slate-400 hover:text-slate-200'
+                        "
+                        :href="href"
+                        @click="navigate"
+                      >
+                        <span
+                          class="text-sm font-medium lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200"
+                          >Upakofka</span
+                        >
+                      </a>
+                    </li>
+                  </router-link>
+                  <router-link
+                    to="/explore/products/lab"
+                    custom
+                    v-slot="{ href, navigate, isExactActive }"
+                  >
+                    <li class="mb-1 last:mb-0">
+                      <a
+                        class="block transition duration-150 truncate"
+                        :class="
+                          isExactActive
+                            ? 'text-[#36d887]'
+                            : 'text-slate-400 hover:text-slate-200'
+                        "
+                        :href="href"
+                        @click="navigate"
+                      >
+                        <span
+                          class="text-sm font-medium lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200"
+                          >Tayyor mato skladi</span
                         >
                       </a>
                     </li>
