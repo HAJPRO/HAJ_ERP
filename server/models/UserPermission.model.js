@@ -3,7 +3,8 @@ const { model, Schema } = require("mongoose");
 const userPermissionSchema = new Schema(
   {
     user_id: {
-      type: mongoose.Schema.Types.ObjectId,
+      // type: mongoose.Schema.Types.ObjectId,
+      type: Schema.ObjectId,
       required: true,
       ref: "User",
     },
