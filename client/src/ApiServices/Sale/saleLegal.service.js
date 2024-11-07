@@ -19,6 +19,7 @@ export const SaleLegalService = {
     return api.post(url, id);
   },
   getAll(order_num) {
+    console.log(order_num);
     let url = "sale/legal_all";
     return api.post(url, order_num);
   },

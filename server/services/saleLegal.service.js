@@ -20,37 +20,70 @@ class SaleLegalService {
     return model;
   }
   async create(data, author) {
-    const newData = await SaleLegalCardModel.create({ ...data, author });
-    return newData;
+    const {
+      customer_name,
+      order_number,
+      pro_name,
+      pro_type,
+      pro_color,
+      pro_width,
+      grammaj,
+      delivery_time,
+      order_quantity,
+    } = data;
+    if (
+      customer_name &&
+      order_number &&
+      pro_name &&
+      pro_type &&
+      pro_color &&
+      pro_width &&
+      grammaj &&
+      delivery_time &&
+      order_quantity
+    ) {
+      const newData = await SaleLegalCardModel.create({ ...data, author });
+      return {
+        status: 200,
+        msg: "Sotuv karta  yaratildi !",
+        newData,
+      };
+    } else {
+      return {
+        status: 400,
+        msg: "Barcha qatorlarni to'ldiring !",
+      };
+    }
   }
 
   async confirm(id) {
     const dataById = await SaleLegalCardModel.findById(id).populate("author");
     const data = dataById;
     data.order_status = "Bo'yoqqa yuborildi";
-    data.process_status.push({
+    const proccess_status =
+    {
       department: data.author.department,
-      author: data.author.email,
+      author: data.author.username,
       status: "Bo'yoqqa yuborildi",
       sent_time: new Date(),
-    });
+      confirm: [{ author: data.author.username, reason: "", isConfirm: true }],
+    }
+    data.process_status.push(proccess_status);
     const updatedData = await SaleLegalCardModel.findByIdAndUpdate(id, data, {
       new: true,
     });
     return updatedData;
   }
 
-  async getAll(num) {
-    if ((num = !" ")) {
-      const allPosts = await SaleLegalCardModel.find({
-        order_number: num,
-      }).populate([
+  async getAll(order_num) {
+    if ((order_num = !" ")) {
+      const allPosts = await SaleLegalCardModel.find({}).populate([
         "author",
         "dep_paint_data",
         "dep_provider_data",
         "dep_weaving_data",
       ]);
-      res.json( { allPosts }) ;
+      res.json({ allPosts });
     } else {
       const allPosts = await SaleLegalCardModel.find().populate([
         "author",

@@ -17,6 +17,17 @@ const loading = useLoading({
   height: "100px",
   width: "100px",
 });
+const is_cancel = ref(false);
+const Cancel = () => {
+  is_cancel.value = !is_cancel.value;
+};
+const cancel_reason = ref({
+  user_id: "",
+  reason: "",
+});
+const CancelAndOfReason = () => {
+  console.log(cancel_reason.value);
+};
 const cardId = ref();
 const outerVisible = ref(false);
 const innerVisible = ref(false);
@@ -294,88 +305,7 @@ onMounted(async () => {
     title="Ish jarayoniga qabul qilish uchun tasdiqlaysizmi ?"
     width="600"
   >
-    <!-- <span>
-      <form
-        class="filter-box md:grid md:grid-cols-3 gap-2 sm:flex sm:flex-wrap rounded shadow-md bg-white p-2 mt-1 mb-1 text-[12px]"
-      >
-        <div class="mb-1 col-span-1">
-          <label
-            name="resul"
-            class="block mb-1 text-[12px] font-medium text-gray-900 dark:text-white"
-            >Pus</label
-          >
-          <el-input
-            v-model="model.pus"
-            clearable
-            class="w-[100%]"
-            size="smal"
-            type="String"
-            placeholder="..."
-          />
-        </div>
-        <div class="mb-1 col-span-1">
-          <label
-            name="resul"
-            class="block mb-1 text-[12px] font-medium text-gray-900 dark:text-white"
-            >Fike</label
-          >
-          <el-input
-            v-model="model.fike"
-            clearable
-            class="w-[100%]"
-            size="smal"
-            type="Number"
-            placeholder="..."
-          />
-        </div>
-
-        <div class="mb-1 col-span-1">
-          <label
-            name="resul"
-            class="block mb-1 text-[12px] font-medium text-gray-900 dark:text-white"
-            >Rang kodi</label
-          >
-          <el-input
-            v-model="model.color_code"
-            clearable
-            class="w-[100%]"
-            size="smal"
-            type="String"
-            placeholder="..."
-          />
-        </div>
-        <div class="mb-1 col-span-1">
-          <label
-            name="resul"
-            class="block mb-1 text-[12px] font-medium text-gray-900 dark:text-white"
-            >Xom mato miqdori</label
-          >
-          <el-input
-            v-model="model.raw_cloth_quantity"
-            clearable
-            class="w-[100%]"
-            size="smal"
-            type="Number"
-            placeholder="..."
-          />
-        </div>
-        <div class="mb-1 col-span-1">
-          <label
-            name="resul"
-            class="block mb-1 text-[12px] font-medium text-gray-900 dark:text-white"
-            >Tayyorlash muddati</label
-          >
-          <el-input
-            v-model="model.duration_time"
-            clearable
-            class="w-[100%]"
-            size="smal"
-            type="Date"
-            placeholder="..."
-          />
-        </div>
-      </form>
-    </span> -->
+    <span> </span>
     <el-dialog
       v-model="innerVisible"
       width="500"
@@ -386,11 +316,54 @@ onMounted(async () => {
     </el-dialog>
     <template #footer>
       <div class="dialog-footer">
-        <el-button @click="outerVisible = false">Yopish</el-button>
+        <el-button @click="Cancel()">Bekor qilish</el-button>
         <el-button type="" @click="Confirm()"> Tasdiqlash </el-button>
       </div>
     </template>
   </el-dialog>
+
+  <!-- // Bekor qilish modal -->
+
+  <el-dialog v-model="is_cancel" title="Bekor qilish oynasi ! " width="600">
+    <span>
+      <form
+        v-show="is_cancel"
+        class="filter-box md:grid md:grid-cols-4 gap-2 sm:flex sm:flex-wrap rounded shadow-md bg-white p-2 mt-1 mb-1 text-[12px]"
+      >
+        <div class="mb-1 col-span-4">
+          <label
+            name="resul"
+            class="block mb-1 text-[12px] font-medium text-gray-900 dark:text-white"
+            >Bekor qilish sababi</label
+          >
+
+          <el-input
+            v-model="cancel_reason.reason"
+            clearable
+            maxlength="200"
+            show-word-limit
+            autosize
+            type="textarea"
+            placeholder="Sababini kiriting !"
+          />
+        </div>
+      </form>
+    </span>
+    <el-dialog
+      v-model="innerVisible"
+      width="600"
+      title="Inner Dialog"
+      append-to-body
+    >
+      <span>Cancel And Of Reason</span>
+    </el-dialog>
+    <template #footer>
+      <div class="dialog-footer">
+        <el-button type="" @click="CancelAndOfReason()"> Yuborish </el-button>
+      </div>
+    </template>
+  </el-dialog>
+  <!-- /// -->
 
   <!-- //PAGANATION PAGANATION PAGANATION PAGANATION// -->
   <div class="flex justify-between mt-2 bg-white p-2 shadow-md">

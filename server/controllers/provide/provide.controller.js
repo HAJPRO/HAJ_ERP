@@ -25,7 +25,20 @@ class DepProvideController {
   async create(req, res, next) {
     try {
       const userData = await userModel.findById(req.user.id);
-      const data = await DepPaintService.create(req.body.items, req.user.id);
+      const proccess_status =
+      {
+        department: userData.department,
+        author: userData.username,
+        status: "Yigiruvga yuborildi",
+        sent_time: new Date(),
+        confirm: [{ author: userData.author, reason: "", isConfirm:true }],
+      }
+
+      const data = await DepProvideService.create(
+        req.body.items,
+        req.user.id,
+        proccess_status
+      );
       const LegalDataById = await SaleLegalCardModel.findById(req.body.id);
       const newLegalData = LegalDataById;
       newLegalData.order_status = "Yigiruvga yuborildi";

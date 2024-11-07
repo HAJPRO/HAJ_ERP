@@ -2,12 +2,10 @@
 import { onMounted, ref } from "vue";
 import Title from "@/components/Title.vue";
 import { SaleLegalService } from "@/ApiServices/Sale/saleLegal.service";
-import { toast } from "vue3-toastify";
+import { ToastifyService } from "../../../utils/Toastify.js";
 import { useRouter } from "vue-router";
 import Cookies from "js-cookie";
-
 const router = useRouter();
-import "vue3-toastify/dist/index.css";
 import { useLoading } from "vue-loading-overlay";
 const loading = useLoading({
   color: "#36d887",
@@ -25,18 +23,46 @@ const getModel = async () => {
 };
 const Save = async () => {
   try {
-    const data = await SaleLegalService.create(model.value);
-    model.value = {};
-    window.location.href = "/explore/sale/legal";
+    const {
+      customer_name,
+      order_number,
+      pro_name,
+      pro_type,
+      pro_color,
+      pro_width,
+      grammaj,
+      delivery_time,
+      order_quantity,
+    } = model.value;
+    if (
+      customer_name &&
+      order_number &&
+      pro_name &&
+      pro_type &&
+      pro_color &&
+      pro_width &&
+      grammaj &&
+      delivery_time &&
+      order_quantity
+    ) {
+      const data = await SaleLegalService.create(model.value);
+      model.value = {};
+      ToastifyService.ToastSuccess({ msg: data.data.msg });
+      setInterval((window.location.href = "/explore/sale/legal"), 1500);
+    } else {
+      return ToastifyService.ToastError({
+        msg: "Barcha qatorlarni to'ldiring !",
+      });
+    }
   } catch (error) {
-    console.log(error);
+    return ToastifyService.ToastError({ msg: error.message });
   }
 };
 onMounted(async () => {
   try {
     await getModel();
-  } catch (err) {
-    console.log(err);
+  } catch (error) {
+    return ToastifyService.ToastError({ msg: error.message });
   }
 });
 </script>

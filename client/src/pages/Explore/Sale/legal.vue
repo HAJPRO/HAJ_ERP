@@ -2,10 +2,9 @@
 import { ref, onMounted } from "vue";
 import Title from "@/components/Title.vue";
 import { SaleLegalService } from "@/ApiServices/Sale/saleLegal.service";
-import { toast } from "vue3-toastify";
 import { useRouter } from "vue-router";
+import { ToastifyService } from "../../../utils/Toastify";
 const router = useRouter();
-import "vue3-toastify/dist/index.css";
 import { useLoading } from "vue-loading-overlay";
 const loading = useLoading({
   color: "#36d887",
@@ -30,32 +29,32 @@ const Export_Excel = async (id) => {
   try {
     const data = await SaleLegalService.export_excel({ id });
   } catch (error) {
-    console.log(error);
+    return ToastifyService.ToastError({ msg: error.messages });
   }
 };
 const Confirm = async (id) => {
   try {
     const Id = await SaleLegalService.confirm({ id });
-    window.location.href = "/explore/sale/legal";
+    ToastifyService.ToastSuccess({
+      msg: "Sotuv tasdiqlandi va bo'yoqqa yuborildi",
+    });
+    setInterval((window.location.href = "/explore/sale/legal"), 2000);
   } catch (error) {
-    console.log(error);
+    return ToastifyService.ToastError({ msg: error.messages });
   }
 };
 const items = ref([]);
 const painting_length = ref();
 const provide_length = ref();
-const filter_order_num = ref("");
-const getAll = async () => {
-  if ((filter_order_num.value = "")) {
+const filter_order_num = ref({ order_num: "" });
+const getAll = async (filter_order_num) => {
+  if (!filter_order_num) {
     const data = await SaleLegalService.getAll();
     items.value = data.data.allPosts;
     // painting_length.value = data.data.painting_length.length;
     // provide_length.value = data.data.provide_length.length;
   } else {
-    const data = await SaleLegalService.getAll({
-      order_num: filter_order_num.value,
-    });
-    console.log(filter_order_num.value);
+    const data = await SaleLegalService.getAll({});
     items.value = data.data.allPosts;
     // painting_length.value = data.data.painting_length.length;
     // provide_length.value = data.data.provide_length.length;
@@ -156,8 +155,8 @@ onMounted(async () => {
       <div class="flex flex-wrap">
         <div class="mr-3 col-span-1">
           <el-input
-            @input="getAll"
-            v-model="filter_order_num"
+            @input="getAll()"
+            v-model="filter_order_num.order_num"
             clearable
             class="w-[100%]"
             size="large"
@@ -286,6 +285,7 @@ onMounted(async () => {
         >
           <template #default="scope">
             <router-link
+              v-show="scope.row.order_status === 'Tasdiqlanmagan'"
               to=""
               @click="Confirm(scope.row._id)"
               class="inline-flex items-center mt-4 ml-2 text-red bg-[#eedc36] hover:bg-yellow-400 font-medium rounded-md text-sm w-full sm:w-auto px-2 py-3 text-center"
@@ -300,6 +300,7 @@ onMounted(async () => {
               <i class="text-black fa-sharp fa-solid fa-info fa-xs"></i>
             </router-link>
             <router-link
+              v-show="scope.row.order_status === 'Tasdiqlanmagan'"
               to="/explore/sale/legal/create"
               @click="DeleteFromTable(scope.row._id)"
               class="inline-flex items-center mt-4 ml-2 text-white bg-yellow-500 hover:bg-yellow-600 font-medium rounded-md text-sm w-full sm:w-auto px-2 py-3 text-center"

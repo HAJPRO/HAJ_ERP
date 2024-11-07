@@ -16,9 +16,31 @@ class DepProvideService {
 
     return model;
   }
-  async create(data, author) {
-    const newData = await SaleDepPaintCardModel.create({ ...data, author });
-    return newData;
+  async create(data, author, proccess_status) {
+    const newData = await SaleDepProvideCardModel.create({
+      ...data,
+      author,
+    });
+    if (await newData) {
+      const id = newData._id
+      const result = await SaleDepProvideCardModel.findOne(id)
+      const newItems = result
+      const proccess = newItems.proccess_status
+      const newProccess = proccess.push(proccess_status)
+      console.log(newItems);
+      // if (id) {
+      //   const updateDataLegal = await SaleDepProvideCardModel.findByIdAndUpdate(
+      //     id,
+      //     items,
+      //     { new: true }
+      //   );
+      // }
+
+
+    }
+
+
+    return newData
   }
 
   async getAll() {
