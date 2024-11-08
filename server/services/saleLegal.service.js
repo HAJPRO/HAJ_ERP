@@ -111,10 +111,6 @@ class SaleLegalService {
   }
 
   async edit(data, id) {
-    if (!id) {
-      console.log("Id not found");
-    }
-
     const updatedData = await SaleLegalCardModel.findByIdAndUpdate(id, data, {
       new: true,
     });

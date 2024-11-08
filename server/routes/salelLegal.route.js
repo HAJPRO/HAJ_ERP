@@ -10,17 +10,7 @@ router.post("/legal_create", authMiddleware, saleLegalController.create);
 router.delete("/legal_delete/:id", authMiddleware, saleLegalController.delete);
 router.post("/legal_confirm", saleLegalController.confirm);
 router.post("/legal_export_excel", saleLegalController.export_excel);
-router.put(
-  "/legal_edit/:id",
-  authMiddleware,
-  authorMiddleware,
-  saleLegalController.edit
-);
-router.get(
-  "/legal_get-one/:id",
-  authMiddleware,
-  authorMiddleware,
-  saleLegalController.getOne
-);
+router.put( "/legal_edit/:id",authMiddleware,authorMiddleware,saleLegalController.edit);
+router.get("/legal_get_one/:id", authMiddleware,authorMiddleware,saleLegalController.getOne);
 
 module.exports = router;

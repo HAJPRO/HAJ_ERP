@@ -34,7 +34,7 @@ class saleLegalController {
   async delete(req, res, next) {
     try {
       const data = await SaleLegalService.delete(req.params.id);
-      res.status(200).json(data);
+      res.status(200).json({ msg: "Karta muvaffaqiyatli o'chirildi !", data });
     } catch (error) {
       next(error);
     }
@@ -53,7 +53,7 @@ class saleLegalController {
     try {
       const { body, params } = req;
       const data = await SaleLegalService.edit(body, params.id);
-      res.status(200).json(data);
+      res.status(200).json({ msg: "Malumot muvaffaqiyatli yangilandi !", data });
     } catch (error) {
       next(error);
     }

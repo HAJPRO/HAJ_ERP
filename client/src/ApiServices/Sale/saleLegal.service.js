@@ -23,4 +23,16 @@ export const SaleLegalService = {
     let url = "sale/legal_all";
     return api.post(url, order_num);
   },
+  Edit(id, data) {
+    let url = `sale/legal_edit/${id}`;
+    return api.put(url, data);
+  },
+  getOne(id) {
+    let url = `sale/legal_get_one/${id}`;
+    return api.get(url);
+  },
+  Delete(id) {
+    let url = `sale/legal_delete/${id}`;
+    return api.delete(url);
+  },
 };
