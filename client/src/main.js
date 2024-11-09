@@ -3,9 +3,9 @@ import ElementPlus from "element-plus";
 import * as ElementPlusIconsVue from "@element-plus/icons-vue";
 import "element-plus/dist/index.css";
 import toast from "vue3-toastify";
-import "vue3-toastify/dist/index.css";
+import Loading from 'vue-loading-overlay';
 
-import "vue-loading-overlay/dist/css/index.css";
+
 import router from "./router/index";
 import store from "./store";
 
@@ -17,4 +17,5 @@ app.use(store);
 app.use(ElementPlus);
 app.use(ElementPlusIconsVue);
 app.use(toast);
+app.use(Loading);
 app.mount("#app");

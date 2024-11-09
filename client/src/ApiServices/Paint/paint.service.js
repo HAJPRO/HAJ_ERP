@@ -10,6 +10,10 @@ export const PaintService = {
     let url = "paint/paint_create";
     return api.post(url, data);
   },
+  cancelReason(data) {
+    let url = "paint/cancel_reason";
+    return api.post(url, data);
+  },
   getAll() {
     let url = "paint/paint_all";
     return api.get(url);

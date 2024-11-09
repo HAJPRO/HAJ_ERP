@@ -4,18 +4,8 @@ import Title from "@/components/Title.vue";
 import { SaleLegalService } from "@/ApiServices/Sale/saleLegal.service";
 import { useRouter } from "vue-router";
 import { ToastifyService } from "../../../utils/Toastify";
+import { loading } from ".././../../utils/Loader"
 const router = useRouter();
-import { useLoading } from "vue-loading-overlay";
-const loading = useLoading({
-  color: "#36d887",
-  backgroundColor: "#666",
-  opacity: "0.9",
-  loader: "bars",
-  height: "100px",
-  width: "100px",
-});
-
-
 const isEditModal = ref(false)
 const model = ref({})
 const edit_id = ref()
@@ -40,18 +30,21 @@ const Update = async () => {
       window.location.href = "/explore/sale/legal"
     }
   } catch (error) {
-    console.log(error);
     return ToastifyService.ToastError({ msg: error.messages });
   }
 }
 const DeleteById = async (id) => {
   try {
+    const loading = loader.show()
     const data = await SaleLegalService.Delete(id)
-    console.log(data);
+    loader.hide()
     ToastifyService.ToastSuccess({
       msg: data.data.msg,
     });
-    window.location.href = "/explore/sale/legal"
+    const Refresh = () => {
+      window.location.href = "/explore/sale/legal"
+    }
+    setTimeout(Refresh, 1500)
   } catch (error) {
     return ToastifyService.ToastError({ msg: error.messages });
   }
@@ -76,11 +69,14 @@ const Export_Excel = async (id) => {
 };
 const Confirm = async (id) => {
   try {
+    const loader = loading.show()
     const Id = await SaleLegalService.confirm({ id });
-    ToastifyService.ToastSuccess({
-      msg: "Sotuv tasdiqlandi va bo'yoqqa yuborildi",
-    });
-    setInterval((window.location.href = "/explore/sale/legal"), 2000);
+    loader.hide()
+    ToastifyService.ToastSuccess({ msg: "Sotuv tasdiqlandi va bo'yoqqa yuborildi", });
+    const TimeOut = () => {
+      window.location.href = "/explore/sale/legal"
+    }
+    setTimeout(TimeOut, 1500)
   } catch (error) {
     return ToastifyService.ToastError({ msg: error.messages });
   }
@@ -91,36 +87,35 @@ const painting_length = ref();
 const filter_order_num = ref({ order_num: "" });
 const getAll = async (filter_order_num) => {
   if (!filter_order_num) {
+    const loader = loading.show()
     const data = await SaleLegalService.getAll();
+    loader.hide()
     items.value = data.data.allPosts;
     sales_length.value = data.data.allPosts.length;
-    // painting_length.value = data.data.painting_length.length;
-    // provide_length.value = data.data.provide_length.length;
   } else {
     const data = await SaleLegalService.getAll();
     items.value = data.data.allPosts;
     sales_length.value = data.data.allPosts;
-    // provide_length.value = data.data.provide_length.length;
   }
 };
 const isActive = ref(1)
-const ActiveTabLink = (num) =>{
-  if(num === 1){
+const ActiveTabLink = (num) => {
+  if (num === 1) {
     isActive.value = 1
   }
-  if(num === 2){
+  if (num === 2) {
     isActive.value = 2
   }
-  if(num === 3){
+  if (num === 3) {
     isActive.value = 3
   }
-  if(num === 4){
+  if (num === 4) {
     isActive.value = 4
   }
-  if(num === 5){
+  if (num === 5) {
     isActive.value = 5
   }
- 
+
 }
 
 onMounted(async () => {
@@ -141,87 +136,86 @@ onMounted(async () => {
     </Title>
     <div class="grid grid-cols-12 grid-flow-col justify-between bg-white rounded-md shadow-md p-3 mb-2 ">
       <div class="col-span-8 grid-flow-col ">
-        <router-link  @click="ActiveTabLink(1)" to=""
-        :class = "{activeTab : isActive === 1 }"
+        <router-link @click="ActiveTabLink(1)" to="" :class="{ activeTab: isActive === 1 }"
           class="inline-flex ml-2 text-[13px] items-center mr-2 px-4 py-2 mb-1 text-sm font-medium text-center text-red hover:border-b-2 border-solid border-[#36d887] bg-[#e4e9e9] text-bold rounded ">
           <i class="fa-solid fa-info mr-2 fa-xm"></i> Sotuv
           <div class="flex flex-shrink-0 ml-2">
             <span
               class=" inline-flex items-center justify-center h-5 text-md font-medium text-white bg-red-500 px-3 py-3 rounded">
-             <span class=" ">1</span>/{{sales_length }}</span>
+              <span class=" ">1</span>/{{ sales_length }}</span>
           </div>
         </router-link>
-        <router-link to="" @click="ActiveTabLink(2)" 
-        :class = "{activeTab : isActive === 2 }"
+        <router-link to="" @click="ActiveTabLink(2)" :class="{ activeTab: isActive === 2 }"
           class="inline-flex text-[13px] items-center px-4 py-2 mb-1 text-sm font-medium text-center text-red hover:border-b-2 border-solid border-[#36d887] bg-[#e4e9e9] text-bold rounded ">
           <i class="fa-solid fa-info mr-2 fa-xm"></i> Bo'yoq
           <div class="flex flex-shrink-0 ml-2">
             <span
               class="inline-flex items-center justify-center h-5 text-xm font-medium text-white bg-[#36d887] px-3 py-3 rounded">
-              <span class=" ">0</span>/{{ painting_length || 0}}</span>
+              <span class=" ">0</span>/{{ painting_length || 0 }}</span>
           </div>
         </router-link>
 
-        <router-link to="" @click="ActiveTabLink(3)" 
-        :class = "{activeTab : isActive === 3 }"
+        <router-link to="" @click="ActiveTabLink(3)" :class="{ activeTab: isActive === 3 }"
           class="inline-flex text-[13px] items-center ml-2 px-4 py-2 mb-1 text-sm font-medium text-center text-red hover:border-b-2 border-solid border-[#36d887] bg-[#e4e9e9] text-bold rounded ">
           <i class="fa-solid fa-info mr-2 fa-xm"></i> To'quv
           <div class="flex flex-shrink-0 ml-2">
             <span
-              class="inline-flex items-center justify-center h-5 text-xm font-medium text-white bg-[#36d887] px-3 py-3 rounded"><span class=" ">0</span>/0</span>
+              class="inline-flex items-center justify-center h-5 text-xm font-medium text-white bg-[#36d887] px-3 py-3 rounded"><span
+                class=" ">0</span>/0</span>
           </div>
         </router-link>
-        <router-link to="" @click="ActiveTabLink(4)" 
-        :class = "{activeTab : isActive === 4 }"
+        <router-link to="" @click="ActiveTabLink(4)" :class="{ activeTab: isActive === 4 }"
           class="inline-flex text-[13px] items-center ml-2 px-4 py-2 mb-1 text-sm font-medium text-center text-red hover:border-b-2 border-solid border-[#36d887] bg-[#e4e9e9] text-bold rounded ">
           <i class="fa-solid fa-info mr-2 fa-xm"></i> Yigiruv
           <div class="flex flex-shrink-0 ml-2">
             <span
-              class="inline-flex items-center justify-center h-5 text-xm font-medium text-white bg-[#36d887] px-3 py-3 rounded"><span class=" ">0</span>/0</span>
+              class="inline-flex items-center justify-center h-5 text-xm font-medium text-white bg-[#36d887] px-3 py-3 rounded"><span
+                class=" ">0</span>/0</span>
           </div>
         </router-link>
-        <router-link to="" @click="ActiveTabLink(5)" 
-        :class = "{activeTab : isActive === 5 }"
+        <router-link to="" @click="ActiveTabLink(5)" :class="{ activeTab: isActive === 5 }"
           class="inline-flex text-[13px] items-center ml-2 px-4 py-2 mb-1 text-sm font-medium text-center text-red hover:border-b-2 border-solid border-[#36d887] bg-[#e4e9e9] text-bold rounded ">
           <i class="fa-solid fa-info mr-2 fa-xm"></i> Taminot
           <div class="flex flex-shrink-0 ml-2">
             <span
               class="inline-flex items-center justify-center h-5 text-xm font-medium text-white bg-[#36d887] px-3 py-3 rounded">
-              <span class=" ">0</span>/{{provide_length || 0 }}</span>
+              <span class=" ">0</span>/{{ provide_length || 0 }}</span>
           </div>
         </router-link>
       </div>
-     <div class="flex justify-end flex-wrap gap-2 col-span-4 grid-flow-col">
-      <div class="">
-        <el-input clearable size="large" type="String" placeholder="Buyurtma nomer bo'yicha izla..." />
-      </div>
-      <div class="row-span-1 grid-flow-col">
-        <router-link to="/explore/sale/legal/create"
-          class="inline-flex text-[13px] items-center px-2 py-2 mb-1 text-sm font-medium text-center text-white bg-[#36d887] text-bold rounded ">
-          <i class="fa-solid fa-plus mr-2 fa-xm"></i> Karta qo'shish
-        </router-link>
-      </div>
+      <div class="flex justify-end flex-wrap gap-2 col-span-4 grid-flow-col">
+        <div class="">
+          <el-input clearable size="large" type="String" placeholder="Buyurtma nomer bo'yicha izla..." />
+        </div>
+        <div class="row-span-1 grid-flow-col">
+          <router-link to="/explore/sale/legal/create"
+            class="inline-flex text-[13px] items-center px-2 py-2 mb-1 text-sm font-medium text-center text-white bg-[#36d887] text-bold rounded ">
+            <i class="fa-solid fa-plus mr-2 fa-xm"></i> Karta qo'shish
+          </router-link>
+        </div>
       </div>
     </div>
     <div class="shadow-md rounded min-h-[15px]">
       <!-- // TRansfer table  -->
-      <el-table load class="w-full" header-align="center" hight="5" style="width: 100%"  empty-text="Mahsulot tanlanmagan... " :default-sort="[
-                { prop: 'customer_name', order: 'customer_name' },
-                { prop: 'order_number', order: 'order_number' },
-                { prop: 'pro_type', order: 'pro_type' },
-                { prop: 'delivery_time', order: 'delivery_time' },
-              ]" :data="items" border min-height="300" max-height="400">
+      <el-table load class="w-full" header-align="center" hight="5" style="width: 100%"
+        empty-text="Mahsulot tanlanmagan... " :default-sort="[
+          { prop: 'customer_name', order: 'customer_name' },
+          { prop: 'order_number', order: 'order_number' },
+          { prop: 'pro_type', order: 'pro_type' },
+          { prop: 'delivery_time', order: 'delivery_time' },
+        ]" :data="items" border min-height="300" max-height="400">
         <el-table-column header-align="center" align="center" type="index" prop="index" fixed="left" label="№"
           width="60" />
 
-        <el-table-column header-align="center"  sortable prop="customer_name" label="Buyurtmachi" width="200" />
+        <el-table-column header-align="center" sortable prop="customer_name" label="Buyurtmachi" width="200" />
 
         <el-table-column header-align="center" sortable prop="order_number" label="Buyurtma nomeri" width="200" />
-        <el-table-column prop="pro_type"  sortable label="Turi" width="180" header-align="center" align="center" />
+        <el-table-column prop="pro_type" sortable label="Turi" width="180" header-align="center" align="center" />
         <el-table-column prop="pro_name" label="Nomi" width="180" header-align="center" align="center" />
         <el-table-column prop="pro_color" label="Rangi" width="180" header-align="center" align="center" />
         <el-table-column prop="order_quantity" label="Miqdori" width="180" header-align="center" align="center" />
-        <el-table-column prop="delivery_time" sortable label="Muddati" width="180" header-align="center" align="center" />
+        <el-table-column prop="delivery_time" sortable label="Muddati" width="180" header-align="center"
+          align="center" />
         <el-table-column fixed="right" prop="order_status" label="Holati" width="150" header-align="center"
           align="center">
           <template #default="scope">
@@ -480,7 +474,12 @@ onMounted(async () => {
     </el-dialog>
     <template #footer>
       <div class="dialog-footer">
-        <el-button @click="outerVisible = false">Yopish</el-button>
+        <div class="">
+          <router-link @click="outerVisible" to=""
+            class="inline-flex text-[13px] items-center px-2 py-1 mb-1 text-sm font-medium text-center text-white bg-yellow-500 text-bold rounded ">
+            <i class="fa-solid fa-file-excel mr-2 fa-xm"></i> Excel
+          </router-link>
+        </div>
       </div>
     </template>
   </el-dialog>
@@ -573,6 +572,6 @@ onMounted(async () => {
 </template>
 <style>
 .activeTab {
-  border-bottom : 2px solid #36d887
+  border-bottom: 2px solid #36d887
 }
 </style>

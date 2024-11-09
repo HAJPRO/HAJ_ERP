@@ -14,6 +14,11 @@ router.put(
   authorMiddleware,
   DepPaintController.edit
 );
+router.post(
+  "/cancel_reason",
+  authMiddleware,
+  DepPaintController.cencelReason
+);
 router.get(
   "/paint_get-one/:id",
   authMiddleware,

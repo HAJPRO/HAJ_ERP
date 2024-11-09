@@ -6,15 +6,6 @@ import { ToastifyService } from "../../../utils/Toastify.js";
 import { useRouter } from "vue-router";
 import Cookies from "js-cookie";
 const router = useRouter();
-import { useLoading } from "vue-loading-overlay";
-const loading = useLoading({
-  color: "#36d887",
-  backgroundColor: "#666",
-  opacity: "0.9",
-  loader: "bars",
-  height: "100px",
-  width: "100px",
-});
 
 const model = ref({});
 const getModel = async () => {
@@ -47,8 +38,11 @@ const Save = async () => {
     ) {
       const data = await SaleLegalService.create(model.value);
       model.value = {};
+      const TimeOut = () => {
+        window.location.href = "/explore/sale/legal"
+      }
       ToastifyService.ToastSuccess({ msg: data.data.msg });
-      setInterval((window.location.href = "/explore/sale/legal"), 1500);
+      setTimeout(TimeOut, 1500)
     } else {
       return ToastifyService.ToastError({
         msg: "Barcha qatorlarni to'ldiring !",

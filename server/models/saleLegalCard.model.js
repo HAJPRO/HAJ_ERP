@@ -16,7 +16,7 @@ const SaleLegalCardSchema = new Schema(
     order_status: { type: String, default: "Tasdiqlanmagan" },
     process_status: { type: Array },
     state: { type: Boolean, default: true },
-    isConfirm: { type: Boolean, default: false },
+    isConfirm: { type: Array },
     dep_paint_data: {
       type: Schema.ObjectId,
       ref: "DepPaintCard",
