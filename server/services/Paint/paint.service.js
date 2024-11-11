@@ -80,7 +80,7 @@ class DepPaintService {
     return Data;
   }
 
-  async getAll() {
+  async getAllFromSale() {
     const allPosts = await SaleLegalCardModel.find({
       order_status: "Bo'yoqqa yuborildi",
     }).populate("author");
@@ -89,7 +89,12 @@ class DepPaintService {
     }).populate("author");
     return { allPosts, allProvideItems };
   }
-
+  async getAllForProvide() {
+    const allPosts = await SaleDepPaintCardModel.find({
+      paint_status: "Taminotga yuborildi",
+    }).populate("author");
+    return allPosts;
+  }
   async delete(id) {
     const data = await SaleDepPaintCardModel.findByIdAndDelete(id);
     return data;

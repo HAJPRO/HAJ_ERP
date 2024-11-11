@@ -1,7 +1,10 @@
 <script setup>
 import { ref, onMounted } from "vue";
 import Title from "@/components/Title.vue";
-import DoneTabelComponent from "../../../../components/Paint/Done.vue";
+import DoneTabelComponent from "../../../../components/Paint/DoneTable.vue";
+import WeavingTabelComponent from "../../../../components/Paint/WeavingTable.vue";
+import ProvideTabelComponent from "../../../../components/Paint/ProvideTable.vue";
+
 import { ToastifyService } from "../../../../utils/Toastify";
 import { loading } from "../../../../utils/Loader";
 import { PaintService } from "@/ApiServices/Paint/paint.service";
@@ -86,12 +89,11 @@ const Save = async () => {
 const items = ref([]);
 const sales_length = ref();
 const provide_quantitiy = ref();
-const getAll = async () => {
+const getAllFromSale = async () => {
   const loader = loading.show()
-  const data = await PaintService.getAll();
+  const data = await PaintService.getAllFromSale();
   items.value = data.data.allPosts;
   sales_length.value = items.value.length;
-  provide_quantitiy.value = data.data.allProvideItems.length;
   loader.hide()
 };
 const isActive = ref(0)
@@ -104,6 +106,7 @@ const ActiveTabLink = (num) => {
   }
   if (num === 2) {
     isActive.value = 2
+   
   }
   if (num === 3) {
     isActive.value = 3
@@ -115,9 +118,17 @@ const ActiveTabLink = (num) => {
     isActive.value = 5
   }
 }
+const weaving_length = ref();
+function WeavingLength(weaving) {
+  weaving_length.value = weaving
+}
+const provide_length = ref();
+function ProvideLength(provide) {
+  provide_length.value = provide
+}
 onMounted(async () => {
   try {
-    await getAll(), await getModel();
+    await getAllFromSale(), await getModel();
   } catch (err) {
     console.log(err);
   }
@@ -131,58 +142,49 @@ onMounted(async () => {
     </template>
   </Title>
   <div class="grid grid-cols-12 grid-flow-col justify-between bg-white rounded-md shadow-md p-3 mb-2 ">
-    <div class="col-span-8 grid-flow-col ">
+    <div class="col-span-9 grid-flow-col flex-wrap">
       <router-link to="" @click="ActiveTabLink(0)" :class="{ activeTab: isActive === 0 }"
-        class="inline-flex text-[13px] items-center  mr-2 px-4 py-2 mb-1 text-sm font-medium text-center text-red hover:border-b-2 border-solid border-[#36d887] bg-[#e4e9e9] text-bold rounded ">
+        class="inline-flex text-[13px] items-center  mr-2 px-4 py-1 mb-1 text-sm font-medium text-center text-red hover:border-b-2 border-solid border-[#36d887] bg-[#e4e9e9] text-bold rounded ">
         <i class="fa-solid fa-info mr-2 fa-xm"></i> Bajarilgan
         <div class="flex flex-shrink-0 ml-2">
           <span
-            class="inline-flex items-center justify-center h-5 text-xm font-medium text-white bg-[#36d887] px-3 py-3 rounded">
-            <span class=" ">0</span>/{{ provide_length || 0 }}</span>
+            class="inline-flex items-center justify-center h-5 text-[11px] font-medium text-white bg-[#36d887] px-3 py-2 rounded">
+            <span class=" ">0</span>/{{  1 }}</span>
         </div>
       </router-link>
       <router-link @click="ActiveTabLink(1)" to="" :class="{ activeTab: isActive === 1 }"
-        class="inline-flex ml-2 text-[13px] items-center mr-2 px-4 py-2 mb-1 text-sm font-medium text-center text-red hover:border-b-2 border-solid border-[#36d887] bg-[#e4e9e9] text-bold rounded ">
+        class="inline-flex  text-[13px] items-center mr-2 px-4 py-1 mb-1 text-sm font-medium text-center text-red hover:border-b-2 border-solid border-[#36d887] bg-[#e4e9e9] text-bold rounded ">
         <i class="fa-solid fa-info mr-2 fa-xm"></i> Sotuv
         <div class="flex flex-shrink-0 ml-2">
           <span
-            class=" inline-flex items-center justify-center h-5 text-md font-medium text-white bg-red-500 px-3 py-3 rounded">
+            class=" inline-flex items-center justify-center h-5 text-[11px] font-medium text-white bg-red-500 px-3 py-2 rounded">
             <span class=" ">1</span>/{{ sales_length }}</span>
         </div>
       </router-link>
       <router-link to="" @click="ActiveTabLink(3)" :class="{ activeTab: isActive === 3 }"
-        class="inline-flex text-[13px] items-center ml-2 px-4 py-2 mb-1 text-sm font-medium text-center text-red hover:border-b-2 border-solid border-[#36d887] bg-[#e4e9e9] text-bold rounded ">
+        class="inline-flex text-[13px] items-center mr-2 px-4 py-1 mb-1 text-sm font-medium text-center text-red hover:border-b-2 border-solid border-[#36d887] bg-[#e4e9e9] text-bold rounded ">
         <i class="fa-solid fa-info mr-2 fa-xm"></i> To'quv
         <div class="flex flex-shrink-0 ml-2">
           <span
-            class="inline-flex items-center justify-center h-5 text-xm font-medium text-white bg-[#36d887] px-3 py-3 rounded"><span
-              class=" ">0</span>/0</span>
+            class="inline-flex items-center justify-center h-5 text-[11px] font-medium text-white bg-[#36d887] px-3 py-2 rounded"><span
+              class=" ">0</span>/{{ weaving_length || 0 }}</span>
         </div>
       </router-link>
       <router-link to="" @click="ActiveTabLink(5)" :class="{ activeTab: isActive === 5 }"
-        class="inline-flex text-[13px] items-center ml-2 px-4 py-2 mb-1 text-sm font-medium text-center text-red hover:border-b-2 border-solid border-[#36d887] bg-[#e4e9e9] text-bold rounded ">
+        class="inline-flex text-[13px] items-center  px-4 py-1 mb-1 text-sm font-medium text-center text-red hover:border-b-2 border-solid border-[#36d887] bg-[#e4e9e9] text-bold rounded ">
         <i class="fa-solid fa-info mr-2 fa-xm"></i> Taminot
         <div class="flex flex-shrink-0 ml-2">
           <span
-            class="inline-flex items-center justify-center h-5 text-xm font-medium text-white bg-[#36d887] px-3 py-3 rounded">
+            class="inline-flex items-center justify-center h-5 text-[11px] font-medium text-white bg-[#36d887] px-3 py-2 rounded">
             <span class=" ">0</span>/{{ provide_length || 0 }}</span>
         </div>
       </router-link>
+      
     </div>
-    <div class="flex justify-end flex-wrap gap-2 col-span-4 grid-flow-col">
-      <div class="">
-        <el-input clearable size="large" type="String" placeholder="Buyurtma nomer bo'yicha izla..." />
-      </div>
-      <div class="row-span-1 grid-flow-col">
-        <router-link to=""
-          class="inline-flex text-[13px] items-center px-2 py-2 mb-1 text-sm font-medium text-center text-white bg-[#36d887] text-bold rounded ">
-          <i class="fa-solid fa-file-excel mr-2 fa-xm"></i> Excel
-        </router-link>
-      </div>
-    </div>
+   
   </div>
-  <div class="shadow-md rounded min-h-[15px]">
-    <!-- // TRansfer table  -->
+  <!-- // Sale Table -->
+  <div v-show="isActive === 1" class="shadow-md rounded min-h-[15px]">
     <el-table load class="w-full" header-align="center" hight="5" empty-text="Mahsulot tanlanmagan... " :default-sort="[
         { prop: 'name', order: 'descending' },
         { prop: 'count', order: 'descending' },
@@ -190,17 +192,16 @@ onMounted(async () => {
       ]" :data="items" border style="width: 100%" min-height="300" max-height="350">
       <el-table-column header-align="center" align="center" type="index" prop="index" fixed="left" label="№"
         width="60" />
-
       <el-table-column header-align="center" sortable prop="customer_name" label="Buyurtmachi nomi" width="200" />
-
       <el-table-column header-align="center" sortable prop="order_number" label="Buyurtma miqdori" width="200" />
       <el-table-column prop="pro_type" label="Mahsulot turi" width="180" header-align="center" align="center" />
       <el-table-column prop="pro_name" label="Mahsulot nomi" width="180" header-align="center" align="center" />
       <el-table-column prop="pro_color" label="Mahsulot rangi" width="180" header-align="center" align="center" />
       <el-table-column prop="order_quantity" label="Buyurtma miqdori" width="180" header-align="center"
         align="center" />
-      <el-table-column prop="finished_pro" label="Tayyor mahsulot" width="180" header-align="center" align="center" />
-      <el-table-column prop="residual" label="Tayyorlanishi kerak" width="180" header-align="center" align="center" />
+      <el-table-column prop="order_quantity" label="Tayyor mahsulot" width="180" header-align="center" align="center" />
+      <el-table-column prop="order_quantity" label="Tayyorlanishi kerak" width="180" header-align="center"
+        align="center" />
       <el-table-column fixed="right" prop="order_status" label="Holati" width="150" header-align="center"
         align="center">
         <template #default="scope">
@@ -212,27 +213,18 @@ onMounted(async () => {
       </el-table-column>
       <el-table-column fixed="right" prop="id" label="" width="150" header-align="center" align="center">
         <template #default="scope">
-          <!-- <router-link to="" @click="openModalById(scope.row._id)"
-              class="inline-flex items-center mt-4 ml-2 text-red bg-[#eedc36] hover:bg-yellow-400 font-medium rounded-md text-sm w-full sm:w-auto px-2 py-3 text-center">
-              <i class="text-red fa-solid fa-check fa-xs fa- fa-xs"></i>
-            </router-link> -->
           <router-link to="" @click="Confirm(scope.row._id)"
             class="inline-flex items-center  ml-2 text-red bg-yellow-300 hover:bg-yellow-400 font-medium rounded-md text-sm w-full sm:w-auto px-3 py-3 text-center">
             <i class="text-black fa-sharp fa-solid fa-check fa-xs"></i>
           </router-link>
-          <!-- <router-link
-              to=""
-              @click="DeleteFromTable(scope.row._id)"
-              class="inline-flex items-center mt-4 ml-2 text-white bg-red-600 hover:bg-red-500 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-md text-sm w-full sm:w-auto px-2 py-3 text-center"
-            >
-              <i class="text-black fa-sharp fa-solid fa-trash fa-xs"></i>
-            </router-link> -->
         </template>
       </el-table-column>
     </el-table>
-    <!-- // -->
   </div>
-  <DoneTabelComponent class="mt-10" :items="items" />
+  <!-- // -->
+  <DoneTabelComponent v-show="isActive === 0" class="" :items="items" />
+  <WeavingTabelComponent @WeavingLength="WeavingLength" v-show="isActive === 3" class="" :items="items" />
+  <ProvideTabelComponent @ProvideLength="ProvideLength" v-show="isActive === 5" class="" />
   <el-dialog v-model="outerVisible" title="Taminot uchun kerakli mahsulotlar qo'shish" width="600">
     <span>
       <form
@@ -335,19 +327,29 @@ onMounted(async () => {
         <router-link v-show="is_cancel" type="" @click="cancelSendReason()" to=""
           class="inline-flex text-[12px] items-center ml-2 px-3 py-1 mb-1 mt-2 text-sm font-medium text-center text-white bg-[#36d887] text-bold rounded focus:ring-4 focus:outline-none">
           <i class="mr-2 fa-solid fa-check fa-sm"></i>Yuborish</router-link>
-
       </div>
     </template>
   </el-dialog>
-
   <!-- //// -->
-
   <!-- //PAGANATION PAGANATION PAGANATION PAGANATION// -->
   <div class="flex justify-between mt-2 bg-white p-2 shadow-md">
-    <div></div>
+    <div>  
+      <router-link to=""
+          class="inline-flex text-[13px] items-center px-2 mr-2 py-1 mb-1 text-sm font-medium text-center text-white bg-[#36d887] text-bold rounded ">
+          <i class="fa-solid fa-file-excel mr-2 fa-xm"></i> Excel
+        </router-link>
+        <router-link to=""
+          class="inline-flex text-[13px] items-center px-2 py-1 mb-1 text-sm font-medium text-center text-white bg-yellow-500 text-bold rounded ">
+          <i class="fa-solid fa-file-pdf mr-2 fa-xm"></i> Pdf
+        </router-link>
+        <div class="inline-flex text-[13px] items-center px-2 py-1 mb-1 text-sm font-medium text-center text-white">
+          <el-input clearable size="smal" width="50px" type="String" placeholder="Buyurtma nomer bo'yicha izla..." />
+        </div>
+      </div>
+        
     <div class="block">
       <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange"
-        :current-page.sync="currentPage1" :page-size="100" layout="total, prev, pager, next" :total="1000">
+        :current-page.sync="currentPage1" :page-size="100" layout="prev, pager, next" :total="1000">
       </el-pagination>
     </div>
   </div>

@@ -1,5 +1,5 @@
 <script setup>
-import { ref, onMounted } from "vue";
+import { ref, onMounted ,onBeforeMount} from "vue";
 import Title from "@/components/Title.vue";
 import { SaleLegalService } from "@/ApiServices/Sale/saleLegal.service";
 import { useRouter } from "vue-router";
@@ -81,46 +81,50 @@ const Confirm = async (id) => {
     return ToastifyService.ToastError({ msg: error.messages });
   }
 };
+const all_length = ref();
+const getAllLength = async () => {
+  const loader = loading.show()
+  const data = await SaleLegalService.getAllLength();
+  loader.hide()
+  all_length.value = data.data ? data.data : {};
+  
+}
 const items = ref([]);
-const sales_length = ref();
-const painting_length = ref();
-const filter_order_num = ref({ order_num: "" });
-const getAll = async (filter_order_num) => {
-  if (!filter_order_num) {
-    const loader = loading.show()
-    const data = await SaleLegalService.getAll();
-    loader.hide()
-    items.value = data.data.allPosts;
-    sales_length.value = data.data.allPosts.length;
-  } else {
-    const data = await SaleLegalService.getAll();
-    items.value = data.data.allPosts;
-    sales_length.value = data.data.allPosts;
-  }
-};
+const getAll = async () => {
+  const loader = loading.show()
+  const data = await SaleLegalService.getAll({ status: isActive.value });
+  loader.hide()
+  items.value = data.data ? data.data : [];
+  
+}
 const isActive = ref(1)
 const ActiveTabLink = (num) => {
   if (num === 1) {
     isActive.value = 1
+    return getAll(1)
   }
   if (num === 2) {
     isActive.value = 2
+    return getAll(2)
   }
   if (num === 3) {
     isActive.value = 3
+    return getAll(3)
   }
   if (num === 4) {
     isActive.value = 4
+    return getAll(4)
   }
   if (num === 5) {
     isActive.value = 5
+    return getAll(5)
   }
 
 }
 
 onMounted(async () => {
   try {
-    await getAll();
+    await getAll();getAllLength();
   } catch (err) {
     console.log(err);
   }
@@ -134,63 +138,60 @@ onMounted(async () => {
         <h3>Sotuvlar</h3>
       </template>
     </Title>
-    <div class="grid grid-cols-12 grid-flow-col justify-between bg-white rounded-md shadow-md p-3 mb-2 ">
-      <div class="col-span-8 grid-flow-col ">
+    <div class="grid grid-cols-12 grid-flow-col justify-between bg-white rounded-md shadow-md p-2 mb-2 ">
+      <div class="col-span-9 grid-flow-col ">
         <router-link @click="ActiveTabLink(1)" to="" :class="{ activeTab: isActive === 1 }"
-          class="inline-flex ml-2 text-[13px] items-center mr-2 px-4 py-2 mb-1 text-sm font-medium text-center text-red hover:border-b-2 border-solid border-[#36d887] bg-[#e4e9e9] text-bold rounded ">
+          class="inline-flex  text-[13px] items-center mr-1 px-4 py-1 mb-1 text-sm font-medium text-center text-red hover:border-b-2 border-solid border-[#36d887] bg-[#e4e9e9] text-bold rounded ">
           <i class="fa-solid fa-info mr-2 fa-xm"></i> Sotuv
           <div class="flex flex-shrink-0 ml-2">
             <span
-              class=" inline-flex items-center justify-center h-5 text-md font-medium text-white bg-red-500 px-3 py-3 rounded">
-              <span class=" ">1</span>/{{ sales_length }}</span>
+              class=" inline-flex items-center justify-center h-5 text-[11px] font-medium text-white bg-red-500 px-3 py-2 rounded">
+              <span class=" ">1</span>/{{(all_length ? all_length.notConfirmed_length : 0) || 0 }}</span>
           </div>
         </router-link>
         <router-link to="" @click="ActiveTabLink(2)" :class="{ activeTab: isActive === 2 }"
-          class="inline-flex text-[13px] items-center px-4 py-2 mb-1 text-sm font-medium text-center text-red hover:border-b-2 border-solid border-[#36d887] bg-[#e4e9e9] text-bold rounded ">
+          class="inline-flex text-[13px] items-center mr-1 px-4 py-1 mb-1 text-sm font-medium text-center text-red hover:border-b-2 border-solid border-[#36d887] bg-[#e4e9e9] text-bold rounded ">
           <i class="fa-solid fa-info mr-2 fa-xm"></i> Bo'yoq
           <div class="flex flex-shrink-0 ml-2">
             <span
-              class="inline-flex items-center justify-center h-5 text-xm font-medium text-white bg-[#36d887] px-3 py-3 rounded">
-              <span class=" ">0</span>/{{ painting_length || 0 }}</span>
+              class="inline-flex items-center justify-center h-5 text-[11px] font-medium text-white bg-[#36d887] px-3 py-2 rounded">
+              <span class=" ">0</span>/{{ (all_length ? all_length.paint_length : 0) || 0 }}</span>
           </div>
         </router-link>
-
         <router-link to="" @click="ActiveTabLink(3)" :class="{ activeTab: isActive === 3 }"
-          class="inline-flex text-[13px] items-center ml-2 px-4 py-2 mb-1 text-sm font-medium text-center text-red hover:border-b-2 border-solid border-[#36d887] bg-[#e4e9e9] text-bold rounded ">
+          class="inline-flex text-[13px] items-center mr-1 px-4 py-1 mb-1 text-sm font-medium text-center text-red hover:border-b-2 border-solid border-[#36d887] bg-[#e4e9e9] text-bold rounded ">
           <i class="fa-solid fa-info mr-2 fa-xm"></i> To'quv
           <div class="flex flex-shrink-0 ml-2">
             <span
-              class="inline-flex items-center justify-center h-5 text-xm font-medium text-white bg-[#36d887] px-3 py-3 rounded"><span
-                class=" ">0</span>/0</span>
+              class="inline-flex items-center justify-center h-5 text-[11px] font-medium text-white bg-[#36d887] px-3 py-2 rounded"><span
+                class=" ">0</span>/{{ (all_length ? all_length.weaving_length : 0) || 0 }}</span>
           </div>
         </router-link>
         <router-link to="" @click="ActiveTabLink(4)" :class="{ activeTab: isActive === 4 }"
-          class="inline-flex text-[13px] items-center ml-2 px-4 py-2 mb-1 text-sm font-medium text-center text-red hover:border-b-2 border-solid border-[#36d887] bg-[#e4e9e9] text-bold rounded ">
+          class="inline-flex text-[13px] items-center mr-1  px-4 py-1 mb-1 text-sm font-medium text-center text-red hover:border-b-2 border-solid border-[#36d887] bg-[#e4e9e9] text-bold rounded ">
           <i class="fa-solid fa-info mr-2 fa-xm"></i> Yigiruv
           <div class="flex flex-shrink-0 ml-2">
             <span
-              class="inline-flex items-center justify-center h-5 text-xm font-medium text-white bg-[#36d887] px-3 py-3 rounded"><span
-                class=" ">0</span>/0</span>
+              class="inline-flex items-center justify-center h-5 text-[11px] font-medium text-white bg-[#36d887] px-3 py-2 rounded"><span
+                class=" ">0</span>/{{ (all_length ? all_length.spinning_length : 0) || 0 }}</span>
           </div>
         </router-link>
         <router-link to="" @click="ActiveTabLink(5)" :class="{ activeTab: isActive === 5 }"
-          class="inline-flex text-[13px] items-center ml-2 px-4 py-2 mb-1 text-sm font-medium text-center text-red hover:border-b-2 border-solid border-[#36d887] bg-[#e4e9e9] text-bold rounded ">
+          class="inline-flex text-[13px] items-center px-4 py-1 mb-1 text-sm font-medium text-center text-red hover:border-b-2 border-solid border-[#36d887] bg-[#e4e9e9] text-bold rounded ">
           <i class="fa-solid fa-info mr-2 fa-xm"></i> Taminot
           <div class="flex flex-shrink-0 ml-2">
             <span
-              class="inline-flex items-center justify-center h-5 text-xm font-medium text-white bg-[#36d887] px-3 py-3 rounded">
-              <span class=" ">0</span>/{{ provide_length || 0 }}</span>
+              class="inline-flex items-center justify-center h-5 text-[11px] font-medium text-white bg-[#36d887] px-3 py-2 rounded">
+              <span class=" ">0</span>/{{(all_length ? all_length.provide_length_length : 0) || 0}}</span>
           </div>
         </router-link>
       </div>
-      <div class="flex justify-end flex-wrap gap-2 col-span-4 grid-flow-col">
-        <div class="">
-          <el-input clearable size="large" type="String" placeholder="Buyurtma nomer bo'yicha izla..." />
-        </div>
-        <div class="row-span-1 grid-flow-col">
+      <div class="row-span-1 flex justify-end flex-wrap col-span-3 grid-flow-col">
+        <div class="col-span-2"></div>
+        <div class="col-span-1">
           <router-link to="/explore/sale/legal/create"
-            class="inline-flex text-[13px] items-center px-2 py-2 mb-1 text-sm font-medium text-center text-white bg-[#36d887] text-bold rounded ">
-            <i class="fa-solid fa-plus mr-2 fa-xm"></i> Karta qo'shish
+            class="inline-flex  items-center px-2 py-1 mb-1 text-sm font-medium text-center text-white bg-[#36d887] text-bold rounded ">
+            <i class="fa-solid fa-plus mr-2 fa-sm"></i> Karta qo'shish
           </router-link>
         </div>
       </div>
@@ -312,7 +313,7 @@ onMounted(async () => {
                     <path d="M25 24H11a1 1 0 01-1-1v-5h2v4h12v-4h2v5a1 1 0 01-1 1zM14 13h8v2h-8z" />
                   </svg>
                 </div>
-                <div class="grow flex items-center border-b border-gray-100 dark:border-gray-700/60 text-sm py-2">
+                <div class="grow flex items-center border-b border-gray-100 dark:border-gray-700/60 text-sm py-1">
                   <div class="grow flex justify-between">
                     <div class="self-center text-[16px]">Bo'yoq</div>
                     <div class="shrink-0 self-end ml-2">
@@ -376,7 +377,7 @@ onMounted(async () => {
                     <path d="M25 24H11a1 1 0 01-1-1v-5h2v4h12v-4h2v5a1 1 0 01-1 1zM14 13h8v2h-8z" />
                   </svg>
                 </div>
-                <div class="grow flex items-center border-b border-gray-100 dark:border-gray-700/60 text-sm py-2">
+                <div class="grow flex items-center border-b border-gray-100 dark:border-gray-700/60 text-sm py-1">
                   <div class="grow flex justify-between">
                     <div class="self-center text-[16px]">Taminot</div>
                     <div class="shrink-0 self-end ml-2">
@@ -439,7 +440,7 @@ onMounted(async () => {
                     <path d="M25 24H11a1 1 0 01-1-1v-5h2v4h12v-4h2v5a1 1 0 01-1 1zM14 13h8v2h-8z" />
                   </svg>
                 </div>
-                <div class="grow flex items-center border-b border-gray-100 dark:border-gray-700/60 text-sm py-2">
+                <div class="grow flex items-center border-b border-gray-100 dark:border-gray-700/60 text-sm py-1">
                   <div class="grow flex justify-between">
                     <div class="self-center text-[16px]">To'quv</div>
                     <div class="shrink-0 self-end ml-2">
@@ -454,7 +455,7 @@ onMounted(async () => {
                     <path d="M25 24H11a1 1 0 01-1-1v-5h2v4h12v-4h2v5a1 1 0 01-1 1zM14 13h8v2h-8z" />
                   </svg>
                 </div>
-                <div class="grow flex items-center border-b border-gray-100 dark:border-gray-700/60 text-sm py-2">
+                <div class="grow flex items-center border-b border-gray-100 dark:border-gray-700/60 text-sm py-1">
                   <div class="grow flex justify-between">
                     <div class="self-center text-[16px]">Tikuv</div>
                     <div class="shrink-0 self-end ml-2">
@@ -561,10 +562,23 @@ onMounted(async () => {
   <!-- // -->
   <!-- //PAGANATION PAGANATION PAGANATION PAGANATION// -->
   <div class="flex justify-between mt-2 bg-white p-2 shadow-md">
-    <div></div>
+    <div>  
+      <router-link to=""
+          class="inline-flex text-[13px] items-center px-2 mr-2 py-1 mb-1 text-sm font-medium text-center text-white bg-[#36d887] text-bold rounded ">
+          <i class="fa-solid fa-file-excel mr-2 fa-xm"></i> Excel
+        </router-link>
+        <router-link to=""
+          class="inline-flex text-[13px] items-center px-2 py-1 mb-1 text-sm font-medium text-center text-white bg-yellow-500 text-bold rounded ">
+          <i class="fa-solid fa-file-pdf mr-2 fa-xm"></i> Pdf
+        </router-link>
+        <div class="inline-flex text-[13px] items-center px-2 py-1 mb-1 text-sm font-medium text-center text-white">
+          <el-input clearable size="smal" width="50px" type="String" placeholder="Buyurtma nomer bo'yicha izla..." />
+        </div>
+      </div>
+        
     <div class="block">
       <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange"
-        :current-page.sync="currentPage1" :page-size="100" layout="total, prev, pager, next" :total="1000">
+        :current-page.sync="currentPage1" :page-size="100" layout="prev, pager, next" :total="1000">
       </el-pagination>
     </div>
   </div>

@@ -2,6 +2,7 @@ const SaleLegalCardModel = require("../models/saleLegalCard.model");
 // const fileService = require("./file.service");
 const XLSX = require("xlsx");
 const excelJs = require("exceljs");
+const saleLegalCardModel = require("../models/saleLegalCard.model");
 
 class SaleLegalService {
   async getModel() {
@@ -73,36 +74,104 @@ class SaleLegalService {
       new: true,
     });
     return updatedData;
+  };
+
+  async getAllLength() {
+    try {
+      const notConfirmed = await this.getAllNotConfirmed()
+      const notConfirmed_length = notConfirmed ? notConfirmed.length : 0
+      const Paint = await this.getAllPaint()
+      const paint_length = Paint ? Paint.length : 0
+      const Weaving = await this.getAllWeaving()
+      const weaving_length = Weaving ? Weaving.length : 0
+      const Spinning = await this.getAllSpinning()
+      const spinning_length = Spinning ? Spinning.length : 0
+      const Provide = await this.getAllProvide()
+      const provide_length = Provide ? Provide.length : 0
+      const allLength = { notConfirmed_length, paint_length, weaving_length, spinning_length, provide_length }
+      return allLength
+    } catch (error) {
+      return error.message
+    }
+  }
+  async getAll(status) {
+    try {
+      if (status === 1) {
+        return await this.getAllNotConfirmed()
+      } else if (status === 2) {
+        return await this.getAllPaint()
+      } else if (status === 3) {
+        return await this.getAllWeaving()
+      } else if (status === 4) {
+        return await this.getAllSpinning()
+      } else if (status === 5) {
+        return await this.getAllProvide()
+      }
+    } catch (error) {
+      return error.message
+    }
   }
 
-  async getAll(order_num) {
-    if ((order_num = !" ")) {
-      const allPosts = await SaleLegalCardModel.find({}).populate([
-        "author",
-        "dep_paint_data",
-        "dep_provider_data",
-        "dep_weaving_data",
-      ]);
-      res.json({ allPosts });
-    } else {
-      const allPosts = await SaleLegalCardModel.find().populate([
-        "author",
-        "dep_paint_data",
-        "dep_provider_data",
-        "dep_weaving_data",
-      ]);
-      return { allPosts };
+  async getAllNotConfirmed() {
+    try {
+      const allNotConfirmed = await SaleLegalCardModel.find({ order_status: 'Tasdiqlanmagan' })
+      return allNotConfirmed;
+    } catch (error) {
+      return error.message
     }
-    const dep_paint_data = await SaleLegalCardModel.find().populate(
-      "dep_paint_data"
-    );
-    const painting_length = await SaleLegalCardModel.find({
-      order_status: "Bo'yoqqa yuborildi",
-    });
-    const provide_length = await SaleLegalCardModel.find({
-      order_status: "Taminotga yuborildi",
-    });
-    return { allPosts, painting_length, provide_length };
+
+  }
+  async getAllPaint() {
+    try {
+      const allPaint = await SaleLegalCardModel.find({ order_status: "Bo'yoqqa yuborildi" }).populate([
+        "author",
+        "dep_paint_data",
+        "dep_provider_data",
+        "dep_weaving_data",
+      ]);;
+      return allPaint
+    } catch (error) {
+      return error.message
+    }
+  }
+  async getAllSpinning() {
+    try {
+      const allSpinning = await SaleLegalCardModel.find({ order_status: "Yigiruvga yuborildi" }).populate([
+        "author",
+        "dep_paint_data",
+        "dep_provider_data",
+        "dep_weaving_data",
+      ]);;
+      return allSpinning
+    } catch (error) {
+      return error.message
+    }
+  }
+  async getAllWeaving() {
+    try {
+      const allWeaving = await SaleLegalCardModel.find({ order_status: "To'quvga yuborildi" }).populate([
+        "author",
+        "dep_paint_data",
+        "dep_provider_data",
+        "dep_weaving_data",
+      ]);;
+      return allWeaving
+    } catch (error) {
+      return error.message
+    }
+  }
+  async getAllProvide() {
+    try {
+      const allProvide = await SaleLegalCardModel.find({ order_status: "Taminotga yuborildi" }).populate([
+        "author",
+        "dep_paint_data",
+        "dep_provider_data",
+        "dep_weaving_data",
+      ]);;
+      return allProvide
+    } catch (error) {
+      return error.message
+    }
   }
 
   async delete(id) {

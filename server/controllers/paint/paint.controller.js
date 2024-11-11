@@ -9,10 +9,18 @@ class DepPaintController {
     }
   }
 
-  async getAll(req, res, next) {
+  async getAllFromSale(req, res, next) {
     try {
-      const allSale = await DepPaintService.getAll();
+      const allSale = await DepPaintService.getAllFromSale();
       res.status(200).json(allSale);
+    } catch (error) {
+      next(error);
+    }
+  }
+  async getAllForProvide(req, res, next) {
+    try {
+      const allPosts = await DepPaintService.getAllForProvide();
+      res.status(200).json(allPosts);
     } catch (error) {
       next(error);
     }
@@ -21,7 +29,7 @@ class DepPaintController {
   async create(req, res, next) {
     try {
       const data = await DepPaintService.create(req.body, req.user.id);
-      res.status(201).json({msg: "Muvaffaqiyatli tasdiqlandi !",data});
+      res.status(201).json({ msg: "Muvaffaqiyatli tasdiqlandi !", data });
     } catch (error) {
       next(error);
     }
@@ -29,7 +37,7 @@ class DepPaintController {
   async cencelReason(req, res, next) {
     try {
       const data = await DepPaintService.cancelReason(req.body, req.user.id);
-      res.status(200).json({msg: "Muvaffaqiyatli yuborildi !",data});
+      res.status(200).json({ msg: "Muvaffaqiyatli yuborildi !", data });
     } catch (error) {
       next(error);
     }

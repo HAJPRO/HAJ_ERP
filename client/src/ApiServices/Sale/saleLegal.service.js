@@ -18,10 +18,17 @@ export const SaleLegalService = {
     let url = "sale/legal_confirm";
     return api.post(url, id);
   },
-  getAll(order_num) {
-    console.log(order_num);
+  getAllLength() {
+    let url = "sale/legal_all_length";
+    return api.post(url);
+  },
+  getAll(status) {
     let url = "sale/legal_all";
-    return api.post(url, order_num);
+    return api.post(url, status);
+  },
+  getAllWeaving() {
+    let url = "sale/weaving_all";
+    return api.post(url);
   },
   Edit(id, data) {
     let url = `sale/legal_edit/${id}`;

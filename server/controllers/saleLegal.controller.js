@@ -12,15 +12,33 @@ class saleLegalController {
       next(error);
     }
   }
-
-  async getAll(req, res, next) {
+  async getAllLength(req, res, next) {
     try {
-      const allSale = await SaleLegalService.getAll(req.body.order_num);
-      res.status(200).json(allSale);
+      const all = await SaleLegalService.getAllLength();
+      res.status(200).json(all);
+
     } catch (error) {
       next(error);
     }
   }
+  async getAll(req, res, next) {
+    try {
+      const all = await SaleLegalService.getAll(req.body.status);
+      res.status(200).json(all);
+
+    } catch (error) {
+      next(error);
+    }
+  }
+  async getAllWeaving(req, res, next) {
+    try {
+      const allWeaving = await SaleLegalService.getAllWeaving();
+      res.status(200).json(allWeaving);
+    } catch (error) {
+      next(error);
+    }
+  }
+
 
   async create(req, res, next) {
     try {
