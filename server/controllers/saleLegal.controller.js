@@ -12,6 +12,15 @@ class saleLegalController {
       next(error);
     }
   }
+  async AllOrderProccessById(req, res, next) {
+    try {
+      const proccess = await SaleLegalService.AllOrderProccessById(req.params.id);
+      res.status(200).json(proccess);
+
+    } catch (error) {
+      next(error);
+    }
+  }
   async getAllLength(req, res, next) {
     try {
       const all = await SaleLegalService.getAllLength();

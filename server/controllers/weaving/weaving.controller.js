@@ -20,30 +20,18 @@ class DepWeavingController {
       next(error);
     }
   }
-
+  async cencelReason(req, res, next) {
+    try {
+      const data = await DepWeavingService.cancelReason(req.body, req.user.id);
+      res.status(200).json({ msg: "Muvaffaqiyatli yuborildi !", data });
+    } catch (error) {
+      next(error);
+    }
+  }
   async create(req, res, next) {
     try {
-      const userData = await UserModel.findById(req.user.id);
-      const data = await DepWeavingService.create(req.body.items, req.user.id);
-      const LegalDataById = await SaleLegalCardModel.findById(req.body.id);
-      const newLegalData = LegalDataById;
-      newLegalData.order_status = "Taminotga yuborildi";
-      newLegalData.process_status.push({
-        department: userData.department,
-        author: userData.email,
-        status: "Taminotga yuborildi",
-        sent_time: new Date(),
-      });
-      if (data._id) {
-        newLegalData.dep_weaving_data = data._id;
-        const updateDataLegal = await SaleLegalCardModel.findByIdAndUpdate(
-          req.body.id,
-          newLegalData,
-          { new: true }
-        );
-      }
-
-      res.status(201).json(data);
+      const data = await DepWeavingService.create(req.body, req.user.id);
+      res.status(201).json({ msg: "Muvaffaqiyatli yuborildi !", data });
     } catch (error) {
       next(error);
     }

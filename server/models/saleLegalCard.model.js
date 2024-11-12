@@ -13,10 +13,10 @@ const SaleLegalCardSchema = new Schema(
     order_quantity: { type: Number, required: true },
     delivery_time: { type: Date, default: Date.now(), required: true },
     in_department_order: { type: String, default: "Sotuv" },
+    isConfirm: { type: String },
     order_status: { type: String, default: "Tasdiqlanmagan" },
     process_status: { type: Array },
     state: { type: Boolean, default: true },
-    isConfirm: { type: Array },
     dep_paint_data: {
       type: Schema.ObjectId,
       ref: "DepPaintCard",

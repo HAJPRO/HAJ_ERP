@@ -21,21 +21,17 @@ class DepPaintService {
       const userData = await userModel.findById(author);
       const LegalDataById = await SaleLegalCardModel.findById(data.card_id);
       const newLegalData = LegalDataById;
-      newLegalData.order_status = "Bekor qilindi";
+      newLegalData.order_status = "Bo'yoq bekor qildi";
       newLegalData.in_department_order = "Sotuv";
+      newLegalData.isConfirm = "Bo'yoq bekor qildi";
       newLegalData.process_status.push({
         department: userData.department,
         author: userData.username,
-        is_confirm: false,
-        status: "Bekor qilindi",
-        sent_time: new Date(),
-      });
-      newLegalData.isConfirm.push({
-        department: userData.department,
-        author: userData.username,
         is_confirm: { status: false, reason: data.reason },
+        status: "Bo'yoq bekor qilindi",
         sent_time: new Date(),
       });
+
       if (data.card_id) {
         const updateDataLegal = await SaleLegalCardModel.findByIdAndUpdate(
           data.card_id,
@@ -49,25 +45,26 @@ class DepPaintService {
     }
   }
   async create(data, author) {
-    const Data = await SaleDepPaintCardModel.create({ ...data.items, author, sale_order_id: data.card_id });
+    const paint_process_status = {
+      author: author,
+      is_confirm: { status: true, reason: "" },
+      sent_time: new Date()
+    }
+    const Data = await SaleDepPaintCardModel.create({ ...data.items, author, sale_order_id: data.card_id, paint_process_status });
     const userData = await userModel.findById(author);
     const LegalDataById = await SaleLegalCardModel.findById(data.card_id);
     const newLegalData = LegalDataById;
     newLegalData.order_status = "To'quvga yuborildi";
     newLegalData.in_department_order = "To'quv";
+    newLegalData.isConfirm = "Bo'yoq tasdiqladi";
     newLegalData.process_status.push({
       department: userData.department,
       author: userData.username,
-      is_confirm: "Tasdiqlandi",
+      is_confirm: { status: true, reason: "" },
       status: "To'quvga yuborildi",
       sent_time: new Date(),
     });
-    newLegalData.isConfirm.push({
-      department: userData.department,
-      author: userData.username,
-      is_confirm: { status: true, reason: "" },
-      sent_time: new Date(),
-    });
+
     if (Data._id) {
       newLegalData.dep_paint_data = Data._id;
       const updateDataLegal = await SaleLegalCardModel.findByIdAndUpdate(

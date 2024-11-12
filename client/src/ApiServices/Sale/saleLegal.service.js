@@ -18,6 +18,10 @@ export const SaleLegalService = {
     let url = "sale/legal_confirm";
     return api.post(url, id);
   },
+  AllOrderProccessById(id) {
+    let url = `sale/legal_proccess/${id}`;
+    return api.post(url);
+  },
   getAllLength() {
     let url = "sale/legal_all_length";
     return api.post(url);

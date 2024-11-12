@@ -1,6 +1,8 @@
 const SaleLegalCardModel = require("../../models/saleLegalCard.model");
 const SaleDepPaintCardModel = require("../../models/saleDepPaintCard.model");
 const SaleDepWeavingCardModel = require("../../models/saleDepWeavingCard.model");
+const userModel = require("../../models/user.model");
+
 
 // const fileService = require("./file.service");
 
@@ -16,8 +18,63 @@ class DepWeavingService {
 
     return model;
   }
+  async cancelReason(data, author) {
+    try {
+      const userData = await userModel.findById(author);
+      const LegalDataById = await SaleLegalCardModel.findById(data.card_id);
+      const newLegalData = LegalDataById;
+      newLegalData.order_status = "Toq'quv bekor qildi";
+      newLegalData.in_department_order = "Bo'yoq";
+      newLegalData.isConfirm = "To'quv bekor qildi";
+      newLegalData.process_status.push({
+        department: userData.department,
+        author: userData.username,
+        is_confirm: { status: false, reason: data.reason },
+        status: "Toq'quv bekor qilindi",
+        sent_time: new Date(),
+      });
+
+      if (data.card_id) {
+        const updateDataLegal = await SaleLegalCardModel.findByIdAndUpdate(
+          data.card_id,
+          newLegalData,
+          { new: true }
+        );
+        return updateDataLegal
+      }
+    } catch (error) {
+      return error.message
+    }
+  }
   async create(data, author) {
-    const newData = await SaleDepWeavingCardModel.create({ ...data, author });
+    const weaving_process_status = {
+      author: author,
+      is_confirm: { status: true, reason: "" },
+      sent_time: new Date()
+    }
+    const newData = await SaleDepWeavingCardModel.create({ ...data.items, author, weaving_process_status });
+    const userData = await userModel.findById(author);
+    const LegalDataById = await SaleLegalCardModel.findById(data.card_id);
+    const newLegalData = LegalDataById;
+    newLegalData.order_status = "Yigiruvga yuborildi";
+    newLegalData.isConfirm = "To'quv tasdiqladi";
+    newLegalData.process_status.push({
+      department: userData.department,
+      author: userData.username,
+      is_confim: { status: true, reason: "" },
+      status: "Yigiruvga yuborildi",
+      sent_time: new Date(),
+    });
+    if (data.card_id) {
+      newLegalData.dep_weaving_data = data.card_id;
+      const updateDataLegal = await SaleLegalCardModel.findByIdAndUpdate(
+        data.card_id,
+        newLegalData,
+        { new: true }
+      );
+    }
+
+
     return newData;
   }
 

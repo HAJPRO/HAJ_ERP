@@ -12,6 +12,11 @@ router.delete(
   authMiddleware,
   DepWeavingController.delete
 );
+router.post(
+  "/cancel_reason",
+  authMiddleware,
+  DepWeavingController.cencelReason
+);
 router.put(
   "/weaving_edit/:id",
   authMiddleware,

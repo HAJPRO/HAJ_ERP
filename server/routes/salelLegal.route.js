@@ -5,6 +5,7 @@ const saleLegalController = require("../controllers/saleLegal.controller.js");
 
 const router = express.Router();
 router.get("/legal_model", saleLegalController.getModel);
+router.post("/legal_proccess/:id", saleLegalController.AllOrderProccessById);
 router.post("/legal_all", saleLegalController.getAll);
 router.post("/legal_all_length", saleLegalController.getAllLength);
 router.post("/weaving_all", saleLegalController.getAllWeaving);

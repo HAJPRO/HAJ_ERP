@@ -60,14 +60,16 @@ class SaleLegalService {
   async confirm(id) {
     const dataById = await SaleLegalCardModel.findById(id).populate("author");
     const data = dataById;
+    data.in_department_order = "Bo'yoq";
     data.order_status = "Bo'yoqqa yuborildi";
+    data.isConfirm = "Sotuv tasdiqladi";
     const proccess_status =
     {
       department: data.author.department,
       author: data.author.username,
+      is_confirm: { status: true, reason: "" },
       status: "Bo'yoqqa yuborildi",
       sent_time: new Date(),
-      confirm: [{ author: data.author.username, reason: "", isConfirm: true }],
     }
     data.process_status.push(proccess_status);
     const updatedData = await SaleLegalCardModel.findByIdAndUpdate(id, data, {
@@ -75,7 +77,14 @@ class SaleLegalService {
     });
     return updatedData;
   };
-
+  async AllOrderProccessById(id) {
+    try {
+      const itims = await saleLegalCardModel.findById(id).populate(["author", "dep_paint_data", "dep_weaving_data", "dep_provider_data"])
+      return itims
+    } catch (error) {
+      return error.message
+    }
+  }
   async getAllLength() {
     try {
       const notConfirmed = await this.getAllNotConfirmed()
@@ -114,7 +123,7 @@ class SaleLegalService {
 
   async getAllNotConfirmed() {
     try {
-      const allNotConfirmed = await SaleLegalCardModel.find({ order_status: 'Tasdiqlanmagan' })
+      const allNotConfirmed = await SaleLegalCardModel.find({ $or: [{ in_department_order: 'Sotuv' }, { isConfirm: "Bo'yoq qabul qildi" }] })
       return allNotConfirmed;
     } catch (error) {
       return error.message
@@ -123,12 +132,13 @@ class SaleLegalService {
   }
   async getAllPaint() {
     try {
-      const allPaint = await SaleLegalCardModel.find({ order_status: "Bo'yoqqa yuborildi" }).populate([
+      const allPaint = await SaleLegalCardModel.find({ $or: [{ in_department_order: "Bo'yoq" }, { order_status: "Bo'yoqqa yuborildi" }, { isConfirm: "Bo'yoq bekor qildi" }, { isConfirm: "Bo'yoq qabul qildi" }] }).populate([
         "author",
         "dep_paint_data",
         "dep_provider_data",
         "dep_weaving_data",
-      ]);;
+      ]);
+
       return allPaint
     } catch (error) {
       return error.message

@@ -1,6 +1,8 @@
 <script setup>
-import { ref, onMounted ,onBeforeMount} from "vue";
+import { ref, onMounted } from "vue";
 import Title from "@/components/Title.vue";
+import ProccessModal from "../../../components/Sale/ProccessModal.component.vue";
+import StatusInfoModal from "../../../components/Sale/StatusModal.component.vue";
 import { SaleLegalService } from "@/ApiServices/Sale/saleLegal.service";
 import { useRouter } from "vue-router";
 import { ToastifyService } from "../../../utils/Toastify";
@@ -49,17 +51,21 @@ const DeleteById = async (id) => {
     return ToastifyService.ToastError({ msg: error.messages });
   }
 }
-const isDepInfo = ref(false);
-const isDepInfoBtn = () => {
-  isDepInfo.value = !isDepInfo.value;
-};
-const outerVisible = ref(false);
+const is_status_info_modal = ref(false)
+const StatusModal = (id) => {
+  is_status_info_modal.value = !is_status_info_modal.value
+  console.log(id);
+}
 const innerVisible = ref(false);
 const cardId = ref();
-const openModalById = (id) => {
-  outerVisible.value = true;
+const isProccessModal = ref(false);
+const ProccessModalById = (id) => {
+  isProccessModal.value = !isProccessModal.value;
   cardId.value = id;
 };
+const isProccess = (is_proccess) => {
+  isProccessModal.value = is_proccess
+}
 const Export_Excel = async (id) => {
   try {
     const data = await SaleLegalService.export_excel({ id });
@@ -87,7 +93,7 @@ const getAllLength = async () => {
   const data = await SaleLegalService.getAllLength();
   loader.hide()
   all_length.value = data.data ? data.data : {};
-  
+
 }
 const items = ref([]);
 const getAll = async () => {
@@ -95,7 +101,7 @@ const getAll = async () => {
   const data = await SaleLegalService.getAll({ status: isActive.value });
   loader.hide()
   items.value = data.data ? data.data : [];
-  
+
 }
 const isActive = ref(1)
 const ActiveTabLink = (num) => {
@@ -124,7 +130,7 @@ const ActiveTabLink = (num) => {
 
 onMounted(async () => {
   try {
-    await getAll();getAllLength();
+    await getAll(); getAllLength();
   } catch (err) {
     console.log(err);
   }
@@ -146,7 +152,7 @@ onMounted(async () => {
           <div class="flex flex-shrink-0 ml-2">
             <span
               class=" inline-flex items-center justify-center h-5 text-[11px] font-medium text-white bg-red-500 px-3 py-2 rounded">
-              <span class=" ">1</span>/{{(all_length ? all_length.notConfirmed_length : 0) || 0 }}</span>
+              <span class=" ">1</span>/{{ (all_length ? all_length.notConfirmed_length : 0) || 0 }}</span>
           </div>
         </router-link>
         <router-link to="" @click="ActiveTabLink(2)" :class="{ activeTab: isActive === 2 }"
@@ -182,7 +188,7 @@ onMounted(async () => {
           <div class="flex flex-shrink-0 ml-2">
             <span
               class="inline-flex items-center justify-center h-5 text-[11px] font-medium text-white bg-[#36d887] px-3 py-2 rounded">
-              <span class=" ">0</span>/{{(all_length ? all_length.provide_length_length : 0) || 0}}</span>
+              <span class=" ">0</span>/{{ (all_length ? all_length.provide_length_length : 0) || 0 }}</span>
           </div>
         </router-link>
       </div>
@@ -197,7 +203,6 @@ onMounted(async () => {
       </div>
     </div>
     <div class="shadow-md rounded min-h-[15px]">
-      <!-- // TRansfer table  -->
       <el-table load class="w-full" header-align="center" hight="5" style="width: 100%"
         empty-text="Mahsulot tanlanmagan... " :default-sort="[
           { prop: 'customer_name', order: 'customer_name' },
@@ -220,8 +225,8 @@ onMounted(async () => {
         <el-table-column fixed="right" prop="order_status" label="Holati" width="150" header-align="center"
           align="center">
           <template #default="scope">
-            <router-link to=""
-              class="inline-flex items-center text-red bg-[#e4e9e9] hover:bg-[#f7efa9]  focus:ring-blue-300 font-medium rounded-md text-[12px] w-ful p-[5px] sm:w-auto text-center">
+            <router-link to="" @click="StatusModal(scope.row.order_status)"
+              class="cursor-pointer inline-flex items-center text-red bg-[#e4e9e9] hover:bg-[#f7efa9]  focus:ring-blue-300 font-medium rounded-md text-[12px] w-ful p-[5px] sm:w-auto text-center">
               {{ scope.row.order_status }}
             </router-link>
           </template>
@@ -233,7 +238,7 @@ onMounted(async () => {
               <i class="text-red fa-solid fa-check fa-xs fa- fa-xs"></i>
             </router-link>
             <router-link to="" v-show="scope.row.order_status !== 'Tasdiqlanmagan'"
-              @click="openModalById(scope.row._id)"
+              @click="ProccessModalById(scope.row._id)"
               class="inline-flex items-center mt-4 ml-2 text-white bg-[#36d887] hover:bg-[rgb(57,192,124)] font-medium rounded-md text-sm w-full sm:w-auto px-3 py-3 text-center">
               <i class="text-black fa-sharp fa-solid fa-info fa-xs"></i>
             </router-link>
@@ -256,234 +261,9 @@ onMounted(async () => {
       <!-- // -->
     </div>
   </div>
-  <el-dialog v-model="outerVisible" title="Buyurtmani ishlab chiqarish jarayoni bo'yicha malumotlari" width="700">
-    <div>
-      <div>
-        <span to=""
-          class="inline-flex text-[11px] items-center px-2 py-1 mb-1 text-sm font-medium text-center text-white bg-[#36d887] text-bold rounded ">
-          Bo'yoqqa yuborildi
-        </span>
-        =>
-        <span to=""
-          class="inline-flex text-[11px] items-center px-2 py-1 mb-1 text-sm font-medium text-center text-white bg-[#36d887] text-bold rounded ">
-          Taminotga yuborildi
-        </span>
-        =>
-        <span to=""
-          class="inline-flex text-[11px] items-center px-2 py-1 mb-1 text-sm font-medium text-center text-white bg-[#36d887] text-bold rounded ">
-          To'quvga yuborildi </span>=>
-        <span to=""
-          class="inline-flex text-[11px] items-center px-2 py-1 mb-1 text-sm font-medium text-center text-white bg-yellow-500 text-bold rounded ">
-          Tikuvga yuborildi
-        </span>
-      </div>
-      <div class="col-span-full xl:col-span-6 bg-white dark:bg-gray-800 shadow-sm rounded-xl">
-        <div class="grid grid-cols-3 gap-1 border-t-[1.5px] border-solid border-[#36d887]">
-          <header class="py-3 border-b border-gray-100 dark:border-gray-700/60">
-            <h5 class="font-semibold text-[12px] text-gray-800 dark:text-gray-100">
-              Buyurtmachi nomi : Humo MCHJ
-            </h5>
-          </header>
-          <header class="py-3 border-b border-gray-100 dark:border-gray-700/60">
-            <h5 class="font-semibold text-[12px] text-gray-800 dark:text-gray-100">
-              Buyurtmachi miqdori : 500 kg
-            </h5>
-          </header>
-          <header class="py-3 border-b border-gray-100 dark:border-gray-700/60">
-            <h5 class="font-semibold text-[12px] text-gray-800 dark:text-gray-100">
-              Buyurtmachi nomi : Suprima
-            </h5>
-          </header>
-        </div>
-
-        <div class="">
-          <!-- Card content -->
-          <!-- "Today" group -->
-          <div>
-            <header @click="isDepInfoBtn()"
-              class="text-xs uppercase text-center cursor-pointer text-white dark:text-gray-500 bg-[#36d887] dark:bg-gray-700 dark:bg-opacity-50 rounded-sm font-semibold p-2">
-              Bo'limlar bo'yicha ma'lumotini ko'rish
-              <span class="hidden sm:inline"> -&gt;</span>
-            </header>
-            <ul v-show="isDepInfo" class="my-1">
-              <!-- Item -->
-              <li class="flex px-2 cursor-pointer">
-                <div class="w-9 h-9 rounded-full shrink-0 bg-red-500 my-2 mr-3">
-                  <svg class="w-9 h-9 fill-current text-white" viewBox="0 0 36 36">
-                    <path d="M25 24H11a1 1 0 01-1-1v-5h2v4h12v-4h2v5a1 1 0 01-1 1zM14 13h8v2h-8z" />
-                  </svg>
-                </div>
-                <div class="grow flex items-center border-b border-gray-100 dark:border-gray-700/60 text-sm py-1">
-                  <div class="grow flex justify-between">
-                    <div class="self-center text-[16px]">Bo'yoq</div>
-                    <div class="shrink-0 self-end ml-2">
-                      <span class="hidden sm:inline"> -&gt;</span>
-                    </div>
-                  </div>
-                </div>
-              </li>
-              <div class="col-span-full xl:col-span-6 bg-white dark:bg-gray-800 shadow-sm rounded-xl">
-                <div class="p-3">
-                  <!-- Table -->
-                  <div class="overflow-x-auto">
-                    <table class="table-auto w-full">
-                      <!-- Table header -->
-                      <thead
-                        class="text-xs text-center font-semibold dark:text-gray-500 bg-gray-50 dark:bg-gray-700 dark:bg-opacity-50">
-                        <tr>
-                          <th class="p-2 whitespace-nowrap">
-                            <div class="font-semibold text-center">№</div>
-                          </th>
-                          <th class="p-2 whitespace-nowrap">
-                            <div class="font-semibold text-center">Pus</div>
-                          </th>
-                          <th class="p-2 whitespace-nowrap">
-                            <div class="font-semibold text-center">Fike</div>
-                          </th>
-                          <th class="p-2 whitespace-nowrap">
-                            <div class="font-semibold text-center">
-                              Rang kodi
-                            </div>
-                          </th>
-                          <th class="p-2 whitespace-nowrap">
-                            <div class="font-semibold text-center">
-                              Xom mato (kg)
-                            </div>
-                          </th>
-                          <th class="p-2 whitespace-nowrap">
-                            <div class="font-semibold text-center">Muddati</div>
-                          </th>
-                        </tr>
-                      </thead>
-                      <!-- Table body -->
-                      <tbody class="text-sm text-center divide-y divide-gray-100 dark:divide-gray-700/60">
-                        <tr>
-                          <td>1</td>
-                          <td>josa</td>
-                          <td>josa</td>
-                          <td>josa</td>
-                          <td>josa</td>
-                          <td>josa</td>
-                        </tr>
-                      </tbody>
-                    </table>
-                  </div>
-                </div>
-              </div>
-
-              <li class="flex px-2 cursor-pointer">
-                <div class="w-9 h-9 rounded-full shrink-0 bg-red-500 my-2 mr-3">
-                  <svg class="w-9 h-9 fill-current text-white" viewBox="0 0 36 36">
-                    <path d="M25 24H11a1 1 0 01-1-1v-5h2v4h12v-4h2v5a1 1 0 01-1 1zM14 13h8v2h-8z" />
-                  </svg>
-                </div>
-                <div class="grow flex items-center border-b border-gray-100 dark:border-gray-700/60 text-sm py-1">
-                  <div class="grow flex justify-between">
-                    <div class="self-center text-[16px]">Taminot</div>
-                    <div class="shrink-0 self-end ml-2">
-                      <span class="hidden sm:inline"> -&gt;</span>
-                    </div>
-                  </div>
-                </div>
-              </li>
-              <div class="col-span-full xl:col-span-6 bg-white dark:bg-gray-800 shadow-sm rounded-xl">
-                <div class="p-3">
-                  <!-- Table -->
-                  <div class="overflow-x-auto">
-                    <table class="table-auto w-full">
-                      <!-- Table header -->
-                      <thead
-                        class="text-xs text-center font-semibold dark:text-gray-500 bg-gray-50 dark:bg-gray-700 dark:bg-opacity-50">
-                        <tr>
-                          <th class="p-2 whitespace-nowrap">
-                            <div class="font-semibold text-center">№</div>
-                          </th>
-                          <th class="p-2 whitespace-nowrap">
-                            <div class="font-semibold text-center">Pus</div>
-                          </th>
-                          <th class="p-2 whitespace-nowrap">
-                            <div class="font-semibold text-center">Fike</div>
-                          </th>
-                          <th class="p-2 whitespace-nowrap">
-                            <div class="font-semibold text-center">
-                              Rang kodi
-                            </div>
-                          </th>
-                          <th class="p-2 whitespace-nowrap">
-                            <div class="font-semibold text-center">
-                              Xom mato (kg)
-                            </div>
-                          </th>
-                          <th class="p-2 whitespace-nowrap">
-                            <div class="font-semibold text-center">Muddati</div>
-                          </th>
-                        </tr>
-                      </thead>
-                      <!-- Table body -->
-                      <tbody class="text-sm text-center divide-y divide-gray-100 dark:divide-gray-700/60">
-                        <tr>
-                          <td>1</td>
-                          <td>josa</td>
-                          <td>josa</td>
-                          <td>josa</td>
-                          <td>josa</td>
-                          <td>josa</td>
-                        </tr>
-                      </tbody>
-                    </table>
-                  </div>
-                </div>
-              </div>
-              <li class="flex px-2 cursor-pointer">
-                <div class="w-9 h-9 rounded-full shrink-0 bg-red-500 my-2 mr-3">
-                  <svg class="w-9 h-9 fill-current text-white" viewBox="0 0 36 36">
-                    <path d="M25 24H11a1 1 0 01-1-1v-5h2v4h12v-4h2v5a1 1 0 01-1 1zM14 13h8v2h-8z" />
-                  </svg>
-                </div>
-                <div class="grow flex items-center border-b border-gray-100 dark:border-gray-700/60 text-sm py-1">
-                  <div class="grow flex justify-between">
-                    <div class="self-center text-[16px]">To'quv</div>
-                    <div class="shrink-0 self-end ml-2">
-                      <span class="hidden sm:inline"> -&gt;</span>
-                    </div>
-                  </div>
-                </div>
-              </li>
-              <li class="flex px-2 cursor-pointer">
-                <div class="w-9 h-9 rounded-full shrink-0 bg-red-500 my-2 mr-3">
-                  <svg class="w-9 h-9 fill-current text-white" viewBox="0 0 36 36">
-                    <path d="M25 24H11a1 1 0 01-1-1v-5h2v4h12v-4h2v5a1 1 0 01-1 1zM14 13h8v2h-8z" />
-                  </svg>
-                </div>
-                <div class="grow flex items-center border-b border-gray-100 dark:border-gray-700/60 text-sm py-1">
-                  <div class="grow flex justify-between">
-                    <div class="self-center text-[16px]">Tikuv</div>
-                    <div class="shrink-0 self-end ml-2">
-                      <span class="hidden sm:inline"> -&gt;</span>
-                    </div>
-                  </div>
-                </div>
-              </li>
-            </ul>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <el-dialog v-model="innerVisible" width="500" title="Inner Dialog" append-to-body>
-      <span>This is the inner Dialog</span>
-    </el-dialog>
-    <template #footer>
-      <div class="dialog-footer">
-        <div class="">
-          <router-link @click="outerVisible" to=""
-            class="inline-flex text-[13px] items-center px-2 py-1 mb-1 text-sm font-medium text-center text-white bg-yellow-500 text-bold rounded ">
-            <i class="fa-solid fa-file-excel mr-2 fa-xm"></i> Excel
-          </router-link>
-        </div>
-      </div>
-    </template>
-  </el-dialog>
+  <!-- // Proccess Modal -->
+  <ProccessModal @isProccess="isProccess" :isProccessModal="isProccessModal" :cardId="cardId" />
+  <!-- ////// -->
   <!-- // EDIT Modal -->
   <el-dialog v-model="isEditModal" title="Sotuv kartani o'zgartirish oynasi " width="700">
     <span>
@@ -560,22 +340,23 @@ onMounted(async () => {
     </template>
   </el-dialog>
   <!-- // -->
+  <StatusInfoModal :is_status="is_status_info_modal" />
   <!-- //PAGANATION PAGANATION PAGANATION PAGANATION// -->
   <div class="flex justify-between mt-2 bg-white p-2 shadow-md">
-    <div>  
+    <div>
       <router-link to=""
-          class="inline-flex text-[13px] items-center px-2 mr-2 py-1 mb-1 text-sm font-medium text-center text-white bg-[#36d887] text-bold rounded ">
-          <i class="fa-solid fa-file-excel mr-2 fa-xm"></i> Excel
-        </router-link>
-        <router-link to=""
-          class="inline-flex text-[13px] items-center px-2 py-1 mb-1 text-sm font-medium text-center text-white bg-yellow-500 text-bold rounded ">
-          <i class="fa-solid fa-file-pdf mr-2 fa-xm"></i> Pdf
-        </router-link>
-        <div class="inline-flex text-[13px] items-center px-2 py-1 mb-1 text-sm font-medium text-center text-white">
-          <el-input clearable size="smal" width="50px" type="String" placeholder="Buyurtma nomer bo'yicha izla..." />
-        </div>
+        class="inline-flex text-[13px] items-center px-2 mr-2 py-1 mb-1 text-sm font-medium text-center text-white bg-[#36d887] text-bold rounded ">
+        <i class="fa-solid fa-file-excel mr-2 fa-xm"></i> Excel
+      </router-link>
+      <router-link to=""
+        class="inline-flex text-[13px] items-center px-2 py-1 mb-1 text-sm font-medium text-center text-white bg-yellow-500 text-bold rounded ">
+        <i class="fa-solid fa-file-pdf mr-2 fa-xm"></i> Pdf
+      </router-link>
+      <div class="inline-flex text-[13px] items-center px-2 py-1 mb-1 text-sm font-medium text-center text-white">
+        <el-input clearable size="smal" width="50px" type="String" placeholder="Buyurtma nomer bo'yicha izla..." />
       </div>
-        
+    </div>
+
     <div class="block">
       <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange"
         :current-page.sync="currentPage1" :page-size="100" layout="prev, pager, next" :total="1000">

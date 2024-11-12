@@ -9,9 +9,8 @@ const SaleDepPaintCardSchema = new Schema(
     color_code: { type: String },
     duration_time: { type: Date, default: new Date() },
     raw_cloth_quantity: { type: Number },
-    paint_status: { type: String, default: "Taminotga yuborildi" },
-    process_status: { type: Array, default: "To'quvga yuborildi" },
-    isConfirm: {type: Array},
+    status: { type: String, default: "Taminotga yuborildi" },
+    paint_process_status: { type: Array },
     state: { type: Boolean, default: true },
   },
   { timestamps: true }

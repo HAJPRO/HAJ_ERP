@@ -50,21 +50,21 @@ const getAll = async () => {
   provide_length.value = items.value.length;
 };
 const isActive = ref(0)
-const ActiveTabLink = (num) =>{
-  if(num ===0){
+const ActiveTabLink = (num) => {
+  if (num === 0) {
     isActive.value = 0
   }
-   if(num === 1){
+  if (num === 1) {
     isActive.value = 1
-  } if(num===2){
+  } if (num === 2) {
     isActive.value = 2
-  }if(num===3){
+  } if (num === 3) {
     isActive.value = 3
-  } if(num===4){
+  } if (num === 4) {
     isActive.value = 4
   }
-  
- 
+
+
 }
 onMounted(async () => {
   try {
@@ -82,185 +82,85 @@ onMounted(async () => {
         <h3>Taminot reja iqtisod</h3>
       </template>
     </Title>
-    <div class="grid grid-cols-12 grid-flow-col justify-between bg-white rounded-md shadow-md p-3 mb-2 ">
-      <div class="col-span-8 grid-flow-col ">
-        <router-link to="" @click="ActiveTabLink(0)" 
-        :class = "{activeTab : isActive === 0}"
-          class="inline-flex text-[13px] items-center  mr-2 px-4 py-2 mb-1 text-sm font-medium text-center text-red hover:border-b-2 border-solid border-[#36d887] bg-[#e4e9e9] text-bold rounded ">
+    <div class="grid grid-cols-12 grid-flow-col justify-between bg-white rounded-md shadow-md p-2 mb-2 ">
+      <div class="col-span-9 grid-flow-col ">
+        <router-link @click="ActiveTabLink(0)" to="" :class="{ activeTab: isActive === 0 }"
+          class="inline-flex  text-[13px] items-center mr-1 px-4 py-1 mb-1 text-sm font-medium text-center text-red hover:border-b-2 border-solid border-[#36d887] bg-[#e4e9e9] text-bold rounded ">
           <i class="fa-solid fa-info mr-2 fa-xm"></i> Bajarilgan
           <div class="flex flex-shrink-0 ml-2">
             <span
-              class="inline-flex items-center justify-center h-5 text-xm font-medium text-white bg-[#36d887] px-3 py-3 rounded">
-              <span class=" ">0</span>/{{provide_length || 0 }}</span>
+              class=" inline-flex items-center justify-center h-5 text-[11px] font-medium text-white bg-red-500 px-3 py-2 rounded">
+              <span class=" ">1</span>/{{ (all_length ? all_length.notConfirmed_length : 0) || 0 }}</span>
           </div>
         </router-link>
-        <router-link to="" @click="ActiveTabLink(2)" 
-        :class = "{activeTab : isActive === 2 }"
-          class="inline-flex text-[13px] items-center px-4 py-2 mb-1 text-sm font-medium text-center text-red hover:border-b-2 border-solid border-[#36d887] bg-[#e4e9e9] text-bold rounded ">
+        <router-link to="" @click="ActiveTabLink(2)" :class="{ activeTab: isActive === 2 }"
+          class="inline-flex text-[13px] items-center mr-1 px-4 py-1 mb-1 text-sm font-medium text-center text-red hover:border-b-2 border-solid border-[#36d887] bg-[#e4e9e9] text-bold rounded ">
           <i class="fa-solid fa-info mr-2 fa-xm"></i> Bo'yoq
           <div class="flex flex-shrink-0 ml-2">
             <span
-              class="inline-flex items-center justify-center h-5 text-xm font-medium text-white bg-[#36d887] px-3 py-3 rounded">
-              <span class=" ">0</span>/{{ painting_length || 0}}</span>
+              class="inline-flex items-center justify-center h-5 text-[11px] font-medium text-white bg-[#36d887] px-3 py-2 rounded">
+              <span class=" ">0</span>/{{ (all_length ? all_length.paint_length : 0) || 0 }}</span>
           </div>
         </router-link>
-
-        <router-link to="" @click="ActiveTabLink(3)" 
-        :class = "{activeTab : isActive === 3 }"
-          class="inline-flex text-[13px] items-center ml-2 px-4 py-2 mb-1 text-sm font-medium text-center text-red hover:border-b-2 border-solid border-[#36d887] bg-[#e4e9e9] text-bold rounded ">
+        <router-link to="" @click="ActiveTabLink(3)" :class="{ activeTab: isActive === 3 }"
+          class="inline-flex text-[13px] items-center mr-1 px-4 py-1 mb-1 text-sm font-medium text-center text-red hover:border-b-2 border-solid border-[#36d887] bg-[#e4e9e9] text-bold rounded ">
           <i class="fa-solid fa-info mr-2 fa-xm"></i> To'quv
           <div class="flex flex-shrink-0 ml-2">
             <span
-              class="inline-flex items-center justify-center h-5 text-xm font-medium text-white bg-[#36d887] px-3 py-3 rounded"><span class=" ">0</span>/0</span>
+              class="inline-flex items-center justify-center h-5 text-[11px] font-medium text-white bg-[#36d887] px-3 py-2 rounded"><span
+                class=" ">0</span>/{{ (all_length ? all_length.weaving_length : 0) || 0 }}</span>
           </div>
         </router-link>
-        <router-link to="" @click="ActiveTabLink(4)" 
-        :class = "{activeTab : isActive === 4 }"
-          class="inline-flex text-[13px] items-center ml-2 px-4 py-2 mb-1 text-sm font-medium text-center text-red hover:border-b-2 border-solid border-[#36d887] bg-[#e4e9e9] text-bold rounded ">
+        <router-link to="" @click="ActiveTabLink(4)" :class="{ activeTab: isActive === 4 }"
+          class="inline-flex text-[13px] items-center mr-1  px-4 py-1 mb-1 text-sm font-medium text-center text-red hover:border-b-2 border-solid border-[#36d887] bg-[#e4e9e9] text-bold rounded ">
           <i class="fa-solid fa-info mr-2 fa-xm"></i> Yigiruv
           <div class="flex flex-shrink-0 ml-2">
             <span
-              class="inline-flex items-center justify-center h-5 text-xm font-medium text-white bg-[#36d887] px-3 py-3 rounded"><span class=" ">0</span>/0</span>
+              class="inline-flex items-center justify-center h-5 text-[11px] font-medium text-white bg-[#36d887] px-3 py-2 rounded"><span
+                class=" ">0</span>/{{ (all_length ? all_length.spinning_length : 0) || 0 }}</span>
           </div>
         </router-link>
-       
+
       </div>
-     <div class="flex justify-end flex-wrap gap-2 col-span-4 grid-flow-col">
-      <div class="">
-        <el-input clearable size="large" type="String" placeholder="Buyurtma nomer bo'yicha izla..." />
-      </div>
-      <div class="row-span-1 grid-flow-col">
-        <router-link to="/explore/sale/legal/create"
-          class="inline-flex text-[13px] items-center px-2 py-2 mb-1 text-sm font-medium text-center text-white bg-[#36d887] text-bold rounded ">
-          <i class="fa-solid fa-file-excel mr-2 fa-xm"></i> Excel
-        </router-link>
-      </div>
-      </div>
+
     </div>
     <div class="shadow-md rounded min-h-[15px]">
       <!-- // TRansfer table  -->
-      <el-table
-        load
-        class="w-full"
-        header-align="center"
-        hight="5"
-        empty-text="Mahsulot tanlanmagan... "
-        :default-sort="[
+      <el-table load class="w-full" header-align="center" hight="5" empty-text="Mahsulot tanlanmagan... " :default-sort="[
           { prop: 'name', order: 'descending' },
           { prop: 'count', order: 'descending' },
           { prop: 'tranfer', order: 'descending' },
-        ]"
-        :data="items"
-        border
-        style="width: 100%"
-        min-height="300"
-        max-height="350"
-      >
-        <el-table-column
-          header-align="center"
-          align="center"
-          type="index"
-          prop="index"
-          fixed="left"
-          label="№"
-          width="60"
-        />
+        ]" :data="items" border style="width: 100%" min-height="300" max-height="350">
+        <el-table-column header-align="center" align="center" type="index" prop="index" fixed="left" label="№"
+          width="60" />
 
-        <el-table-column
-          header-align="center"
-          sortable
-          prop="customer_name"
-          label="Buyurtmachi nomi"
-          width="200"
-        />
+        <el-table-column header-align="center" sortable prop="customer_name" label="Buyurtmachi nomi" width="200" />
 
-        <el-table-column
-          header-align="center"
-          sortable
-          prop="order_number"
-          label="Buyurtma miqdori"
-          width="200"
-        />
-        <el-table-column
-          prop="pro_type"
-          label="Mahsulot turi"
-          width="180"
-          header-align="center"
-          align="center"
-        />
-        <el-table-column
-          prop="pro_name"
-          label="Mahsulot nomi"
-          width="180"
-          header-align="center"
-          align="center"
-        />
-        <el-table-column
-          prop="pro_color"
-          label="Mahsulot rangi"
-          width="180"
-          header-align="center"
-          align="center"
-        />
-        <el-table-column
-          prop="order_quantity"
-          label="Buyurtma miqdori"
-          width="180"
-          header-align="center"
-          align="center"
-        />
-        <el-table-column
-          prop="finished_pro"
-          label="Tayyor mahsulot"
-          width="180"
-          header-align="center"
-          align="center"
-        />
-        <el-table-column
-          prop="residual"
-          label="Tayyorlanishi kerak"
-          width="180"
-          header-align="center"
-          align="center"
-        />
-        <el-table-column
-          fixed="right"
-          prop="order_status"
-          label="Holati"
-          width="150"
-          header-align="center"
-          align="center"
-        >
+        <el-table-column header-align="center" sortable prop="order_number" label="Buyurtma miqdori" width="200" />
+        <el-table-column prop="pro_type" label="Mahsulot turi" width="180" header-align="center" align="center" />
+        <el-table-column prop="pro_name" label="Mahsulot nomi" width="180" header-align="center" align="center" />
+        <el-table-column prop="pro_color" label="Mahsulot rangi" width="180" header-align="center" align="center" />
+        <el-table-column prop="order_quantity" label="Buyurtma miqdori" width="180" header-align="center"
+          align="center" />
+        <el-table-column prop="finished_pro" label="Tayyor mahsulot" width="180" header-align="center" align="center" />
+        <el-table-column prop="residual" label="Tayyorlanishi kerak" width="180" header-align="center" align="center" />
+        <el-table-column fixed="right" prop="order_status" label="Holati" width="150" header-align="center"
+          align="center">
           <template #default="scope">
-            <router-link
-              to=""
-              class="inline-flex items-center text-red bg-[#f3e77b] hover:bg-[#eedc36] focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-md text-[12px] w-ful p-[5px] sm:w-auto text-center"
-            >
+            <router-link to=""
+              class="inline-flex items-center text-red bg-[#f3e77b] hover:bg-[#eedc36] focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-md text-[12px] w-ful p-[5px] sm:w-auto text-center">
               {{ scope.row.order_status }}
             </router-link>
           </template>
         </el-table-column>
-        <el-table-column
-          fixed="right"
-          prop="id"
-          label=""
-          width="150"
-          header-align="center"
-          align="center"
-        >
+        <el-table-column fixed="right" prop="id" label="" width="150" header-align="center" align="center">
           <template #default="scope">
-            <router-link
-              to=""
-              @click="openModalById(scope.row._id)"
-              class="inline-flex items-center mt-4 ml-2 text-red bg-[#eedc36] hover:bg-yellow-400 font-medium rounded-md text-sm w-full sm:w-auto px-2 py-3 text-center"
-            >
+            <router-link to="" @click="openModalById(scope.row._id)"
+              class="inline-flex items-center mt-4 ml-2 text-red bg-[#eedc36] hover:bg-yellow-400 font-medium rounded-md text-sm w-full sm:w-auto px-2 py-3 text-center">
               <i class="text-red fa-solid fa-check fa-xs fa- fa-xs"></i>
             </router-link>
-            <router-link
-              to="/explore/sale/legal/create"
-              @click="DeleteFromTable(scope.row._id)"
-              class="inline-flex items-center mt-4 ml-2 text-red bg-[#36d887] hover:bg-[#39c07c] font-medium rounded-md text-sm w-full sm:w-auto px-3 py-3 text-center"
-            >
+            <router-link to="/explore/sale/legal/create" @click="DeleteFromTable(scope.row._id)"
+              class="inline-flex items-center mt-4 ml-2 text-red bg-[#36d887] hover:bg-[#39c07c] font-medium rounded-md text-sm w-full sm:w-auto px-3 py-3 text-center">
               <i class="text-black fa-sharp fa-solid fa-info fa-xs"></i>
             </router-link>
             <!-- <router-link
@@ -277,99 +177,42 @@ onMounted(async () => {
     </div>
   </div>
 
-  <el-dialog
-    v-model="outerVisible"
-    title="Taminot uchun kerakli mahsulotlar qo'shish"
-    width="600"
-  >
+  <el-dialog v-model="outerVisible" title="Taminot uchun kerakli mahsulotlar qo'shish" width="600">
     <span>
       <form
-        class="filter-box md:grid md:grid-cols-3 gap-2 sm:flex sm:flex-wrap rounded shadow-md bg-white p-2 mt-1 mb-1 text-[12px]"
-      >
+        class="filter-box md:grid md:grid-cols-3 gap-2 sm:flex sm:flex-wrap rounded shadow-md bg-white p-2 mt-1 mb-1 text-[12px]">
         <div class="mb-1 col-span-1">
-          <label
-            name="resul"
-            class="block mb-1 text-[12px] font-medium text-gray-900 dark:text-white"
-            >Ip (kg)</label
-          >
-          <el-input
-            v-model="model.yarn_quantity"
-            clearable
-            class="w-[100%]"
-            size="smal"
-            type="String"
-            placeholder="..."
-          />
+          <label name="resul" class="block mb-1 text-[12px] font-medium text-gray-900 dark:text-white">Ip (kg)</label>
+          <el-input v-model="model.yarn_quantity" clearable class="w-[100%]" size="smal" type="String"
+            placeholder="..." />
         </div>
         <div class="mb-1 col-span-1">
-          <label
-            name="resul"
-            class="block mb-1 text-[12px] font-medium text-gray-900 dark:text-white"
-            >Rang (kg)</label
-          >
-          <el-input
-            v-model="model.color_quantity"
-            clearable
-            class="w-[100%]"
-            size="smal"
-            type="Number"
-            placeholder="..."
-          />
+          <label name="resul" class="block mb-1 text-[12px] font-medium text-gray-900 dark:text-white">Rang (kg)</label>
+          <el-input v-model="model.color_quantity" clearable class="w-[100%]" size="smal" type="Number"
+            placeholder="..." />
         </div>
 
         <div class="mb-1 col-span-1">
-          <label
-            name="resul"
-            class="block mb-1 text-[12px] font-medium text-gray-900 dark:text-white"
-            >Korbamid (kg)</label
-          >
-          <el-input
-            v-model="model.corbamide_quantity"
-            clearable
-            class="w-[100%]"
-            size="smal"
-            type="String"
-            placeholder="..."
-          />
+          <label name="resul" class="block mb-1 text-[12px] font-medium text-gray-900 dark:text-white">Korbamid
+            (kg)</label>
+          <el-input v-model="model.corbamide_quantity" clearable class="w-[100%]" size="smal" type="String"
+            placeholder="..." />
         </div>
         <div class="mb-1 col-span-1">
-          <label
-            name="resul"
-            class="block mb-1 text-[12px] font-medium text-gray-900 dark:text-white"
-            >Kislata (kg)</label
-          >
-          <el-input
-            v-model="model.acid_quantity"
-            clearable
-            class="w-[100%]"
-            size="smal"
-            type="Number"
-            placeholder="..."
-          />
+          <label name="resul" class="block mb-1 text-[12px] font-medium text-gray-900 dark:text-white">Kislata
+            (kg)</label>
+          <el-input v-model="model.acid_quantity" clearable class="w-[100%]" size="smal" type="Number"
+            placeholder="..." />
         </div>
         <div class="mb-1 col-span-1">
-          <label
-            name="resul"
-            class="block mb-1 text-[12px] font-medium text-gray-900 dark:text-white"
-            >Tayyorlash muddati</label
-          >
-          <el-input
-            v-model="model.duration_time"
-            clearable
-            class="w-[100%]"
-            size="smal"
-            type="Date"
-            placeholder="..."
-          />
+          <label name="resul" class="block mb-1 text-[12px] font-medium text-gray-900 dark:text-white">Tayyorlash
+            muddati</label>
+          <el-input v-model="model.duration_time" clearable class="w-[100%]" size="smal" type="Date"
+            placeholder="..." />
         </div>
       </form>
     </span>
-    <el-dialog
-      v-model="innerVisible"
-      width="500"
-      title="Inner Dialog"
-      append-to-body
-    >
+    <el-dialog v-model="innerVisible" width="500" title="Inner Dialog" append-to-body>
       <span>This is the inner Dialog</span>
     </el-dialog>
     <template #footer>
@@ -382,16 +225,23 @@ onMounted(async () => {
 
   <!-- //PAGANATION PAGANATION PAGANATION PAGANATION// -->
   <div class="flex justify-between mt-2 bg-white p-2 shadow-md">
-    <div></div>
+    <div>
+      <router-link to=""
+        class="inline-flex text-[13px] items-center px-2 mr-2 py-1 mb-1 text-sm font-medium text-center text-white bg-[#36d887] text-bold rounded ">
+        <i class="fa-solid fa-file-excel mr-2 fa-xm"></i> Excel
+      </router-link>
+      <router-link to=""
+        class="inline-flex text-[13px] items-center px-2 py-1 mb-1 text-sm font-medium text-center text-white bg-yellow-500 text-bold rounded ">
+        <i class="fa-solid fa-file-pdf mr-2 fa-xm"></i> Pdf
+      </router-link>
+      <div class="inline-flex text-[13px] items-center px-2 py-1 mb-1 text-sm font-medium text-center text-white">
+        <el-input clearable size="smal" width="50px" type="String" placeholder="Buyurtma nomer bo'yicha izla..." />
+      </div>
+    </div>
+
     <div class="block">
-      <el-pagination
-        @size-change="handleSizeChange"
-        @current-change="handleCurrentChange"
-        :current-page.sync="currentPage1"
-        :page-size="100"
-        layout="total, prev, pager, next"
-        :total="1000"
-      >
+      <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange"
+        :current-page.sync="currentPage1" :page-size="100" layout="prev, pager, next" :total="1000">
       </el-pagination>
     </div>
   </div>
@@ -399,5 +249,6 @@ onMounted(async () => {
 </template>
 <style>
 .activeTab {
-  border-bottom : 2px solid #36d887
-}</style>
+  border-bottom: 2px solid #36d887
+}
+</style>
