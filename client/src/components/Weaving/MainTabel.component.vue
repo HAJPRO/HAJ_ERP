@@ -1,15 +1,11 @@
 <script setup>
-import { ref, onMounted } from "vue";
+import { ref, onMounted, computed } from "vue";
+import { useStore } from "vuex";
+const store = useStore()
 // import { WeavingService } from "../../ApiServices/Weaving/weaving.service";
 import { SaleLegalService } from "../../ApiServices/Sale/saleLegal.service";
 // import { ToastifyService } from "../../utils/Toastify";
 // import { loading } from ".././../utils/Loader"
-const props = defineProps({
-    items: {
-        tyoe: Array,
-        requred: true
-    }
-})
 const emit = defineEmits({})
 const card_id = ref();
 const isModalWeaving = ref(false);
@@ -18,6 +14,11 @@ const openModalById = (id) => {
     card_id.value = id;
     emit("DataForWeavingModal", { id: card_id.value, is_modal: isModalWeaving.value })
 };
+
+// const info = computed(() => {
+//     return store.getters['weavingPlan/newData']
+// })
+
 onMounted(async () => {
     try {
 
@@ -33,7 +34,7 @@ onMounted(async () => {
                 { prop: 'name', order: 'descending' },
                 { prop: 'count', order: 'descending' },
                 { prop: 'tranfer', order: 'descending' },
-            ]" :data="props.items" border style="width: 100%" min-height="300" max-height="350">
+            ]" :data="items" border style="width: 100%" min-height="300" max-height="350">
             <el-table-column header-align="center" align="center" type="index" prop="index" fixed="left" label="№"
                 width="60" />
 
@@ -60,7 +61,8 @@ onMounted(async () => {
             </el-table-column>
             <el-table-column fixed="right" prop="id" label="" width="150" header-align="center" align="center">
                 <template #default="scope">
-                    <router-link to="" v-show="scope.row.order_status  ==!'Yigiruvga yuborildi' || scope.row.order_status  === `To'quvga yuborildi`"
+                    <router-link to=""
+                        v-show="scope.row.order_status == !'Yigiruvga yuborildi' || scope.row.order_status === `To'quvga yuborildi`"
                         @click="openModalById(scope.row._id)"
                         class="inline-flex items-center mt-4 ml-2 text-red bg-[#eedc36] hover:bg-yellow-400 font-medium rounded-md text-sm w-full sm:w-auto px-2 py-3 text-center">
                         <i class="text-red fa-solid fa-check fa-xs fa- fa-xs"></i>

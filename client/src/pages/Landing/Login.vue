@@ -7,21 +7,7 @@ const user = {
   username: "",
   password: "",
 };
-function ToastError(data) {
-  toast.error(data.msg, {
-    autoClose: 1000,
-  });
-}
-function ToastSuccess(data) {
-  toast.success(data.msg, {
-    autoClose: 1000,
-  });
-}
-function ToastInfo(data) {
-  toast.info(data.msg, {
-    autoClose: 1000,
-  });
-}
+
 const login = async () => {
   try {
     if (!user.username || !user.password) {

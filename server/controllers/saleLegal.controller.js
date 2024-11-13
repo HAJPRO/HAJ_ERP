@@ -32,6 +32,7 @@ class saleLegalController {
   }
   async getAll(req, res, next) {
     try {
+      
       const all = await SaleLegalService.getAll(req.body.status);
       res.status(200).json(all);
 

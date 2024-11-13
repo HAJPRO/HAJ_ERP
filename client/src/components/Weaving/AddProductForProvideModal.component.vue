@@ -2,7 +2,7 @@
 import { ref, onMounted } from "vue"
 import { WeavingService } from "@/ApiServices/Weaving/weaving.service";
 import { ToastifyService } from "../../utils/Toastify";
-import { loading } from "../../utils/Loader";
+// import { loading } from "../../utils/Loader";
 const props = defineProps({
     isModalData: {
         type: Object,

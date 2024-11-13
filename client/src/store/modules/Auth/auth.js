@@ -1,7 +1,6 @@
-import api from "@/helpers/api";
 import Cookies from "js-cookie";
-import { LoginService } from "../../ApiServices/Auth/login.service.js";
-import { RegisterService } from "../../ApiServices/Auth/register.service.js";
+import { LoginService } from "../../../ApiServices/Auth/login.service.js";
+import { RegisterService } from "../../../ApiServices/Auth/register.service.js";
 
 const authModule = {
   namespaces: true,
@@ -11,7 +10,9 @@ const authModule = {
       : "",
 
     token: Cookies.get("token") ? JSON.stringify(Cookies.get("token")) : {},
+    data: ""
   },
+
   mutations: {
     setAccount(state, payload) {
       state.account = payload;
@@ -19,11 +20,15 @@ const authModule = {
     setToken(state, payload) {
       state.token = payload;
     },
+    Data(state, payload) {
+      state.data = payload
+    }
   },
   actions: {
     async register({ commit }, payload) {
       try {
         const res = await RegisterService.Register(payload);
+        commit("Data", res.data)
         if (res.data) {
           Cookies.set("account", JSON.stringify(res.data.user));
           Cookies.set("token", res.data.accessToken);

@@ -80,7 +80,7 @@ const Confirm = async (id) => {
     loader.hide()
     ToastifyService.ToastSuccess({ msg: "Sotuv tasdiqlandi va bo'yoqqa yuborildi", });
     const TimeOut = () => {
-      window.location.href = "/explore/sale/legal"
+      window.location.reload();
     }
     setTimeout(TimeOut, 1500)
   } catch (error) {
