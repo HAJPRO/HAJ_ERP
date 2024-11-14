@@ -32,7 +32,6 @@ class saleLegalController {
   }
   async getAll(req, res, next) {
     try {
-      
       const all = await SaleLegalService.getAll(req.body.status);
       res.status(200).json(all);
 
@@ -69,9 +68,8 @@ class saleLegalController {
   }
   async confirm(req, res, next) {
     try {
-      const ID = req.body.id;
-      const data = await SaleLegalService.confirm(ID);
-      res.status(200).json(data);
+      const data = await SaleLegalService.confirm(req.body.id);
+      res.status(200).json({ msg: "Sotuv tasdiqlandi", data });
     } catch (error) {
       next(error);
     }
@@ -81,7 +79,7 @@ class saleLegalController {
     try {
       const { body, params } = req;
       const data = await SaleLegalService.edit(body, params.id);
-      res.status(200).json({ msg: "Malumot muvaffaqiyatli yangilandi !", data });
+      res.status(200).json({ msg: "Malumot muvaffaqiyatli yangilandi", data });
     } catch (error) {
       next(error);
     }

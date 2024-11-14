@@ -9,13 +9,11 @@ import Loading from 'vue-loading-overlay';
 
 
 import router from "./router/index";
-import store from "./store/index.js";
 
 import App from "./App.vue";
 import "./css/style.css";
 const app = createApp(App);
 app.use(router);
-app.use(store);
 app.use(createPinia());
 app.use(ElementPlus);
 app.use(ElementPlusIconsVue);

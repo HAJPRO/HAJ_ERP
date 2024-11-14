@@ -1,22 +1,11 @@
 <script setup>
 import { ref, onMounted, onBeforeUpdate } from "vue";
 import { SaleLegalService } from "../../ApiServices/Sale/saleLegal.service";
-
-const props = defineProps({
-    isProccessModal: {
-        type: Boolean,
-        default: false,
-    },
-    cardId: {
-        type: Number,
-        default: false,
-    },
-});
-const emit = defineEmits({});
-const isDepInfo = ref(false);
-const isDepInfoBtn = () => {
-    isDepInfo.value = !isDepInfo.value;
-};
+import { SaleStore } from "../../stores/Sale/sale.store";
+const store = SaleStore();
+import { storeToRefs } from "pinia";
+const { id, isModal } = storeToRefs(store.proccess_modal);
+const isDepInfo = ref(false)
 const proccess = ref([]);
 const customer_name = ref();
 const order_quantity = ref();
@@ -25,7 +14,7 @@ const dep_paint_data = ref([]);
 const author = ref();
 const AllOrderProccessById = async () => {
     try {
-        const items = await SaleLegalService.AllOrderProccessById(props.cardId);
+        const items = await SaleLegalService.AllOrderProccessById(store.proccess_modal.id);
         proccess.value = items.data.process_status;
         customer_name.value = items.data.customer_name;
         order_quantity.value = items.data.order_quantity;
@@ -46,7 +35,8 @@ onBeforeUpdate(async () => {
 </script>
 
 <template>
-    <el-dialog v-model="isProccessModal" title="Buyurtmani ishlab chiqarish jarayoni bo'yicha malumotlari" width="800">
+    <el-dialog v-model="store.proccess_modal.isModal" title="Buyurtmani ishlab chiqarish jarayoni bo'yicha malumotlari"
+        width="800">
         <div class="">
             <div class="Pragress flex gap-1">
                 <div v-for="itim in proccess" :key="itim.index">
@@ -76,8 +66,8 @@ onBeforeUpdate(async () => {
                 </div>
                 <div class="Department">
                     <div>
-                        <header @click="isDepInfoBtn()"
-                            class="text-xs uppercase text-center cursor-pointer text-white dark:text-gray-500 bg-[#36d887] dark:bg-gray-700 dark:bg-opacity-50 rounded-sm font-semibold p-2">
+                        <header @click="isDepInfo = !isDepInfo"
+                            class="text-[12px] uppercase text-center cursor-pointer text-white dark:text-gray-500 bg-[#36d887] dark:bg-gray-700 dark:bg-opacity-50 rounded-sm font-semibold p-2">
                             Bo'limlar bo'yicha ma'lumotini ko'rish
                             <span class="hidden sm:inline"> -&gt;</span>
                         </header>
@@ -283,12 +273,12 @@ onBeforeUpdate(async () => {
             <div class="dialog-footer">
                 <div class="">
                     <router-link to=""
-                        class="inline-flex text-[13px] items-center px-2 py-1 mb-1 text-sm font-medium text-center text-white bg-yellow-500 text-bold rounded">
+                        class="inline-flex text-[11px] items-center px-2 py-1 mb-1  font-medium text-center text-white bg-[#36d887] text-bold rounded">
                         <i class="fa-solid fa-file-excel mr-2 fa-xm"></i> Excel
                     </router-link>
-                    <router-link @click="emit('isProccess', false)" to=""
-                        class="inline-flex text-[13px] items-center ml-2 px-2 py-1 mb-1 text-sm font-medium text-center text-white bg-red-500 text-bold rounded">
-                        <i class="fa-solid fa-file-excel mr-2 fa-xm"></i> Yopish
+                    <router-link to=""
+                        class="inline-flex text-[11px] items-center ml-2 px-2 py-1 mb-1  font-medium text-center text-white bg-yellow-500 text-bold rounded">
+                        <i class="fa-solid fa-file-pdf mr-2 fa-xm"></i> Pdf
                     </router-link>
                 </div>
             </div>

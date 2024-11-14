@@ -16,7 +16,7 @@ export const SaleLegalService = {
   },
   confirm(id) {
     let url = "sale/legal_confirm";
-    return api.post(url, id);
+    return api.post(url, { id });
   },
   AllOrderProccessById(id) {
     let url = `sale/legal_proccess/${id}`;

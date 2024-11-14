@@ -6,7 +6,6 @@ export const ToastifyService = {
         return toast.info("Toast Info !", { autoClose: 1500 });
     },
     ToastSuccess(data) {
-        console.log(data.msg);
         return toast.success(data.msg, { autoClose: 1500 });
     },
     ToastWarning(item) {

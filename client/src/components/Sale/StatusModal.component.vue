@@ -1,13 +1,11 @@
 <script setup>
-const props = defineProps({
-    is_status: {
-        type: String
-    }
-})
+import { SaleStore } from "../../stores/Sale/sale.store";
+const store = SaleStore();
+import { storeToRefs } from "pinia";
 </script>
 
 <template>
-    <el-dialog v-model="props.is_status" title="Holati haqida ma'lumot" width="500">
+    <el-dialog v-model="store.status_modal.isModal" title="Holati haqida ma'lumot" width="500">
         <span>
             <form
                 class="filter-box md:grid md:grid-cols-12 gap-2 sm:flex sm:flex-wrap rounded shadow-md bg-white p-1 mt-1 mb-1 text-[12px]">

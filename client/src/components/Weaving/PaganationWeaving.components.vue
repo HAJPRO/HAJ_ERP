@@ -2,8 +2,8 @@
 </script>
 
 <template>
-    <!-- //PAGANATION PAGANATION PAGANATION PAGANATION// -->
-  <div class="flex justify-between mt-2 bg-white p-2 shadow-md">
+  <!-- //PAGANATION PAGANATION PAGANATION PAGANATION// -->
+  <div class="mt-2 flex justify-between   bg-white p-2 rounded-lg  w-full  mx-auto">
     <div>
       <router-link to=""
         class="inline-flex text-[13px] items-center px-2 mr-2 py-1 mb-1 text-sm font-medium text-center text-white bg-[#36d887] text-bold rounded ">
@@ -19,8 +19,8 @@
     </div>
 
     <div class="block">
-      <el-pagination @size-change=" handleSizeChange " @current-change=" handleCurrentChange "
-        :current-page.sync=" currentPage1 " :page-size=" 100 " layout="prev, pager, next" :total=" 1000 ">
+      <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange"
+        :current-page.sync="currentPage1" :page-size="100" layout="prev, pager, next" :total="1000">
       </el-pagination>
     </div>
   </div>

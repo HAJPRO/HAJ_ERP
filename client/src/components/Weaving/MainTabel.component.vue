@@ -1,7 +1,8 @@
 <script setup>
 import { ref, onMounted, computed } from "vue";
-import { useStore } from "vuex";
-const store = useStore()
+import { SaleStore } from "../../stores/Sale/sale.store";
+const store = SaleStore()
+import { storeToRefs } from "pinia"
 // import { WeavingService } from "../../ApiServices/Weaving/weaving.service";
 import { SaleLegalService } from "../../ApiServices/Sale/saleLegal.service";
 // import { ToastifyService } from "../../utils/Toastify";
@@ -12,13 +13,10 @@ const isModalWeaving = ref(false);
 const openModalById = (id) => {
     isModalWeaving.value = true;
     card_id.value = id;
-    emit("DataForWeavingModal", { id: card_id.value, is_modal: isModalWeaving.value })
+    store.openModalById({ id: card_id.value, is_modal: isModalWeaving.value })
 };
 
-// const info = computed(() => {
-//     return store.getters['weavingPlan/newData']
-// })
-
+const { items } = storeToRefs(store)
 onMounted(async () => {
     try {
 

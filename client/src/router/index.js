@@ -49,7 +49,7 @@ const routes = [
       {
         path: "",
         name: "Dashboard",
-        component: () => import("../pages/Explore/Dashboard.vue"),
+        component: () => import("../pages/Explore/Dashboard/Dashboard.vue"),
       },
       // Sotuv bo'limi
       {

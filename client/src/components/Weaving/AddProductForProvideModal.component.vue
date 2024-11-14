@@ -1,22 +1,12 @@
 <script setup>
 import { ref, onMounted } from "vue"
 import { WeavingService } from "@/ApiServices/Weaving/weaving.service";
+import { SaleStore } from "../../stores/Sale/sale.store";
+const store = SaleStore()
+import { storeToRefs } from "pinia"
 import { ToastifyService } from "../../utils/Toastify";
-// import { loading } from "../../utils/Loader";
-const props = defineProps({
-    isModalData: {
-        type: Object,
-        required: true
-    },
-    is_modal: {
-        type: Boolean,
-        required: true
-    },
-    card_id: {
-        type: String,
-        required: true
-    }
-})
+import { loading } from "../../utils/Loader";
+const { id, is_modal } = storeToRefs(store)
 const model = ref({});
 const getModel = async () => {
     const data = await WeavingService.getModel();
@@ -50,7 +40,7 @@ onMounted(async () => {
 </script>
 
 <template>
-    <el-dialog v-model="props.isModalData" title="Taminot uchun kerakli mahsulotlar qo'shish" width="600">
+    <el-dialog v-model="is_modal" title="Taminot uchun kerakli mahsulotlar qo'shish" width="600">
         <span>
             <form
                 class="filter-box md:grid md:grid-cols-3 gap-2 sm:flex sm:flex-wrap rounded shadow-md bg-white p-2 mt-1 mb-1 text-[12px]">

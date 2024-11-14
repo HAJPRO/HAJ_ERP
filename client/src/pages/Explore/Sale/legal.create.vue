@@ -125,7 +125,7 @@ onMounted(async () => {
     <div class="flex justify-end bg-white rounded-md shadow-md p-3">
       <div></div>
       <router-link @click="Save()" to=""
-        class="inline-flex text-[13px] items-center px-6 py-2 mb-1 text-sm font-medium text-center text-white bg-[#36d887] text-bold rounded focus:ring-4 focus:outline-none">
+        class="inline-flex text-[13px] items-center px-4 py-2 mb-1  font-medium text-center text-white bg-[#36d887] text-bold rounded focus:ring-4 focus:outline-none">
         <i class="fa-solid fa-check mr-2 fa-lg"></i> Saqlash
       </router-link>
     </div>
