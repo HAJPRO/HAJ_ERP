@@ -6,13 +6,13 @@ export const SpinningService = {
     let url = "spinning/spinning_model";
     return api.get(url);
   },
+  cancelReason(data) {
+    let url = "spinning/cancel_reason";
+    return api.post(url, data);
+  },
   create(data) {
     let url = "spinning/spinning_create";
     return api.post(url, data);
-  },
-  confirm(id) {
-    let url = "spinning/spinning_confirm";
-    return api.post(url, id);
   },
   getAll() {
     let url = "spinning/spinning_all";

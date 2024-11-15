@@ -57,7 +57,7 @@ onMounted(async () => {
                     <span
                         class="inline-flex items-center justify-center h-5 text-[11px] font-medium text-white bg-red-500 px-3 py-2 rounded">
                         <span class=" ">1</span>/{{
-                (all_length ? all_length.notConfirmed_length : 0) || 0
+                (all_length ? all_length.sale_length : 0) || 0
             }}</span>
                 </div>
             </router-link>

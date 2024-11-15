@@ -23,14 +23,14 @@ class DepWeavingService {
       const userData = await userModel.findById(author);
       const LegalDataById = await SaleLegalCardModel.findById(data.card_id);
       const newLegalData = LegalDataById;
-      newLegalData.order_status = "Toq'quv bekor qildi";
+      newLegalData.order_status = "To'quv bekor qildi";
       newLegalData.in_department_order = "Bo'yoq";
       newLegalData.isConfirm = "To'quv bekor qildi";
       newLegalData.process_status.push({
         department: userData.department,
         author: userData.username,
         is_confirm: { status: false, reason: data.reason },
-        status: "Toq'quv bekor qilindi",
+        status: "To'quv bekor qilindi",
         sent_time: new Date(),
       });
 
@@ -58,6 +58,7 @@ class DepWeavingService {
     const newLegalData = LegalDataById;
     newLegalData.order_status = "Yigiruvga yuborildi";
     newLegalData.isConfirm = "To'quv tasdiqladi";
+    newLegalData.in_department_order = "Yigiruv";
     newLegalData.process_status.push({
       department: userData.department,
       author: userData.username,

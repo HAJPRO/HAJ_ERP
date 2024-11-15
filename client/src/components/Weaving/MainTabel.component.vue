@@ -1,14 +1,12 @@
 <script setup>
 import { SaleStore } from "../../stores/Sale/sale.store";
 const StoreSale = SaleStore();
-import { PaintPlanStore } from "../../stores/Paint/paintPlan.store";
-const StorePaint = PaintPlanStore();
+import { WeavingPlanStore } from "../../stores/Weaving/weaving_plan.store";
+const StoreWeaving = WeavingPlanStore();
 import { storeToRefs } from "pinia";
-
 const openModalById = async (id) => {
-    await StorePaint.openModalById({ id, is_modal: true });
+    await StoreWeaving.openModalById({ id, is_modal: true });
 };
-
 const { items } = storeToRefs(StoreSale);
 </script>
 <template>

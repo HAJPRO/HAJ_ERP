@@ -28,7 +28,7 @@ class DepPaintService {
         department: userData.department,
         author: userData.username,
         is_confirm: { status: false, reason: data.reason },
-        status: "Bo'yoq bekor qilindi",
+        status: "Bo'yoq bekor qildi",
         sent_time: new Date(),
       });
 

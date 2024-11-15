@@ -26,6 +26,10 @@ const SaleLegalCardSchema = new Schema(
       type: Schema.ObjectId,
       ref: "DepWeavingCard",
     },
+    dep_spinning_data: {
+      type: Schema.ObjectId,
+      ref: "DepSpinningCard",
+    },
     dep_provider_data: {
       type: Schema.ObjectId,
       ref: "DepProviderCard",

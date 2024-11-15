@@ -1,10 +1,10 @@
 import { SaleLegalService } from "../../ApiServices/Sale/saleLegal.service";
-import { WeavingService } from "../../ApiServices/Weaving/weaving.service";
+import { SpinningService } from "../../ApiServices/Spinning/spinning.service";
 import { ToastifyService } from "../../utils/Toastify";
-import { loading } from "./../../utils/Loader";
+import { loading } from "../../utils/Loader";
 import { defineStore } from "pinia";
 
-export const WeavingPlanStore = defineStore("WeavingPlan", {
+export const SpinningPlanStore = defineStore("SpinningPlan", {
     state: () => {
         return {
             items: "",
@@ -35,13 +35,13 @@ export const WeavingPlanStore = defineStore("WeavingPlan", {
         async cancelSendReason(payload) {
             try {
                 const loader = loading.show();
-                const data = await WeavingService.cancelReason({
+                const data = await SpinningService.cancelReason({
                     reason: payload.reason,
                     card_id: payload.id,
                 });
                 loader.hide();
                 const Refresh = () => {
-                    window.location.href = "/explore/department/weaving/working/plan";
+                    window.location.href = "/explore/department/spinning/workin/plan";
                 };
                 ToastifyService.ToastSuccess({ msg: data.data.msg });
                 setTimeout(Refresh, 1500);
@@ -58,13 +58,13 @@ export const WeavingPlanStore = defineStore("WeavingPlan", {
         async SaveToProvide(payload) {
             try {
                 const loader = loading.show();
-                const data = await WeavingService.create({
+                const data = await SpinningService.create({
                     items: payload.data,
                     card_id: payload.id,
                 });
                 loader.hide();
                 const TimeOut = () => {
-                    window.location.href = "/explore/department/weaving/working/plan";
+                    window.location.href = "/explore/department/spinning/working/plan";
                 };
                 ToastifyService.ToastSuccess({ msg: data.data.msg });
                 setTimeout(TimeOut, 1000);

@@ -1,6 +1,4 @@
 const DepWeavingService = require("../../services/Weaving/weaving.service.js");
-const SaleLegalCardModel = require("../../models/saleLegalCard.model.js");
-const UserModel = require("../../models/user.model.js");
 
 class DepWeavingController {
   async getModel(req, res, next) {

@@ -1,4 +1,14 @@
 <script setup>
+import { SaleStore } from "../../stores/Sale/sale.store";
+const StoreSale = SaleStore();
+import { SpinningPlanStore } from "../../stores/Spinning/spinningPlan.store";
+const StoreSpinning = SpinningPlanStore();
+import { storeToRefs } from "pinia";
+const OpenModalById = (id) => {
+    StoreSpinning.openModalById({ id, is_modal: true });
+};
+
+const { items } = storeToRefs(StoreSale);
 </script>
 <template>
     <div class="shadow-md rounded min-h-[15px]">
@@ -34,14 +44,14 @@
             </el-table-column>
             <el-table-column fixed="right" prop="id" label="" width="150" header-align="center" align="center">
                 <template #default="scope">
-                    <router-link to="" @click="openModalById(scope.row._id)"
+                    <router-link to="" @click="OpenModalById(scope.row._id)"
                         class="inline-flex items-center mt-4 ml-2 text-red bg-[#eedc36] hover:bg-yellow-400 font-medium rounded-md text-sm w-full sm:w-auto px-2 py-3 text-center">
                         <i class="text-red fa-solid fa-check fa-xs fa- fa-xs"></i>
                     </router-link>
                     <router-link to="/explore/sale/legal/create" @click="DeleteFromTable(scope.row._id)"
                         class="inline-flex items-center mt-4 ml-2 text-red bg-[#36d887] hover:bg-[#39c07c] font-medium rounded-md text-sm w-full sm:w-auto px-3 py-3 text-center">
                         <i class="text-black fa-sharp fa-solid fa-info fa-xs"></i>
-                    </router-link>    
+                    </router-link>
                 </template>
             </el-table-column>
         </el-table>

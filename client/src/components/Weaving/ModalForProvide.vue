@@ -1,12 +1,10 @@
 <script setup>
 import { ref, onMounted } from "vue";
 import { WeavingService } from "@/ApiServices/Weaving/weaving.service";
-import { PaintPlanStore } from "../../stores/Paint/paintPlan.store";
 import { WeavingPlanStore } from "../../stores/Weaving/weaving_plan.store";
 const StoreWeaving = WeavingPlanStore();
-const StorePaint = PaintPlanStore();
 import { storeToRefs } from "pinia";
-const { is_provide, card_id } = storeToRefs(StorePaint);
+const { is_provide, card_id } = storeToRefs(StoreWeaving);
 const model = ref({});
 const getModel = async () => {
     const data = await WeavingService.getModel();

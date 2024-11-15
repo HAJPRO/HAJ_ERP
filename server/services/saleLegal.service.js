@@ -87,8 +87,8 @@ class SaleLegalService {
   }
   async getAllLength() {
     try {
-      const notConfirmed = await this.getAllNotConfirmed()
-      const notConfirmed_length = notConfirmed ? notConfirmed.length : 0
+      const Sale = await this.getAllSale()
+      const sale_length = Sale ? Sale.length : 0
       const Paint = await this.getAllPaint()
       const paint_length = Paint ? Paint.length : 0
       const Weaving = await this.getAllWeaving()
@@ -97,7 +97,7 @@ class SaleLegalService {
       const spinning_length = Spinning ? Spinning.length : 0
       const Provide = await this.getAllProvide()
       const provide_length = Provide ? Provide.length : 0
-      const allLength = { notConfirmed_length, paint_length, weaving_length, spinning_length, provide_length }
+      const allLength = { sale_length, paint_length, weaving_length, spinning_length, provide_length }
       return allLength
     } catch (error) {
       return error.message
@@ -105,10 +105,8 @@ class SaleLegalService {
   }
   async getAll(status) {
     try {
-      if (status === 0) {
-        return
-      } else if (status === 1) {
-        return await this.getAllNotConfirmed()
+      if (status === 1) {
+        return await this.getAllSale()
       }
       else if (status === 2) {
         return await this.getAllPaint()
@@ -124,10 +122,10 @@ class SaleLegalService {
     }
   }
 
-  async getAllNotConfirmed() {
+  async getAllSale() {
     try {
-      const allNotConfirmed = await SaleLegalCardModel.find({ $or: [{ in_department_order: 'Sotuv' }, { isConfirm: "Bo'yoq qabul qildi" }] })
-      return allNotConfirmed;
+      const allSale = await SaleLegalCardModel.find({ $or: [{ in_department_order: 'Sotuv' }, { in_department_order: "Bo'yoq" }, { in_department_order: "To'quv" }, { in_department_order: "Yigiruv" }] })
+      return allSale;
     } catch (error) {
       return error.message
     }
@@ -135,7 +133,7 @@ class SaleLegalService {
   }
   async getAllPaint() {
     try {
-      const allPaint = await SaleLegalCardModel.find({ $or: [{ in_department_order: "Bo'yoq" }, { order_status: "Bo'yoqqa yuborildi" }, { isConfirm: "Bo'yoq bekor qildi" }, { isConfirm: "Bo'yoq qabul qildi" }] }).populate([
+      const allPaint = await SaleLegalCardModel.find({ $or: [{ in_department_order: "Bo'yoq" }, { order_status: "Bo'yoqqa yuborildi" }, { isConfirm: "Bo'yoq bekor qildi" }] }).populate([
         "author",
         "dep_paint_data",
         "dep_provider_data",
@@ -149,7 +147,7 @@ class SaleLegalService {
   }
   async getAllSpinning() {
     try {
-      const allSpinning = await SaleLegalCardModel.find({ order_status: "Yigiruvga yuborildi" }).populate([
+      const allSpinning = await SaleLegalCardModel.find({ $or: [{ in_department_order: "Yigiruv" }, { order_status: "Yigiruvga yuborildi" }, { isConfirm: "Yigiruv bekor qildi" }] }).populate([
         "author",
         "dep_paint_data",
         "dep_provider_data",
@@ -162,7 +160,7 @@ class SaleLegalService {
   }
   async getAllWeaving() {
     try {
-      const allWeaving = await SaleLegalCardModel.find({ order_status: "To'quvga yuborildi" }).populate([
+      const allWeaving = await SaleLegalCardModel.find({ $or: [{ in_department_order: "To'quv" }, { order_status: "To'quv yuborildi" }, { isConfirm: "To'quv bekor qildi" }] }).populate([
         "author",
         "dep_paint_data",
         "dep_provider_data",

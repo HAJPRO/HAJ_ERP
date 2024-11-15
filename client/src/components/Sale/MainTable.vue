@@ -33,6 +33,7 @@ const statusModalById = (id) => {
                 { prop: 'customer_name', order: 'customer_name' },
                 { prop: 'order_number', order: 'order_number' },
                 { prop: 'pro_type', order: 'pro_type' },
+                { prop: 'order_status', order: 'order_status' },
                 { prop: 'delivery_time', order: 'delivery_time' },
             ]" :data="items" border min-height="300" max-height="400">
             <el-table-column header-align="center" align="center" type="index" prop="index" fixed="left" label="№"
@@ -47,10 +48,11 @@ const statusModalById = (id) => {
             <el-table-column prop="order_quantity" label="Miqdori" width="180" header-align="center" align="center" />
             <el-table-column prop="delivery_time" sortable label="Muddati" width="180" header-align="center"
                 align="center" />
-            <el-table-column fixed="right" prop="order_status" label="Holati" width="150" header-align="center"
+            <el-table-column fixed="right" prop="order_status" sortable label="Holati" width="150" header-align="center"
                 align="center">
                 <template #default="scope">
                     <router-link to="" @click="statusModalById(scope.row.id)"
+                        :class="{ status_bg: scope.row.order_status === 'Tasdiqlanmagan' }"
                         class="cursor-pointer inline-flex items-center text-red bg-[#e4e9e9] hover:bg-[#d7ebeb]  font-medium rounded-md text-[12px] w-ful p-[5px] sm:w-auto text-center">
                         {{ scope.row.order_status }}
                     </router-link>
@@ -63,8 +65,7 @@ const statusModalById = (id) => {
                         class="inline-flex items-center mt-4 ml-2 text-red bg-[#eedc36] hover:bg-yellow-400 font-medium rounded-md text-sm w-full sm:w-auto px-2 py-3 text-center">
                         <i class="text-red fa-solid fa-check fa-xs fa- fa-xs"></i>
                     </router-link>
-                    <router-link to="" v-show="scope.row.order_status !== 'Tasdiqlanmagan'"
-                        @click="proccessModalById(scope.row._id)"
+                    <router-link to="" @click="proccessModalById(scope.row._id)"
                         class="inline-flex items-center mt-4 ml-2 text-white bg-[#36d887] hover:bg-[rgb(57,192,124)] font-medium rounded-md text-sm w-full sm:w-auto px-3 py-3 text-center">
                         <i class="text-black fa-sharp fa-solid fa-info fa-xs"></i>
                     </router-link>
@@ -87,3 +88,11 @@ const statusModalById = (id) => {
         <!-- // -->
     </div>
 </template>
+<style scoped>
+.status_bg {
+    background-color: rgb(243, 147, 147);
+    color: white;
+}
+
+;
+</style>
