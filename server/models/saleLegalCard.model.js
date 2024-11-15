@@ -16,6 +16,7 @@ const SaleLegalCardSchema = new Schema(
     isConfirm: { type: String },
     order_status: { type: String, default: "Tasdiqlanmagan" },
     process_status: { type: Array },
+    done_proccess: { type: Array },
     state: { type: Boolean, default: true },
     dep_paint_data: {
       type: Schema.ObjectId,

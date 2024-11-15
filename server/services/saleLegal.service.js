@@ -105,9 +105,12 @@ class SaleLegalService {
   }
   async getAll(status) {
     try {
-      if (status === 1) {
+      if (status === 0) {
+        return
+      } else if (status === 1) {
         return await this.getAllNotConfirmed()
-      } else if (status === 2) {
+      }
+      else if (status === 2) {
         return await this.getAllPaint()
       } else if (status === 3) {
         return await this.getAllWeaving()

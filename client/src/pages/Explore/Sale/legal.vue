@@ -46,11 +46,11 @@ onMounted(async () => {
     <HeaderTabLink />
     <MainTable />
     <!-- // Proccess Modal -->
-    <ProccessModal @isProccess="isProccess" :isProccessModal="isProccessModal" :cardId="cardId" />
+    <ProccessModal />
     <!-- ////// -->
     <!-- // EDIT Modal -->
     <SaleUpdateCardModal />
     <!-- // -->
-    <StatusInfoModal :is_status="is_status_info_modal" />
+    <StatusInfoModal />
   </div>
 </template>

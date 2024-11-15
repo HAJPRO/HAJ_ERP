@@ -19,7 +19,7 @@
         <!-- Header: Right side -->
         <div class="flex items-center space-x-3">
           <router-link to="" @click="goBack"
-            class="inline-flex text-[11px] items-center px-2 py-1 mb-1 mt-2  font-medium text-center text-white bg-red-500 text-bold rounded focus:ring-4 focus:outline-none">
+            class="inline-flex text-[11px] items-center px-2 py-1 mb-1 mt-2  font-medium text-center text-white bg-red-500 text-bold rounded ">
             <i class="fa-solid fa-arrow-left mr-2 fa-sm"></i>Orqaga</router-link>
           <div>
             <button

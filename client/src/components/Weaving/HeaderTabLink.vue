@@ -1,24 +1,19 @@
 <script setup>
 import { ref, onMounted, computed } from "vue";
-import { ToastifyService } from "../../utils/Toastify";
 import { loading } from "../../utils/Loader";
 import { SaleLegalService } from "../../ApiServices/Sale/saleLegal.service";
 import { SaleStore } from "../../stores/Sale/sale.store";
-const store = SaleStore()
-import { storeToRefs } from "pinia"
+const store = SaleStore();
 const all_length = ref();
 const getAllLength = async () => {
     const loader = loading.show();
     const data = await SaleLegalService.getAllLength();
     loader.hide();
     all_length.value = data.data ? data.data : {};
-
 };
 
 const getAll = async () => {
-    const loader = loading.show();
-    const items = await store.getAll({ status: isActive.value })
-    loader.hide();
+    const items = await store.getAll({ status: isActive.value });
 };
 const isActive = ref(0);
 const ActiveTabLink = (num) => {
@@ -49,7 +44,7 @@ const ActiveTabLink = (num) => {
 };
 onMounted(async () => {
     try {
-        await getAllLength(), getAll()
+        await getAllLength(), getAll();
     } catch (err) {
         console.log(err);
     }
@@ -59,7 +54,7 @@ onMounted(async () => {
     <div class="grid grid-cols-12 grid-flow-col justify-between bg-white rounded-md shadow-md p-2 mb-2">
         <div class="col-span-9 grid-flow-col">
             <router-link to="" @click="ActiveTabLink(0)" :class="{ activeTab: isActive === 0 }"
-                class="inline-flex text-[13px] items-center mr-1 px-4 py-1 mb-1  font-medium text-center text-red hover:border-b-2 border-solid border-[#36d887] bg-[#e4e9e9] text-bold rounded">
+                class="inline-flex text-[13px] items-center mr-1 px-4 py-1 mb-1 font-medium text-center text-red hover:border-b-2 border-solid border-[#36d887] bg-[#e4e9e9] text-bold rounded">
                 <i class="fa-solid fa-info mr-2 fa-xm"></i> Bajarilgan
                 <div class="flex flex-shrink-0 ml-2">
                     <span
@@ -70,7 +65,7 @@ onMounted(async () => {
                 </div>
             </router-link>
             <router-link to="" @click="ActiveTabLink(3)" :class="{ activeTab: isActive === 3 }"
-                class="inline-flex text-[13px] items-center mr-1 px-4 py-1 mb-1  font-medium text-center text-red hover:border-b-2 border-solid border-[#36d887] bg-[#e4e9e9] text-bold rounded">
+                class="inline-flex text-[13px] items-center mr-1 px-4 py-1 mb-1 font-medium text-center text-red hover:border-b-2 border-solid border-[#36d887] bg-[#e4e9e9] text-bold rounded">
                 <i class="fa-solid fa-info mr-2 fa-xm"></i> Bo'yoq
                 <div class="flex flex-shrink-0 ml-2">
                     <span
@@ -81,7 +76,7 @@ onMounted(async () => {
                 </div>
             </router-link>
             <router-link to="" @click="ActiveTabLink(4)" :class="{ activeTab: isActive === 4 }"
-                class="inline-flex text-[13px] items-center mr-1 px-4 py-1 mb-1  font-medium text-center text-red hover:border-b-2 border-solid border-[#36d887] bg-[#e4e9e9] text-bold rounded">
+                class="inline-flex text-[13px] items-center mr-1 px-4 py-1 mb-1 font-medium text-center text-red hover:border-b-2 border-solid border-[#36d887] bg-[#e4e9e9] text-bold rounded">
                 <i class="fa-solid fa-info mr-2 fa-xm"></i> Yigiruv
                 <div class="flex flex-shrink-0 ml-2">
                     <span
@@ -92,7 +87,7 @@ onMounted(async () => {
                 </div>
             </router-link>
             <router-link to="" @click="ActiveTabLink(5)" :class="{ activeTab: isActive === 5 }"
-                class="inline-flex text-[13px] items-center px-4 py-1 mb-1  font-medium text-center text-red hover:border-b-2 border-solid border-[#36d887] bg-[#e4e9e9] text-bold rounded">
+                class="inline-flex text-[13px] items-center px-4 py-1 mb-1 font-medium text-center text-red hover:border-b-2 border-solid border-[#36d887] bg-[#e4e9e9] text-bold rounded">
                 <i class="fa-solid fa-info mr-2 fa-xm"></i> Taminot
                 <div class="flex flex-shrink-0 ml-2">
                     <span

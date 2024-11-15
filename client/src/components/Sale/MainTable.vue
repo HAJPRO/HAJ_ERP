@@ -51,7 +51,7 @@ const statusModalById = (id) => {
                 align="center">
                 <template #default="scope">
                     <router-link to="" @click="statusModalById(scope.row.id)"
-                        class="cursor-pointer inline-flex items-center text-red bg-[#e4e9e9] hover:bg-[#f7efa9] focus:ring-blue-300 font-medium rounded-md text-[12px] w-ful p-[5px] sm:w-auto text-center">
+                        class="cursor-pointer inline-flex items-center text-red bg-[#e4e9e9] hover:bg-[#d7ebeb]  font-medium rounded-md text-[12px] w-ful p-[5px] sm:w-auto text-center">
                         {{ scope.row.order_status }}
                     </router-link>
                 </template>

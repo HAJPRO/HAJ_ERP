@@ -1,9 +1,9 @@
 <script setup>
 import Title from "@/components/Title.vue";
-import { ref, onBeforeMount, onMounted } from "vue";
 import HeaderTabLink from "../../../../components/Weaving/HeaderTabLink.vue";
 import MainTable from "../../../../components/Weaving/MainTabel.component.vue";
-import AddProductForProvideModal from "../../../../components/Weaving/AddProductForProvideModal.component.vue";
+import ModalConfirm from "../../../../components/Paint/ModalConfirm.vue";
+import ModalForProvide from "../../../../components/Weaving/ModalForProvide.vue";
 // import PaganationWeavingComponents from "../../../../components/Weaving/PaganationWeaving.components.vue";
 </script>
 
@@ -16,7 +16,9 @@ import AddProductForProvideModal from "../../../../components/Weaving/AddProduct
     </Title>
     <HeaderTabLink />
     <MainTable />
-    <AddProductForProvideModal />
+    <ModalForProvide />
+    <ModalConfirm />
+
     <!-- <PaganationWeavingComponents/> -->
   </div>
 

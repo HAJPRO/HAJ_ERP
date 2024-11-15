@@ -1,7 +1,16 @@
-<script>
+<script setup>
+import { ref } from "vue"
+import { PaintPlanStore } from "../../stores/Paint/paintPlan.store";
+const store = PaintPlanStore();
+import { storeToRefs } from "pinia";
+const { is_provide, model, card_id } = storeToRefs(store)
+const SaveToProvide = async () => {
+    await store.SaveToProvide({ id: card_id.value, data: model.value })
+    is_provide.value = false
+}
 </script>
 <template>
-    <el-dialog v-model="outerVisible" title="Taminot uchun kerakli mahsulotlar qo'shish" width="600">
+    <el-dialog v-model="is_provide" title="Taminot uchun kerakli mahsulotlar qo'shish" width="600">
         <span>
             <form
                 class="filter-box md:grid md:grid-cols-3 gap-2 sm:flex sm:flex-wrap rounded shadow-md bg-white p-2 mt-1 mb-1 text-[12px]">
@@ -46,10 +55,10 @@
         <template #footer>
             <div class="dialog-footer ">
 
-                <router-link @click="outerVisible = false" to=""
+                <router-link @click="is_provide = false" to=""
                     class="inline-flex text-[12px] items-center ml-2 px-3 py-1 mb-1 mt-2 text-sm font-medium text-center text-white bg-red-500 text-bold rounded focus:ring-4 focus:outline-none">
                     <i class=" mr-2 fa-solid fa-arrow-left fa-sm"></i>Orqaga</router-link>
-                <router-link @click="Save()" to=""
+                <router-link to="" @click="SaveToProvide()"
                     class="inline-flex text-[12px] items-center ml-2 px-3 py-1 mb-1 mt-2 text-sm font-medium text-center text-white bg-[#36d887] text-bold rounded focus:ring-4 focus:outline-none">
                     <i class="mr-2 fa-solid fa-check fa-sm"></i>Yuborish</router-link>
 
