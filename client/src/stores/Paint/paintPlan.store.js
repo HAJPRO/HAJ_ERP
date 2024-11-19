@@ -3,6 +3,7 @@ import { PaintService } from "../../ApiServices/Paint/paint.service";
 import { ToastifyService } from "../../utils/Toastify";
 import { loading } from "./../../utils/Loader";
 import { defineStore } from "pinia";
+// import PaintService from "../../../../server/services/Paint/paint.service";
 
 export const PaintPlanStore = defineStore("paintPlanStore", {
     state: () => {
@@ -11,6 +12,7 @@ export const PaintPlanStore = defineStore("paintPlanStore", {
             card_id: "",
             is_modal: false,
             items: [],
+            confirmed_orders: [],
             model: "",
             is_provide: false
         };
@@ -31,9 +33,16 @@ export const PaintPlanStore = defineStore("paintPlanStore", {
             const data = await SaleLegalService.getOne(payload.id);
             this.items = Array(data.data);
         },
+        async PaintConfirmedOrders(payload) {
+            const data = await PaintService.PaintConfirmedOrders(payload.status).then((items) => {
+                items.map((item) => {
+                    return item.confirmed_orders
+                })
+            });
 
+            this.confirmed_orders = Array(data.data);
+        },
         async cancelSendReason(payload) {
-            console.log(payload);
             try {
                 const loader = loading.show();
                 const data = await PaintService.cancelReason({
@@ -73,61 +82,61 @@ export const PaintPlanStore = defineStore("paintPlanStore", {
                 console.log(err);
             }
         },
-        // async StatusModalById(payload) {
-        //     this.status_modal.id = payload.id;
-        //     this.status_modal.isModal = payload.is_modal;
-        //     // const data = await SaleLegalService.getOne(payload.id)
-        //     // this.model = data.data
-        // },
-        // async Update(payload) {
-        //     try {
-        //         const loader = loading.show();
-        //         const updateData = await SaleLegalService.Edit(this.card_id, payload);
-        //         loader.hide();
-        //         ToastifyService.ToastSuccess({
-        //             msg: updateData.data.msg,
-        //         });
-        //         const Refresh = () => {
-        //             window.location.href = "/explore/sale/legal";
-        //         };
-        //         setTimeout(Refresh, 1500);
-        //     } catch (error) {
-        //         return ToastifyService.ToastError({ msg: error.messages });
-        //     }
-        // },
+        async StatusModalById(payload) {
+            this.status_modal.id = payload.id;
+            this.status_modal.isModal = payload.is_modal;
+            // const data = await SaleLegalService.getOne(payload.id)
+            // this.model = data.data
+        },
+        async Update(payload) {
+            try {
+                const loader = loading.show();
+                const updateData = await SaleLegalService.Edit(this.card_id, payload);
+                loader.hide();
+                ToastifyService.ToastSuccess({
+                    msg: updateData.data.msg,
+                });
+                const Refresh = () => {
+                    window.location.href = "/explore/sale/legal";
+                };
+                setTimeout(Refresh, 1500);
+            } catch (error) {
+                return ToastifyService.ToastError({ msg: error.messages });
+            }
+        },
 
-        // async Confirm(id) {
-        //     try {
-        //         const loader = loading.show();
-        //         const confirmData = await SaleLegalService.confirm(id);
-        //         loader.hide();
-        //         ToastifyService.ToastSuccess({
-        //             msg: confirmData.data.msg,
-        //         });
-        //         const Refresh = () => {
-        //             window.location.href = "/explore/sale/legal";
-        //         };
-        //         setTimeout(Refresh, 1500);
-        //     } catch (error) {
-        //         return ToastifyService.ToastError({ msg: error.messages });
-        //     }
-        // },
+        async Confirm(id) {
+            try {
+                const loader = loading.show();
+                const confirmData = await SaleLegalService.confirm(id);
+                loader.hide();
+                ToastifyService.ToastSuccess({
+                    msg: confirmData.data.msg,
+                });
+                const Refresh = () => {
+                    window.location.href = "/explore/sale/legal";
+                };
+                setTimeout(Refresh, 1500);
+            } catch (error) {
+                return ToastifyService.ToastError({ msg: error.messages });
+            }
+        },
 
-        // async DeleteById(id) {
-        //     try {
-        //         const loader = loading.show();
-        //         const data = await SaleLegalService.Delete(id);
-        //         loader.hide();
-        //         ToastifyService.ToastSuccess({
-        //             msg: data.data.msg,
-        //         });
-        //         const Refresh = () => {
-        //             window.location.href = "/explore/sale/legal";
-        //         };
-        //         setTimeout(Refresh, 1500);
-        //     } catch (error) {
-        //         return ToastifyService.ToastError({ msg: error.messages });
-        //     }
-        // },
+        async DeleteById(id) {
+            try {
+                const loader = loading.show();
+                const data = await SaleLegalService.Delete(id);
+                loader.hide();
+                ToastifyService.ToastSuccess({
+                    msg: data.data.msg,
+                });
+                const Refresh = () => {
+                    window.location.href = "/explore/sale/legal";
+                };
+                setTimeout(Refresh, 1500);
+            } catch (error) {
+                return ToastifyService.ToastError({ msg: error.messages });
+            }
+        },
     },
 });

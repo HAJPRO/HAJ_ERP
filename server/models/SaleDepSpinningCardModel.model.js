@@ -4,6 +4,7 @@ const SaleDepSpinningCardSchema = new Schema(
     {
         author: { type: Schema.ObjectId, ref: "User" },
         sale_order_id: { type: Schema.ObjectId, ref: "SaleCard" },
+        departmen: { type: String, default: "Yigiruv" },
         latun: { type: Number },
         begunok: { type: Number },
         duration_time: { type: Date, default: new Date() },

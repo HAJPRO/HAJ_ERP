@@ -24,6 +24,7 @@ app.use("/api/v1/paint", require("./routes/paint/paint.route.js"));
 app.use("/api/v1/provide", require("./routes/provide/provide.route.js"));
 app.use("/api/v1/weaving", require("./routes/weaving/weaving.route.js"));
 app.use("/api/v1/spinning", require("./routes/spinning/spinning.route.js"));
+app.use("/api/v1/seam", require("./routes/seam/seam.router.js"));
 app.use("/api/v1/admin", require("./routes/admin/admin.route.js"));
 
 const START = async () => {

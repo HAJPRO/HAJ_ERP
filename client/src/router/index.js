@@ -46,6 +46,7 @@ const routes = [
     name: "Explore",
     component: ExploreLayout,
     children: [
+
       {
         path: "",
         name: "Dashboard",
@@ -86,6 +87,13 @@ const routes = [
         name: "spinning",
         component: () => import("../pages/Explore/Spinning/plan.vue"),
       },
+      //Tikuv bolimi
+      {
+        path: "department/seam/warehouse/raw_material",
+        name: "seam",
+        component: () => import("../pages/Explore/Seam/warehouse/RawMaterial.vue.vue")
+      },
+
     ],
     beforeEnter(to, from, next) {
       if (!Cookies.get("token")) {

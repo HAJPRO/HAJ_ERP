@@ -17,7 +17,7 @@ const getAll = async () => {
     const items = await store.getAll({ status: isActive.value });
     loader.hide();
 };
-const isActive = ref(0);
+const isActive = ref(1);
 const ActiveTabLink = (num) => {
     if (num === 0) {
         isActive.value = 0;
@@ -55,14 +55,14 @@ onMounted(async () => {
 <template>
     <div class="grid grid-cols-12 grid-flow-col justify-between bg-white rounded-md shadow-md p-2 mb-2">
         <div class="col-span-9 grid-flow-col">
-            <router-link to="" @click="ActiveTabLink(0)" :class="{ activeTab: isActive === 0 }"
+            <router-link to="" @click="ActiveTabLink(1)" :class="{ activeTab: isActive === 1 }"
                 class="inline-flex text-[13px] items-center mr-1 px-4 py-1 mb-1 font-medium text-center text-red hover:border-b-2 border-solid border-[#36d887] bg-[#e4e9e9] text-bold rounded">
                 <i class="fa-solid fa-info mr-2 fa-xm"></i> Jarayonda
                 <div class="flex flex-shrink-0 ml-2">
                     <span
                         class="inline-flex items-center justify-center h-5 text-[11px] font-medium text-white bg-[#36d887] px-3 py-2 rounded">
                         <span class=" ">0</span>/{{
-                (all_length ? all_length.paint_length : 0) || 0
+                (all_length ? all_length.sale_length : 0) || 0
             }}</span>
                 </div>
             </router-link>

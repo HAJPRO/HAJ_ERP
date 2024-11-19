@@ -53,9 +53,9 @@
         currentRoute.fullPath.includes('dashboard')
         ">
           <a class="block text-slate-200 truncate transition duration-150" :class="currentRoute.fullPath === '/' ||
-          currentRoute.fullPath.includes('dashboard')
-          ? 'hover:text-slate-200'
-          : 'hover:text-white'
+        currentRoute.fullPath.includes('dashboard')
+        ? 'hover:text-slate-200'
+        : 'hover:text-white'
         " href="#0" @click.prevent="
         sidebarExpanded
           ? parentLink.handleClick()
@@ -83,8 +83,8 @@
               <router-link to="/explore" custom v-slot="{ href, navigate, isExactActive }">
                 <li class="mb-1 last:mb-0">
                   <a class="block transition duration-150 truncate" :class="isExactActive
-          ? 'text-[#36d887]'
-          : 'text-slate-400 hover:text-slate-200'
+        ? 'text-[#36d887]'
+        : 'text-slate-400 hover:text-slate-200'
         " :href="href" @click="navigate">
                     <span
                       class="text-sm font-medium lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200">Main</span>
@@ -105,8 +105,8 @@
             <!-- Sotuv  -->
             <SidebarLinkGroup v-slot="parentLink" :activeCondition="currentRoute.fullPath.includes('ecommerce')">
               <a class="block text-slate-200 truncate transition duration-150" :class="currentRoute.fullPath.includes('ecommerce')
-          ? 'hover:text-slate-200'
-          : 'hover:text-white'
+        ? 'hover:text-slate-200'
+        : 'hover:text-white'
         " href="#0" @click.prevent="
         sidebarExpanded
           ? parentLink.handleClick()
@@ -135,8 +135,8 @@
                   <router-link to="/explore/sale/legal" custom v-slot="{ href, navigate, isExactActive }">
                     <li class="mb-1 last:mb-0">
                       <a class="block transition duration-150 truncate" :class="isExactActive
-          ? 'text-[#36d887]'
-          : 'text-slate-400 hover:text-slate-200'
+        ? 'text-[#36d887]'
+        : 'text-slate-400 hover:text-slate-200'
         " :href="href" @click="navigate">
                         <span
                           class="text-sm font-medium lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200">Yuridik</span>
@@ -146,8 +146,8 @@
                   <router-link to="/explore/sale/physical" custom v-slot="{ href, navigate, isExactActive }">
                     <li class="mb-1 last:mb-0">
                       <a class="block transition duration-150 truncate" :class="isExactActive
-          ? 'text-[#36d887]'
-          : 'text-slate-400 hover:text-slate-200'
+        ? 'text-[#36d887]'
+        : 'text-slate-400 hover:text-slate-200'
         " :href="href" @click="navigate">
                         <span
                           class="text-sm font-medium lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200">Jismoniy</span>
@@ -171,8 +171,8 @@
             <!-- Bo'yash harakati  -->
             <SidebarLinkGroup v-slot="parentLink" :activeCondition="currentRoute.fullPath.includes('ecommerce')">
               <a class="block text-slate-200 truncate transition duration-150" :class="currentRoute.fullPath.includes('ecommerce')
-          ? 'hover:text-slate-200'
-          : 'hover:text-white'
+        ? 'hover:text-slate-200'
+        : 'hover:text-white'
         " href="#0" @click.prevent="
         sidebarExpanded
           ? parentLink.handleClick()
@@ -204,8 +204,8 @@
                   <router-link to="/explore/products/list" custom v-slot="{ href, navigate, isExactActive }">
                     <li class="mb-1 last:mb-0">
                       <a class="block transition duration-150 truncate" :class="isExactActive
-          ? 'text-[#36d887]'
-          : 'text-slate-400 hover:text-slate-200'
+        ? 'text-[#36d887]'
+        : 'text-slate-400 hover:text-slate-200'
         " :href="href" @click="navigate">
                         <span
                           class="text-sm font-medium lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200">Xom
@@ -219,8 +219,8 @@
                     <SidebarLinkGroup v-slot="parentLink" :activeCondition="currentRoute.fullPath.includes('ecommerce')
         ">
                       <a class="block text-slate-200 truncate transition duration-150" :class="currentRoute.fullPath.includes('ecommerce')
-          ? 'hover:text-slate-200'
-          : 'hover:text-white'
+        ? 'hover:text-slate-200'
+        : 'hover:text-white'
         " href="#0" @click.prevent="
         sidebarExpanded
           ? parentLink.handleClick()
@@ -249,8 +249,8 @@
                             v-slot="{ href, navigate, isExactActive }">
                             <li class="mb-1 ml-2 ml-2 last:mb-0">
                               <a class="block transition duration-150 truncate" :class="isExactActive
-          ? 'text-[#36d887]'
-          : 'text-slate-400 hover:text-slate-200'
+        ? 'text-[#36d887]'
+        : 'text-slate-400 hover:text-slate-200'
         " :href="href" @click="navigate">
                                 <span
                                   class="text-sm font-medium lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200">Reja
@@ -263,8 +263,8 @@
                           <router-link to="/explore/products/list" custom v-slot="{ href, navigate, isExactActive }">
                             <li class="mb-1 ml-2 last:mb-0">
                               <a class="block transition duration-150 truncate" :class="isExactActive
-          ? 'text-[#36d887]'
-          : 'text-slate-400 hover:text-slate-200'
+        ? 'text-[#36d887]'
+        : 'text-slate-400 hover:text-slate-200'
         " :href="href" @click="navigate">
                                 <span
                                   class="text-sm font-medium lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200">Xom
@@ -278,8 +278,8 @@
                             v-slot="{ href, navigate, isExactActive }">
                             <li class="mb-1 ml-2 last:mb-0">
                               <a class="block transition duration-150 truncate" :class="isExactActive
-          ? 'text-[#36d887]'
-          : 'text-slate-400 hover:text-slate-200'
+        ? 'text-[#36d887]'
+        : 'text-slate-400 hover:text-slate-200'
         " :href="href" @click="navigate">
                                 <span
                                   class="text-sm font-medium lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200">Fipsa</span>
@@ -292,8 +292,8 @@
                             v-slot="{ href, navigate, isExactActive }">
                             <li class="mb-1 ml-2 last:mb-0">
                               <a class="block transition duration-150 truncate" :class="isExactActive
-          ? 'text-[#36d887]'
-          : 'text-slate-400 hover:text-slate-200'
+        ? 'text-[#36d887]'
+        : 'text-slate-400 hover:text-slate-200'
         " :href="href" @click="navigate">
                                 <span
                                   class="text-sm font-medium lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200">Bo'yoq</span>
@@ -306,8 +306,8 @@
                             v-slot="{ href, navigate, isExactActive }">
                             <li class="mb-1 ml-2 last:mb-0">
                               <a class="block transition duration-150 truncate" :class="isExactActive
-          ? 'text-[#36d887]'
-          : 'text-slate-400 hover:text-slate-200'
+        ? 'text-[#36d887]'
+        : 'text-slate-400 hover:text-slate-200'
         " :href="href" @click="navigate">
                                 <span
                                   class="text-sm font-medium lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200">Qurutma</span>
@@ -320,8 +320,8 @@
                             v-slot="{ href, navigate, isExactActive }">
                             <li class="mb-1 ml-2 last:mb-0">
                               <a class="block transition duration-150 truncate" :class="isExactActive
-          ? 'text-[#36d887]'
-          : 'text-slate-400 hover:text-slate-200'
+        ? 'text-[#36d887]'
+        : 'text-slate-400 hover:text-slate-200'
         " :href="href" @click="navigate">
                                 <span
                                   class="text-sm font-medium lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200">Pechat</span>
@@ -334,8 +334,8 @@
                             v-slot="{ href, navigate, isExactActive }">
                             <li class="mb-1 ml-2 last:mb-0">
                               <a class="block transition duration-150 truncate" :class="isExactActive
-          ? 'text-[#36d887]'
-          : 'text-slate-400 hover:text-slate-200'
+        ? 'text-[#36d887]'
+        : 'text-slate-400 hover:text-slate-200'
         " :href="href" @click="navigate">
                                 <span
                                   class="text-sm font-medium lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200">Rolik</span>
@@ -348,8 +348,8 @@
                             v-slot="{ href, navigate, isExactActive }">
                             <li class="mb-1 ml-2 last:mb-0">
                               <a class="block transition duration-150 truncate" :class="isExactActive
-          ? 'text-[#36d887]'
-          : 'text-slate-400 hover:text-slate-200'
+        ? 'text-[#36d887]'
+        : 'text-slate-400 hover:text-slate-200'
         " :href="href" @click="navigate">
                                 <span
                                   class="text-sm font-medium lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200">Tarozi</span>
@@ -362,8 +362,8 @@
                             v-slot="{ href, navigate, isExactActive }">
                             <li class="mb-1 ml-2 last:mb-0">
                               <a class="block transition duration-150 truncate" :class="isExactActive
-          ? 'text-[#36d887]'
-          : 'text-slate-400 hover:text-slate-200'
+        ? 'text-[#36d887]'
+        : 'text-slate-400 hover:text-slate-200'
         " :href="href" @click="navigate">
                                 <span
                                   class="text-sm font-medium lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200">Tayyor
@@ -384,8 +384,8 @@
             <!-- To'quv harakatlari  -->
             <SidebarLinkGroup v-slot="parentLink" :activeCondition="currentRoute.fullPath.includes('ecommerce')">
               <a class="block text-slate-200 truncate transition duration-150" :class="currentRoute.fullPath.includes('ecommerce')
-          ? 'hover:text-slate-200'
-          : 'hover:text-white'
+        ? 'hover:text-slate-200'
+        : 'hover:text-white'
         " href="#0" @click.prevent="
         sidebarExpanded
           ? parentLink.handleClick()
@@ -418,8 +418,8 @@
                     <SidebarLinkGroup v-slot="parentLink" :activeCondition="currentRoute.fullPath.includes('ecommerce')
         ">
                       <a class="block text-slate-200 truncate transition duration-150" :class="currentRoute.fullPath.includes('ecommerce')
-          ? 'hover:text-slate-200'
-          : 'hover:text-white'
+        ? 'hover:text-slate-200'
+        : 'hover:text-white'
         " href="#0" @click.prevent="
         sidebarExpanded
           ? parentLink.handleClick()
@@ -448,8 +448,8 @@
                             v-slot="{ href, navigate, isExactActive }">
                             <li class="mb-1 ml-2 last:mb-0">
                               <a class="block transition duration-150 truncate" :class="isExactActive
-          ? 'text-[#36d887]'
-          : 'text-slate-400 hover:text-slate-200'
+        ? 'text-[#36d887]'
+        : 'text-slate-400 hover:text-slate-200'
         " :href="href" @click="navigate">
                                 <span
                                   class="text-sm font-medium lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200">Reja
@@ -462,8 +462,8 @@
                             v-slot="{ href, navigate, isExactActive }">
                             <li class="mb-1 last:mb-0">
                               <a class="block transition duration-150 truncate" :class="isExactActive
-          ? 'text-[#36d887]'
-          : 'text-slate-400 hover:text-slate-200'
+        ? 'text-[#36d887]'
+        : 'text-slate-400 hover:text-slate-200'
         " :href="href" @click="navigate">
                                 <span
                                   class="text-sm font-medium lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200">Kolsa</span>
@@ -476,8 +476,8 @@
                             v-slot="{ href, navigate, isExactActive }">
                             <li class="mb-1 last:mb-0">
                               <a class="block transition duration-150 truncate" :class="isExactActive
-          ? 'text-[#36d887]'
-          : 'text-slate-400 hover:text-slate-200'
+        ? 'text-[#36d887]'
+        : 'text-slate-400 hover:text-slate-200'
         " :href="href" @click="navigate">
                                 <span
                                   class="text-sm font-medium lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200">Opelad</span>
@@ -494,8 +494,8 @@
                     v-slot="{ href, navigate, isExactActive }">
                     <li class="mb-1 last:mb-0">
                       <a class="block transition duration-150 truncate" :class="isExactActive
-          ? 'text-[#36d887]'
-          : 'text-slate-400 hover:text-slate-200'
+        ? 'text-[#36d887]'
+        : 'text-slate-400 hover:text-slate-200'
         " :href="href" @click="navigate">
                         <span
                           class="text-sm font-medium lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200">Xom
@@ -508,8 +508,8 @@
                   <router-link to="/explore/products/tikuv/ip_skald" custom v-slot="{ href, navigate, isExactActive }">
                     <li class="mb-1 last:mb-0">
                       <a class="block transition duration-150 truncate" :class="isExactActive
-          ? 'text-[#36d887]'
-          : 'text-slate-400 hover:text-slate-200'
+        ? 'text-[#36d887]'
+        : 'text-slate-400 hover:text-slate-200'
         " :href="href" @click="navigate">
                         <span
                           class="text-sm font-medium lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200">Ip-Polister
@@ -526,8 +526,8 @@
             <!-- Yigiruv harakatlari  -->
             <SidebarLinkGroup v-slot="parentLink" :activeCondition="currentRoute.fullPath.includes('ecommerce')">
               <a class="block text-slate-200 truncate transition duration-150" :class="currentRoute.fullPath.includes('ecommerce')
-          ? 'hover:text-slate-200'
-          : 'hover:text-white'
+        ? 'hover:text-slate-200'
+        : 'hover:text-white'
         " href="#0" @click.prevent="
         sidebarExpanded
           ? parentLink.handleClick()
@@ -560,8 +560,8 @@
                     <SidebarLinkGroup v-slot="parentLink" :activeCondition="currentRoute.fullPath.includes('ecommerce')
         ">
                       <a class="block text-slate-200 truncate transition duration-150" :class="currentRoute.fullPath.includes('ecommerce')
-          ? 'hover:text-slate-200'
-          : 'hover:text-white'
+        ? 'hover:text-slate-200'
+        : 'hover:text-white'
         " href="#0" @click.prevent="
         sidebarExpanded
           ? parentLink.handleClick()
@@ -591,8 +591,8 @@
                             v-slot="{ href, navigate, isExactActive }">
                             <li class="mb-1 ml-2 last:mb-0">
                               <a class="block transition duration-150 truncate" :class="isExactActive
-          ? 'text-[#36d887]'
-          : 'text-slate-400 hover:text-slate-200'
+        ? 'text-[#36d887]'
+        : 'text-slate-400 hover:text-slate-200'
         " :href="href" @click="navigate">
                                 <span
                                   class="text-sm font-medium lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200">Reja
@@ -605,8 +605,8 @@
                             v-slot="{ href, navigate, isExactActive }">
                             <li class="mb-1 last:mb-0">
                               <a class="block transition duration-150 truncate" :class="isExactActive
-          ? 'text-[#36d887]'
-          : 'text-slate-400 hover:text-slate-200'
+        ? 'text-[#36d887]'
+        : 'text-slate-400 hover:text-slate-200'
         " :href="href" @click="navigate">
                                 <span
                                   class="text-sm font-medium lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200">Kolsa</span>
@@ -619,8 +619,8 @@
                             v-slot="{ href, navigate, isExactActive }">
                             <li class="mb-1 last:mb-0">
                               <a class="block transition duration-150 truncate" :class="isExactActive
-          ? 'text-[#36d887]'
-          : 'text-slate-400 hover:text-slate-200'
+        ? 'text-[#36d887]'
+        : 'text-slate-400 hover:text-slate-200'
         " :href="href" @click="navigate">
                                 <span
                                   class="text-sm font-medium lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200">Opelad</span>
@@ -637,8 +637,8 @@
                     v-slot="{ href, navigate, isExactActive }">
                     <li class="mb-1 last:mb-0">
                       <a class="block transition duration-150 truncate" :class="isExactActive
-          ? 'text-[#36d887]'
-          : 'text-slate-400 hover:text-slate-200'
+        ? 'text-[#36d887]'
+        : 'text-slate-400 hover:text-slate-200'
         " :href="href" @click="navigate">
                         <span
                           class="text-sm font-medium lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200">Paxta
@@ -651,8 +651,8 @@
                   <router-link to="/explore/products/yigiruv/staris" custom v-slot="{ href, navigate, isExactActive }">
                     <li class="mb-1 last:mb-0">
                       <a class="block transition duration-150 truncate" :class="isExactActive
-          ? 'text-[#36d887]'
-          : 'text-slate-400 hover:text-slate-200'
+        ? 'text-[#36d887]'
+        : 'text-slate-400 hover:text-slate-200'
         " :href="href" @click="navigate">
                         <span
                           class="text-sm font-medium lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200">Staris</span>
@@ -665,8 +665,8 @@
                   <router-link to="/explore/products/yigiruv/kolsa" custom v-slot="{ href, navigate, isExactActive }">
                     <li class="mb-1 last:mb-0">
                       <a class="block transition duration-150 truncate" :class="isExactActive
-          ? 'text-[#36d887]'
-          : 'text-slate-400 hover:text-slate-200'
+        ? 'text-[#36d887]'
+        : 'text-slate-400 hover:text-slate-200'
         " :href="href" @click="navigate">
                         <span
                           class="text-sm font-medium lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200">Kolsa</span>
@@ -678,8 +678,8 @@
                   <router-link to="/explore/products/yigiruv/opened" custom v-slot="{ href, navigate, isExactActive }">
                     <li class="mb-1 last:mb-0">
                       <a class="block transition duration-150 truncate" :class="isExactActive
-          ? 'text-[#36d887]'
-          : 'text-slate-400 hover:text-slate-200'
+        ? 'text-[#36d887]'
+        : 'text-slate-400 hover:text-slate-200'
         " :href="href" @click="navigate">
                         <span
                           class="text-sm font-medium lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200">Opened</span>
@@ -692,8 +692,8 @@
                     v-slot="{ href, navigate, isExactActive }">
                     <li class="mb-1 last:mb-0">
                       <a class="block transition duration-150 truncate" :class="isExactActive
-          ? 'text-[#36d887]'
-          : 'text-slate-400 hover:text-slate-200'
+        ? 'text-[#36d887]'
+        : 'text-slate-400 hover:text-slate-200'
         " :href="href" @click="navigate">
                         <span
                           class="text-sm font-medium lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200">Ip
@@ -710,8 +710,8 @@
             <!-- Tikuv harakati  -->
             <SidebarLinkGroup v-slot="parentLink" :activeCondition="currentRoute.fullPath.includes('ecommerce')">
               <a class="block text-slate-200 truncate transition duration-150" :class="currentRoute.fullPath.includes('ecommerce')
-          ? 'hover:text-slate-200'
-          : 'hover:text-white'
+        ? 'hover:text-slate-200'
+        : 'hover:text-white'
         " href="#0" @click.prevent="
         sidebarExpanded
           ? parentLink.handleClick()
@@ -739,11 +739,12 @@
               </a>
               <div class="lg:hidden lg:sidebar-expanded:block 2xl:block">
                 <ul class="pl-9 mt-1" :class="!parentLink.expanded && 'hidden'">
-                  <router-link to="/explore/products/list" custom v-slot="{ href, navigate, isExactActive }">
+                  <router-link to="/explore/department/seam/warehouse/raw_material" custom
+                    v-slot="{ href, navigate, isExactActive }">
                     <li class="mb-1 last:mb-0">
                       <a class="block transition duration-150 truncate" :class="isExactActive
-          ? 'text-[#36d887]'
-          : 'text-slate-400 hover:text-slate-200'
+        ? 'text-[#36d887]'
+        : 'text-slate-400 hover:text-slate-200'
         " :href="href" @click="navigate">
                         <span
                           class="text-sm font-medium lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200">Sklad
@@ -754,8 +755,8 @@
                   <router-link to="/explore/products/lab" custom v-slot="{ href, navigate, isExactActive }">
                     <li class="mb-1 last:mb-0">
                       <a class="block transition duration-150 truncate" :class="isExactActive
-          ? 'text-[#36d887]'
-          : 'text-slate-400 hover:text-slate-200'
+        ? 'text-[#36d887]'
+        : 'text-slate-400 hover:text-slate-200'
         " :href="href" @click="navigate">
                         <span
                           class="text-sm font-medium lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200">Bichuv</span>
@@ -765,8 +766,8 @@
                   <router-link to="/explore/products/lab" custom v-slot="{ href, navigate, isExactActive }">
                     <li class="mb-1 last:mb-0">
                       <a class="block transition duration-150 truncate" :class="isExactActive
-          ? 'text-[#36d887]'
-          : 'text-slate-400 hover:text-slate-200'
+        ? 'text-[#36d887]'
+        : 'text-slate-400 hover:text-slate-200'
         " :href="href" @click="navigate">
                         <span
                           class="text-sm font-medium lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200">Tasnif</span>
@@ -776,8 +777,8 @@
                   <router-link to="/explore/products/lab" custom v-slot="{ href, navigate, isExactActive }">
                     <li class="mb-1 last:mb-0">
                       <a class="block transition duration-150 truncate" :class="isExactActive
-          ? 'text-[#36d887]'
-          : 'text-slate-400 hover:text-slate-200'
+        ? 'text-[#36d887]'
+        : 'text-slate-400 hover:text-slate-200'
         " :href="href" @click="navigate">
                         <span
                           class="text-sm font-medium lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200">Patoklar</span>
@@ -787,8 +788,8 @@
                   <router-link to="/explore/products/lab" custom v-slot="{ href, navigate, isExactActive }">
                     <li class="mb-1 last:mb-0">
                       <a class="block transition duration-150 truncate" :class="isExactActive
-          ? 'text-[#36d887]'
-          : 'text-slate-400 hover:text-slate-200'
+        ? 'text-[#36d887]'
+        : 'text-slate-400 hover:text-slate-200'
         " :href="href" @click="navigate">
                         <span
                           class="text-sm font-medium lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200">Sifat</span>
@@ -798,8 +799,8 @@
                   <router-link to="/explore/products/lab" custom v-slot="{ href, navigate, isExactActive }">
                     <li class="mb-1 last:mb-0">
                       <a class="block transition duration-150 truncate" :class="isExactActive
-          ? 'text-[#36d887]'
-          : 'text-slate-400 hover:text-slate-200'
+        ? 'text-[#36d887]'
+        : 'text-slate-400 hover:text-slate-200'
         " :href="href" @click="navigate">
                         <span
                           class="text-sm font-medium lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200">Dazmol</span>
@@ -809,8 +810,8 @@
                   <router-link to="/explore/products/lab" custom v-slot="{ href, navigate, isExactActive }">
                     <li class="mb-1 last:mb-0">
                       <a class="block transition duration-150 truncate" :class="isExactActive
-          ? 'text-[#36d887]'
-          : 'text-slate-400 hover:text-slate-200'
+        ? 'text-[#36d887]'
+        : 'text-slate-400 hover:text-slate-200'
         " :href="href" @click="navigate">
                         <span
                           class="text-sm font-medium lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200">Upakofka</span>
@@ -820,12 +821,13 @@
                   <router-link to="/explore/products/lab" custom v-slot="{ href, navigate, isExactActive }">
                     <li class="mb-1 last:mb-0">
                       <a class="block transition duration-150 truncate" :class="isExactActive
-          ? 'text-[#36d887]'
-          : 'text-slate-400 hover:text-slate-200'
+        ? 'text-[#36d887]'
+        : 'text-slate-400 hover:text-slate-200'
         " :href="href" @click="navigate">
                         <span
-                          class="text-sm font-medium lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200">Tayyor
-                          mato skladi</span>
+                          class="text-sm font-medium lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200">Sklad
+                          (tayyor mahsulot)
+                        </span>
                       </a>
                     </li>
                   </router-link>
@@ -837,8 +839,8 @@
             <!-- Taminot bo'limi harakati  -->
             <SidebarLinkGroup v-slot="parentLink" :activeCondition="currentRoute.fullPath.includes('ecommerce')">
               <a class="block text-slate-200 truncate transition duration-150" :class="currentRoute.fullPath.includes('ecommerce')
-          ? 'hover:text-slate-200'
-          : 'hover:text-white'
+        ? 'hover:text-slate-200'
+        : 'hover:text-white'
         " href="#0" @click.prevent="
         sidebarExpanded
           ? parentLink.handleClick()
@@ -870,8 +872,8 @@
                     v-slot="{ href, navigate, isExactActive }">
                     <li class="mb-1 last:mb-0">
                       <a class="block transition duration-150 truncate" :class="isExactActive
-          ? 'text-[#36d887]'
-          : 'text-slate-400 hover:text-slate-200'
+        ? 'text-[#36d887]'
+        : 'text-slate-400 hover:text-slate-200'
         " :href="href" @click="navigate">
                         <span
                           class="text-sm font-medium lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200">Reja
@@ -896,8 +898,8 @@
             <!-- Sklad hisoboti -->
             <SidebarLinkGroup v-slot="parentLink" :activeCondition="currentRoute.fullPath.includes('ecommerce')">
               <a class="block text-slate-200 truncate transition duration-150" :class="currentRoute.fullPath.includes('ecommerce')
-          ? 'hover:text-slate-200'
-          : 'hover:text-white'
+        ? 'hover:text-slate-200'
+        : 'hover:text-white'
         " href="#0" @click.prevent="
         sidebarExpanded
           ? parentLink.handleClick()
@@ -927,8 +929,8 @@
                   <router-link to="/explore/products/list" custom v-slot="{ href, navigate, isExactActive }">
                     <li class="mb-1 last:mb-0">
                       <a class="block transition duration-150 truncate" :class="isExactActive
-          ? 'text-[#36d887]'
-          : 'text-slate-400 hover:text-slate-200'
+        ? 'text-[#36d887]'
+        : 'text-slate-400 hover:text-slate-200'
         " :href="href" @click="navigate">
                         <span
                           class="text-sm font-medium lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200">Kirimlar
@@ -939,8 +941,8 @@
                   <router-link to="/explore/products/lab" custom v-slot="{ href, navigate, isExactActive }">
                     <li class="mb-1 last:mb-0">
                       <a class="block transition duration-150 truncate" :class="isExactActive
-          ? 'text-[#36d887]'
-          : 'text-slate-400 hover:text-slate-200'
+        ? 'text-[#36d887]'
+        : 'text-slate-400 hover:text-slate-200'
         " :href="href" @click="navigate">
                         <span
                           class="text-sm font-medium lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200">Kirim
@@ -964,8 +966,8 @@
             <!-- Admin  -->
             <SidebarLinkGroup v-slot="parentLink" :activeCondition="currentRoute.fullPath.includes('ecommerce')">
               <a class="block text-slate-200 truncate transition duration-150" :class="currentRoute.fullPath.includes('ecommerce')
-          ? 'hover:text-slate-200'
-          : 'hover:text-white'
+        ? 'hover:text-slate-200'
+        : 'hover:text-white'
         " href="#0" @click.prevent="
         sidebarExpanded
           ? parentLink.handleClick()
@@ -996,8 +998,8 @@
                     v-slot="{ href, navigate, isExactActive }">
                     <li class="mb-1 last:mb-0">
                       <a class="block transition duration-150 truncate" :class="isExactActive
-          ? 'text-[#36d887]'
-          : 'text-slate-400 hover:text-slate-200'
+        ? 'text-[#36d887]'
+        : 'text-slate-400 hover:text-slate-200'
         " :href="href" @click="navigate">
                         <span
                           class="text-sm font-medium lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200">Reja
@@ -1021,8 +1023,8 @@
             <!-- Authentication  -->
             <SidebarLinkGroup v-slot="parentLink">
               <a class="block text-slate-200 truncate transition duration-150" :class="parentLink.expanded
-          ? 'hover:text-slate-200'
-          : 'hover:text-white'
+        ? 'hover:text-slate-200'
+        : 'hover:text-white'
         " href="#0" @click.prevent="
         sidebarExpanded
           ? parentLink.handleClick()

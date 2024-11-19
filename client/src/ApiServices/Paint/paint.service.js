@@ -14,12 +14,12 @@ export const PaintService = {
     let url = "paint/cancel_reason";
     return api.post(url, data);
   },
-  getAllFromSale() {
-    let url = "paint/paint_all";
-    return api.get(url);
-  },
-  getAllForProvide() {
-    let url = "paint/provide_all";
-    return api.get(url);
+  // PaintConfirmedOrders(status) {
+  //   let url = "paint/";
+  //   return api.post(url, status);
+  // },
+  getQRImage() {
+    let url = "paint/image_qrcode";
+    return api.post(url);
   },
 };

@@ -1,6 +1,10 @@
 const SaleLegalCardModel = require("../../models/saleLegalCard.model");
 const SaleDepPaintCardModel = require("../../models/saleDepPaintCard.model");
+const SaleDepProvideCardModel = require("../../models/saleDepProvideCard.model.js");
 const userModel = require("../../models/user.model");
+const QR = require("qrcode");
+const BarCodeModel = require("../../models/Barcode/BarCode.model");
+const QRCodeModel = require("../../models/Barcode/QRCode.model");
 
 // const fileService = require("./file.service");
 
@@ -51,6 +55,16 @@ class DepPaintService {
       sent_time: new Date()
     }
     const Data = await SaleDepPaintCardModel.create({ ...data.items, author, sale_order_id: data.card_id, paint_process_status });
+    if (Data) {
+      const newDataForProvide = {
+        delivery_product_box_id: Data._id,
+        departmen: Data.departmen ? Data.departmen : "",
+        sale_order_id: Data.sale_order_id,
+        author: Data.author,
+        proccess_status: { confirm: true, reason: '', status: "Taminotga yuborildi" }
+      }
+      const provideData = await SaleDepProvideCardModel.create(newDataForProvide);
+    }
     const userData = await userModel.findById(author);
     const LegalDataById = await SaleLegalCardModel.findById(data.card_id);
     const newLegalData = LegalDataById;
@@ -77,21 +91,6 @@ class DepPaintService {
     return Data;
   }
 
-  async getAllFromSale() {
-    const allPosts = await SaleLegalCardModel.find({
-      order_status: "Bo'yoqqa yuborildi",
-    }).populate("author");
-    const allProvideItems = await SaleDepPaintCardModel.find({
-      paint_status: "Taminotga yuborildi",
-    }).populate("author");
-    return { allPosts, allProvideItems };
-  }
-  async getAllForProvide() {
-    const allPosts = await SaleDepPaintCardModel.find({
-      paint_status: "Taminotga yuborildi",
-    }).populate("author");
-    return allPosts;
-  }
   async delete(id) {
     const data = await SaleDepPaintCardModel.findByIdAndDelete(id);
     return data;
@@ -116,6 +115,9 @@ class DepPaintService {
     const data = await SaleDepPaintCardModel.findById(id);
     return data;
   }
+
+ 
+
 }
 
 module.exports = new DepPaintService();

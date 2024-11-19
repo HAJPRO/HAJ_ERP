@@ -1,4 +1,6 @@
 const DepPaintService = require("../../services/Paint/paint.service.js");
+const { createCanvas } = require('canvas')
+
 class DepPaintController {
   async getModel(req, res, next) {
     try {
@@ -9,18 +11,10 @@ class DepPaintController {
     }
   }
 
-  async getAllFromSale(req, res, next) {
+  async PaintConfirmedOrders(req, res, next) {
     try {
-      const allSale = await DepPaintService.getAllFromSale();
-      res.status(200).json(allSale);
-    } catch (error) {
-      next(error);
-    }
-  }
-  async getAllForProvide(req, res, next) {
-    try {
-      const allPosts = await DepPaintService.getAllForProvide();
-      res.status(200).json(allPosts);
+      const all = await DepPaintService.PaintConfirmedOrders(req.body);
+      res.status(200).json(all);
     } catch (error) {
       next(error);
     }
@@ -70,6 +64,26 @@ class DepPaintController {
       next(error);
     }
   }
+  async GenerateQRCode(req, res, next) {
+    try {
+
+      const qr = await DepPaintService.GenerateQRCode(req.body)
+      return qr
+    }
+    catch (error) {
+      next(error);
+    }
+  }
+  async getQRImage(req, res, next) {
+    try {
+      const data = await DepPaintService.getQRImage()
+      return data
+    }
+    catch (error) {
+      next(error);
+    }
+  }
 }
+
 
 module.exports = new DepPaintController();

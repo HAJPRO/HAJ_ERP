@@ -5,9 +5,8 @@ const DepPaintController = require("../../controllers/paint/paint.controller.js"
 
 const router = express.Router();
 router.get("/paint_model", DepPaintController.getModel);
-router.get("/paint_all", DepPaintController.getAllFromSale);
-router.get("/provide_all", DepPaintController.getAllForProvide);
-router.post("/paint_create", authMiddleware, DepPaintController.create);
+router.post("/paint_confirmed_orders", authMiddleware, DepPaintController.PaintConfirmedOrders);
+router.post("/paint_", authMiddleware, DepPaintController.create);
 router.delete("/paint_delete/:id", authMiddleware, DepPaintController.delete);
 router.put(
   "/paint_edit/:id",

@@ -2,10 +2,9 @@ const SaleLegalCardModel = require("../../models/saleLegalCard.model");
 const SaleDepPaintCardModel = require("../../models/saleDepPaintCard.model");
 const SaleDepWeavingCardModel = require("../../models/saleDepWeavingCard.model");
 const userModel = require("../../models/user.model");
-
+const saleDepProvideCardModel = require("../../models/saleDepProvideCard.model");
 
 // const fileService = require("./file.service");
-
 class DepWeavingService {
   async getModel() {
     const model = {
@@ -53,6 +52,16 @@ class DepWeavingService {
       sent_time: new Date()
     }
     const newData = await SaleDepWeavingCardModel.create({ ...data.items, author, weaving_process_status });
+    if (newData) {
+      const newDataForProvide = {
+        delivery_product_box_id: newData._id,
+        departmen: newData.departmen ? newData.departmen : "",
+        sale_order_id: newData.sale_order_id,
+        author: newData.author,
+        proccess_status: { confirm: true, reason: '', status: "Taminotga yuborildi" }
+      }
+      const provideData = await saleDepProvideCardModel.create(newDataForProvide);
+    }
     const userData = await userModel.findById(author);
     const LegalDataById = await SaleLegalCardModel.findById(data.card_id);
     const newLegalData = LegalDataById;
@@ -67,7 +76,7 @@ class DepWeavingService {
       sent_time: new Date(),
     });
     if (data.card_id) {
-      newLegalData.dep_weaving_data = data.card_id;
+      newLegalData.dep_weaving_data = newData._id;
       const updateDataLegal = await SaleLegalCardModel.findByIdAndUpdate(
         data.card_id,
         newLegalData,

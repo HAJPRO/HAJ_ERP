@@ -3,18 +3,22 @@ import { ref, onMounted } from "vue";
 import Title from "@/components/Title.vue";
 import { PaintPlanStore } from "../../../../stores/Paint/paintPlan.store";
 const store = PaintPlanStore();
+import { PaintService } from "../../../../ApiServices/Paint/paint.service";
 import HeaderTabLink from "../../../../components/Paint/HeaderTabLink.vue";
 import MainTable from "../../../../components/Paint/MainTable.vue";
 import ModalConfirm from "../../../../components/Paint/ModalConfirm.vue";
 import ModalForProvide from "../../../../components/Paint/ModalForProvide.vue";
-
 const getModel = async () => {
   await store.GetModel();
 };
+const getQRImage = async () => {
+  const qr = await PaintService.getQRImage()
+  console.log(qr);
+}
 
 onMounted(async () => {
   try {
-    await getModel();
+    await getModel(); getQRImage()
   } catch (err) {
     console.log(err);
   }
@@ -29,18 +33,7 @@ onMounted(async () => {
   </Title>
   <HeaderTabLink />
   <MainTable />
-  <!-- <DoneTabelComponent v-show="isActive === 0" class="" :items="items" />
-  <WeavingTabelComponent
-    @WeavingLength="WeavingLength"
-    v-show="isActive === 3"
-    class=""
-    :items="items"
-  />
-  <ProvideTabelComponent
-    @ProvideLength="ProvideLength"
-    v-show="isActive === 5"
-    class=""
-  /> -->
   <ModalConfirm />
   <ModalForProvide />
+
 </template>

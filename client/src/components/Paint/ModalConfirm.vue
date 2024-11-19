@@ -4,7 +4,6 @@ import { ToastifyService } from "../../utils/Toastify";
 import { loading } from "../../utils/Loader";
 import { SaleLegalService } from "../../ApiServices/Sale/saleLegal.service";
 import { PaintPlanStore } from "../../stores/Paint/paintPlan.store";
-import ModalForProvide from "../../components/Paint/ProvideTable.vue";
 const store = PaintPlanStore();
 import { storeToRefs } from "pinia";
 const { is_modal, card_id, items, model } = storeToRefs(store)

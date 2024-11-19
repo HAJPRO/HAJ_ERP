@@ -2,6 +2,7 @@ const { Schema, model } = require("mongoose");
 
 const SaleDepPaintCardSchema = new Schema(
   {
+    departmen: { type: String, default: "Bo'yoq" },
     author: { type: Schema.ObjectId, ref: "User" },
     sale_order_id: { type: Schema.ObjectId, ref: "SaleCard" },
     pus: { type: String },
@@ -15,5 +16,4 @@ const SaleDepPaintCardSchema = new Schema(
   },
   { timestamps: true }
 );
-
 module.exports = model("DepPaintCard", SaleDepPaintCardSchema);

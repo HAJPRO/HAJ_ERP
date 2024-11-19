@@ -1,27 +1,25 @@
 const DepPaintService = require("../../services/Paint/paint.service.js");
-const DepProvideService = require("../../services/Provide/provide.service");
+const DepProvideService = require("../../services/Provide/provide.service.js");
 const SaleLegalCardModel = require("../../models/saleLegalCard.model.js");
 const userModel = require("../../models/user.model.js");
 
 class DepProvideController {
-  async getModel(req, res, next) {
-    try {
-      const model = await DepProvideService.getModel();
-      res.status(200).json(model);
-    } catch (error) {
-      next(error);
-    }
-  }
-
   async getAll(req, res, next) {
     try {
-      const allSale = await DepProvideService.getAll();
-      res.status(200).json(allSale);
+      const all = await DepProvideService.getAll(req.body.status);
+      res.status(200).json(all);
     } catch (error) {
       next(error);
     }
   }
-
+  async getAllLength(req, res, next) {
+    try {
+      const all = await DepProvideService.getAllLength();
+      res.status(200).json(all);
+    } catch (error) {
+      next(error);
+    }
+  }
   async create(req, res, next) {
     try {
       const userData = await userModel.findById(req.user.id);
@@ -31,7 +29,7 @@ class DepProvideController {
         author: userData.username,
         status: "Yigiruvga yuborildi",
         sent_time: new Date(),
-        confirm: [{ author: userData.author, reason: "", isConfirm:true }],
+        confirm: [{ author: userData.author, reason: "", isConfirm: true }],
       }
 
       const data = await DepProvideService.create(
