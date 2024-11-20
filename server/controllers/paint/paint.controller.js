@@ -1,5 +1,4 @@
 const DepPaintService = require("../../services/Paint/paint.service.js");
-const { createCanvas } = require('canvas')
 
 class DepPaintController {
   async getModel(req, res, next) {

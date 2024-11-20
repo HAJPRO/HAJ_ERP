@@ -1,9 +1,12 @@
 import { createApp } from "vue";
 import { createPinia } from "pinia";
 
-import ElementPlus from "element-plus";
+import ElementPlus from 'element-plus'
+import 'element-plus/dist/index.css'
+import zhCn from 'element-plus/es/locale/lang/zh-cn'
+
+
 import * as ElementPlusIconsVue from "@element-plus/icons-vue";
-import "element-plus/dist/index.css";
 import toast from "vue3-toastify";
 import Loading from 'vue-loading-overlay';
 
@@ -17,6 +20,9 @@ app.use(router);
 app.use(createPinia());
 app.use(ElementPlus);
 app.use(ElementPlusIconsVue);
+app.use(ElementPlus, {
+    locale: zhCn,
+})
 app.use(toast);
 app.use(Loading);
 app.mount("#app");

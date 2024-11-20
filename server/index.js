@@ -4,12 +4,18 @@ const cors = require("cors");
 const fileUpload = require("express-fileupload");
 const cookie = require("cookie-parser");
 const path = require("path");
+const ejs = require("ejs")
 const mongoose = require("mongoose");
 const errorMiddleware = require("./middlewares/error.middleware.js");
 const app = express();
+
+app.set('view engine', 'ejs');
+app.set('views', './views')
 app.use(express.json());
 app.use(cors({ credentials: true, origin: "*" }));
-app.use(express.static(path.join(__dirname, "./public")));
+// app.use(express.static(path.join(__dirname, "./public")));
+app.use(express.static("./public"));
+
 app.use(fileUpload({}));
 app.use(cookie({}));
 app.use(errorMiddleware);
@@ -26,6 +32,8 @@ app.use("/api/v1/weaving", require("./routes/weaving/weaving.route.js"));
 app.use("/api/v1/spinning", require("./routes/spinning/spinning.route.js"));
 app.use("/api/v1/seam", require("./routes/seam/seam.router.js"));
 app.use("/api/v1/admin", require("./routes/admin/admin.route.js"));
+
+app.use("/api/v1/report", require("./routes/report/BillOfLading.router.js"));
 
 const START = async () => {
   try {

@@ -2,9 +2,6 @@ const SaleLegalCardModel = require("../../models/saleLegalCard.model");
 const SaleDepPaintCardModel = require("../../models/saleDepPaintCard.model");
 const SaleDepProvideCardModel = require("../../models/saleDepProvideCard.model.js");
 const userModel = require("../../models/user.model");
-const QR = require("qrcode");
-const BarCodeModel = require("../../models/Barcode/BarCode.model");
-const QRCodeModel = require("../../models/Barcode/QRCode.model");
 
 // const fileService = require("./file.service");
 
@@ -116,7 +113,7 @@ class DepPaintService {
     return data;
   }
 
- 
+
 
 }
 
