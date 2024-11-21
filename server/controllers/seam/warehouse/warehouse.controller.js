@@ -4,7 +4,6 @@ class DepSeamWarehouseController {
     async GenerateQRCode(req, res, next) {
         try {
             const data = await DepSeamWarehouseService.GenerateQRCode(req.body)
-            console.log(data);
             res.status(201).json({ msg: "", data })
         } catch (error) {
             next(error);

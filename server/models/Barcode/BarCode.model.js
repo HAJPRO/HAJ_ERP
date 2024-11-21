@@ -2,7 +2,12 @@ const { model, Schema, mongoose } = require('mongoose');
 
 // Define TodoSchema Schema
 const BarCodeSchema = new Schema({
-    title: String,
+    author: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'QRCodeModel'
+    },
+    administration: Object,
+    products: Array,
     completed: Boolean,
     qrCode: {
         type: mongoose.Schema.Types.ObjectId,

@@ -4,56 +4,36 @@ const QRCodeModel = require("../../../models/Barcode/QRCode.model");
 class DepSeamWarehouseService {
     async GenerateQRCode(item) {
         // console.log(item);
-        const qr_code = {
-            name: 'fdf',
-            type: 'fdf',
-            color_code: 'dff',
-            raw_material_quantity: '565',
-            unit: 'cxc'
-        }
-        const qr_code_data = JSON.stringify(item)
-        const qrCodeBuffer = await QR.toBuffer(qr_code_data);
-        const NewQRCode = new QRCodeModel({
-            qrCodeImage: qrCodeBuffer
-        });
-        // await save(NewQRCode)
-        // const QRCodeImage = QR.toDataURL(NewQRCode, {
-        //     color: {
-        //         black: "#000000",
-        //     },
-        //     width: {
-        //         size: "65px"
-        //     }    
+        var segs = [
+            { data: 'ABCDEFG', mode: 'alphanumeric' },
+            { data: '0123456', mode: 'numeric' }
+        ]
+        // const qr_code_data = JSON.stringify(segs)
+        // const code = QR.toDataURL(qr_code_data, { color: "#36d887" }, async function (err, url) {
 
+        //     const NewQRCode = {
+        //         qrCodeImage: url
+        //     };
+        //     const qrCode = await QRCodeModel.create(NewQRCode)
+        //     return qrCode
         // })
-        const qrCode = await QRCodeModel.create(NewQRCode);
-        // const qrCodeId = qrCode._id
-        // // Create new TodoSchema with QR Code reference
-        // const todo = { title: item.name, completed: item.age, qrCode: qrCodeId };
-        // await BarCodeModel.create(todo);
-        // // Sending the QR code image along with the todo in the response
-        // const todoWithQRImage = {
-        //     _id: todo._id,
-        //     title: todo.title,
-        //     completed: todo.completed,
-        //     qrCodeImage: qrCodeBuffer // Sending QR code image
-        // };
-        // return (todoWithQRImage); // HTTP 201 Created
+
+
+        const qr_code_data = JSON.stringify(segs)
+        const qrCodeBuffer = await QR.toBuffer(qr_code_data, { color: "#36d887" });
+        const NewQRCode = {
+            qrCodeImage: qrCodeBuffer
+        };
+        const qrCode = await QRCodeModel.create(NewQRCode)
+        if(qrCode._id){
+          const bar_data = await  BarCodeModel.create()  
+        }
         return qrCode
     }
 
     async getQRImage() {
         const todos = await QRCodeModel.find()
-
-        // .populate('qrCode');
-        // const todosWithQRImages = todos.map(todo => ({
-        //     _id: todo._id,
-        //     title: todo.title,
-        //     completed: todo.completed,
-        //     qrCodeImage: todo.qrCode ? todo.qrCode.BarCodeImage : null
-        // }));
-        // console.log(todosWithQRImages);
-        // return todosWithQRImages;
+        console.log(todos);
         return todos
 
     }
