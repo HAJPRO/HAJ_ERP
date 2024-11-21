@@ -4,10 +4,10 @@ const { model, Schema, mongoose } = require('mongoose');
 const BarCodeSchema = new Schema({
     author: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'QRCodeModel'
+        ref: 'User'
     },
     administration: Object,
-    products: Array,
+    load: Array,
     completed: Boolean,
     qrCode: {
         type: mongoose.Schema.Types.ObjectId,

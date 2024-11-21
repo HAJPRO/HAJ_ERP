@@ -3,15 +3,17 @@ const DepSeamWarehouseService = require("../../../services/Seam/warehouse/wareho
 class DepSeamWarehouseController {
     async GenerateQRCode(req, res, next) {
         try {
-            const data = await DepSeamWarehouseService.GenerateQRCode(req.body)
-            res.status(201).json({ msg: "", data })
+            const { load, responsibles } = req.body
+            const author = req.user.id
+            const id = await DepSeamWarehouseService.GenerateQRCode({ load, responsibles, author })
+            res.status(201).json({ msg: "", id })
         } catch (error) {
             next(error);
         }
     };
     async getQRImage(req, res, next) {
         try {
-            const data = await DepSeamWarehouseService.getQRImage()
+            const data = await DepSeamWarehouseService.getQRImage(req.body)
             res.status(201).json({ msg: "", data })
         } catch (error) {
             next(error);

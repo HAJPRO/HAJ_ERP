@@ -4,7 +4,7 @@ const authorMiddleware = require("../../middlewares/author.middleware.js");
 const DepSeamWarehouseController = require("../../controllers/seam/warehouse/warehouse.controller.js");
 
 const router = express.Router();
-router.get("/image_qrcode", authMiddleware, DepSeamWarehouseController.getQRImage);
+router.post("/image_qrcode", authMiddleware, DepSeamWarehouseController.getQRImage);
 router.post("/generate_qrcode", authMiddleware, DepSeamWarehouseController.GenerateQRCode);
 
 module.exports = router;

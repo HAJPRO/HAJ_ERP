@@ -11,13 +11,12 @@ export const SeamWarehouseService = {
     //     return api.post(url, data);
     // },
     GenerateQRCode(data) {
-        console.log(data);
         let url = "seam/generate_qrcode";
         return api.post(url, data);
     },
-    getQRImage() {
+    getQRImage(id) {
         let url = "seam/image_qrcode";
-        return api.get(url);
+        return api.post(url, id);
     },
     // getAll() {
     //     let url = "spinning/spinning_all";

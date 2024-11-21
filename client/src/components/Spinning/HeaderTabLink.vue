@@ -14,7 +14,7 @@ const getAllLength = async () => {
 };
 
 const getAll = async () => {
-    const loader = loading.show();
+   
     const items = await StoreSale.getAll({ status: isActive.value });
     loader.hide();
 };

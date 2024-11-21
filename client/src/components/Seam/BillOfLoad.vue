@@ -1,5 +1,7 @@
 <script setup>
 import { ref } from "vue";
+import { ToastifyService } from "../../utils/Toastify";
+import { loading } from "./../../utils/Loader";
 import jsPDF from "jspdf";
 const pdf = jsPDF({
   orientation: "p",
@@ -29,161 +31,57 @@ const model = ref({
   raw_material_quantity: "",
   unit: "",
 });
-const is_reset_responsibles = ref(false);
-const isResetResponsibles = (formRef) => {
-  formRef.resetFields();
-  is_reset_responsibles.value = false;
-};
-const submitForm = (formRef) => {
-  formRef.validate((valid, fields) => {
-    if (valid) {
-      ResponsiblesSendToBilling();
-      return valid;
-    } else if (!valid) {
-      return (is_reset_responsibles.value = true);
-    }
-  });
-};
-const is_reset_load = ref(false);
-const isResetLoad = (formRef) => {
-  formRef.resetFields();
-  is_reset_load.value = false;
-};
-const submitFormPro = (formRef) => {
-  formRef.validate((valid) => {
-    if (valid) {
-      PlusToLoad();
-      return valid;
-    } else if (!valid) {
-      return (is_reset_load.value = true);
-    }
-  });
-};
 const responsiblesBillingObj = ref({});
 const ResponsiblesSendToBilling = () => {
   responsiblesBillingObj.value = responsibles.value;
 };
 const loadArray = ref([]);
 const PlusToLoad = () => {
-  console.log(model.value.color_code);
   loadArray.value.push(model.value);
-  model.value = [];
+  model.value = {};
 };
+const is_trash = ref(true);
 const is_download = ref(false);
 const generateQRCode = async () => {
   try {
-    const data = await SeamWarehouseService.GenerateQRCode(loadArray.value);
-    if (data) {
-      getQRImage();
-      is_download.value = true;
+    is_trash.value = false;
+    const loader = loading.show();
+    const data = await SeamWarehouseService.GenerateQRCode({
+      load: loadArray.value,
+      responsibles: responsiblesBillingObj.value,
+    });
+    is_download.value = true;
+    loader.hide();
+    ToastifyService.ToastSuccess({
+      msg: "QR kode qo'shildi",
+    });
+
+    if (data.data.id) {
+      getQRImage(data.data.id);
     }
   } catch (error) {
     console.log(error);
   }
 };
 const setQRCodeImageSrc = ref();
-const getQRImage = async () => {
-  const item = await SeamWarehouseService.getQRImage();
-  const qr_code_image = item.data.data[0].qrCodeImage;
-  console.log(qr_code_image);
-  if (qr_code_image && qr_code_image.data) {
-    const base64Image = `data:image/png;base64,${btoa(
-      new Uint8Array(qr_code_image.data).reduce(
-        (data, byte) => data + String.fromCharCode(byte),
-        ""
-      )
-    )}`;
-    setQRCodeImageSrc.value = base64Image;
+const getQRImage = async (id) => {
+  const item = await SeamWarehouseService.getQRImage({ id });
+  if (item) {
+    const qr_code_image = item.data.data.qrCodeImage;
+    if (qr_code_image && qr_code_image.data) {
+      const base64Image = `data:image/png;base64,${btoa(
+        new Uint8Array(qr_code_image.data).reduce(
+          (data, byte) => data + String.fromCharCode(byte),
+          ""
+        )
+      )}`;
+      setQRCodeImageSrc.value = base64Image;
+    }
+  } else {
+    return;
   }
 };
-const rules_validate = ref({
-  number: [
-    {
-      required: true,
-      trigger: "blur",
-      message: "Maydon to'ldirilishi zarur !",
-    },
-  ],
-  from_where: [
-    {
-      required: true,
-      trigger: "blur",
-      message: "Maydon to'ldirilishi zarur !",
-    },
-  ],
-  to_where: [
-    {
-      required: true,
-      trigger: "blur",
-      message: "Maydon to'ldirilishi zarur !",
-    },
-  ],
-  sender: [
-    {
-      required: true,
-      trigger: "blur",
-      message: "Maydon to'ldirilishi zarur !",
-    },
-  ],
-  receiver: [
-    {
-      required: true,
-      trigger: "blur",
-      message: "Maydon to'ldirilishi zarur !",
-    },
-  ],
-  accountant: [
-    {
-      required: true,
-      trigger: "blur",
-      message: "Maydon to'ldirilishi zarur !",
-    },
-  ],
-  director: [
-    {
-      required: true,
-      trigger: "blur",
-      message: "Maydon to'ldirilishi zarur !",
-    },
-  ],
-});
-const pro_validate = ref({
-  name: [
-    {
-      required: true,
-      trigger: "blur",
-      message: "Maydon to'ldirilishi zarur !",
-    },
-  ],
-  type: [
-    {
-      required: true,
-      trigger: "blur",
-      message: "Maydon to'ldirilishi zarur !",
-    },
-  ],
-  color_code: [
-    {
-      required: true,
-      trigger: "blur",
-      message: "Maydon to'ldirilishi zarur !",
-    },
-  ],
-  raw_material_quantity: [
-    {
-      required: true,
-      trigger: "blur",
-      message: "Maydon to'ldirilishi zarur !",
-    },
-  ],
-  unit: [
-    {
-      required: true,
-      trigger: "blur",
-      message: "Maydon to'ldirilishi zarur !",
-    },
-  ],
-});
+const show = ref(false);
 const download = () => {
   is_download.value = false;
   var element = document.getElementById("content");
@@ -211,15 +109,15 @@ const download = () => {
         class="text-[15px] font-semibold bg-white rounded shadow hover:shadow-md mt-2"
       >
         <el-form
+          :ref="responsible"
           :model="responsibles"
-          ref="responsibles"
           label-width="auto"
           class="filter-box md:grid md:grid-cols-8 gap-1 sm:flex sm:flex-wrap rounded p-2 mt-1 mb-1 text-[12px]"
           size="small"
           label-position="top"
           status-icon
         >
-          <div class="mb-1 col-span-8">
+          <div class="col-span-8">
             <el-form-item
               label="№"
               prop="number"
@@ -240,13 +138,24 @@ const download = () => {
             </el-form-item>
           </div>
           <div class="col-span-8">
-            <el-form-item label="Kimdan" prop="from_where">
+            <el-form-item
+              label="Kimdan"
+              prop="from_where"
+              :rules="[
+                {
+                  required: true,
+                  message: `Maydon to'ldirilishi zarur !`,
+                  trigger: 'blur',
+                },
+              ]"
+            >
               <el-select
                 :disabled="responsiblesBillingObj.from_where"
                 v-model="responsibles.from_where"
                 placeholder="..."
               >
                 <el-option
+                  autocomplete="on"
                   v-for="item in leaders"
                   :key="item.id"
                   :label="item.name"
@@ -263,7 +172,17 @@ const download = () => {
             </el-form-item>
           </div>
           <div class="col-span-8">
-            <el-form-item label="Kimga" prop="to_where">
+            <el-form-item
+              label="Kimga"
+              prop="to_where"
+              :rules="[
+                {
+                  required: true,
+                  message: `Maydon to'ldirilishi zarur !`,
+                  trigger: 'blur',
+                },
+              ]"
+            >
               <el-select
                 :disabled="responsiblesBillingObj.to_where"
                 v-model="responsibles.to_where"
@@ -287,7 +206,17 @@ const download = () => {
             </el-form-item>
           </div>
           <div class="col-span-8">
-            <el-form-item label="Topshiruvchi" prop="sender">
+            <el-form-item
+              label="Topshiruvchi"
+              prop="sender"
+              :rules="[
+                {
+                  required: true,
+                  message: `Maydon to'ldirilishi zarur !`,
+                  trigger: 'blur',
+                },
+              ]"
+            >
               <el-select
                 :disabled="responsiblesBillingObj.sender"
                 v-model="responsibles.sender"
@@ -310,8 +239,18 @@ const download = () => {
               </el-select>
             </el-form-item>
           </div>
-          <div class="mb-1 col-span-8">
-            <el-form-item label="Qabul qiluvchi" prop="receiver">
+          <div class="col-span-8">
+            <el-form-item
+              label="Qabul qiluvchi"
+              prop="receiver"
+              :rules="[
+                {
+                  required: true,
+                  message: `Maydon to'ldirilishi zarur !`,
+                  trigger: 'blur',
+                },
+              ]"
+            >
               <el-select
                 :disabled="responsiblesBillingObj.receiver"
                 v-model="responsibles.receiver"
@@ -334,8 +273,18 @@ const download = () => {
               </el-select>
             </el-form-item>
           </div>
-          <div class="mb-1 col-span-8">
-            <el-form-item label="Hisobchi" prop="accountant">
+          <div class="col-span-8">
+            <el-form-item
+              label="Hisobchi"
+              prop="accountant"
+              :rules="[
+                {
+                  required: true,
+                  message: `Maydon to'ldirilishi zarur !`,
+                  trigger: 'blur',
+                },
+              ]"
+            >
               <el-select
                 :disabled="responsiblesBillingObj.accountant"
                 v-model="responsibles.accountant"
@@ -358,8 +307,18 @@ const download = () => {
               </el-select>
             </el-form-item>
           </div>
-          <div class="mb-1 col-span-8">
-            <el-form-item label="Rahbar" prop="director">
+          <div class="col-span-8">
+            <el-form-item
+              label="Rahbar"
+              prop="director"
+              :rules="[
+                {
+                  required: true,
+                  message: `Maydon to'ldirilishi zarur !`,
+                  trigger: 'blur',
+                },
+              ]"
+            >
               <el-select
                 :disabled="responsiblesBillingObj.director"
                 v-model="responsibles.director"
@@ -383,19 +342,12 @@ const download = () => {
             </el-form-item>
           </div>
           <div
-            class="mb-1 col-span-8 flex justify-end"
+            class="col-span-8 flex justify-end"
             v-show="!responsiblesBillingObj.from_where"
           >
-            <el-form-item label=".">
+            <el-form-item>
               <el-button
-                v-show="is_reset_responsibles === true"
-                @click="isResetResponsibles(responsibles)"
-                style="background-color: #36d887; color: white; border: none"
-                >Reset <i class="ml-2 fa-solid fa-arrow-right fa-sm"></i
-              ></el-button>
-              <el-button
-                v-show="is_reset_responsibles === false"
-                @click="submitForm(responsibles)"
+                @click="ResponsiblesSendToBilling()"
                 style="background-color: #36d887; color: white; border: none"
                 >Yuborish <i class="ml-2 fa-solid fa-arrow-right fa-sm"></i
               ></el-button>
@@ -410,15 +362,23 @@ const download = () => {
         <div class="text-[15px] font-semibold bg-white rounded">
           <el-form
             :model="model"
-            :rules="pro_validate"
-            ref="model"
             label-width="auto"
             class="filter-box md:grid md:grid-cols-8 gap-1 sm:flex sm:flex-wrap rounded p-2 mt-1 mb-1 text-[12px]"
             size="small"
             label-position="top"
           >
             <div class="col-span-8">
-              <el-form-item label="Nomi" prop="name">
+              <el-form-item
+                label="Nomi"
+                prop="name"
+                :rules="[
+                  {
+                    required: true,
+                    message: `Maydon to'ldirilishi zarur !`,
+                    trigger: 'blur',
+                  },
+                ]"
+              >
                 <el-select v-model="model.name" placeholder="...">
                   <el-option
                     v-for="item in leaders"
@@ -439,7 +399,17 @@ const download = () => {
               </el-form-item>
             </div>
             <div class="col-span-8">
-              <el-form-item label="Turi" prop="type">
+              <el-form-item
+                label="Turi"
+                prop="type"
+                :rules="[
+                  {
+                    required: true,
+                    message: `Maydon to'ldirilishi zarur !`,
+                    trigger: 'blur',
+                  },
+                ]"
+              >
                 <el-select v-model="model.type" clearable placeholder="...">
                   <el-option
                     v-for="item in leaders"
@@ -460,7 +430,17 @@ const download = () => {
               </el-form-item>
             </div>
             <div class="col-span-8">
-              <el-form-item label="Rang kod" prop="color_code">
+              <el-form-item
+                label="Rang kod"
+                prop="color_code"
+                :rules="[
+                  {
+                    required: true,
+                    message: `Maydon to'ldirilishi zarur !`,
+                    trigger: 'blur',
+                  },
+                ]"
+              >
                 <el-select
                   v-model="model.color_code"
                   clearable
@@ -484,10 +464,17 @@ const download = () => {
                 </el-select>
               </el-form-item>
             </div>
-            <div class="mb-1 col-span-8">
+            <div class="col-span-8">
               <el-form-item
                 label="Xom mato miqdori"
                 prop="raw_material_quantity"
+                :rules="[
+                  {
+                    required: true,
+                    message: `Maydon to'ldirilishi zarur !`,
+                    trigger: 'blur',
+                  },
+                ]"
               >
                 <el-select
                   v-model="model.raw_material_quantity"
@@ -512,8 +499,18 @@ const download = () => {
                 </el-select>
               </el-form-item>
             </div>
-            <div class="mb-1 col-span-4">
-              <el-form-item label="Birligi" prop="unit">
+            <div class="col-span-8">
+              <el-form-item
+                label="Birligi"
+                prop="unit"
+                :rules="[
+                  {
+                    required: true,
+                    message: `Maydon to'ldirilishi zarur !`,
+                    trigger: 'blur',
+                  },
+                ]"
+              >
                 <el-select v-model="model.unit" clearable placeholder="...">
                   <el-option
                     v-for="item in leaders"
@@ -534,19 +531,12 @@ const download = () => {
               </el-form-item>
             </div>
             <div
-              class="mb-1 col-span-4 flex justify-end"
+              class="col-span-8 flex justify-end"
               v-show="!setQRCodeImageSrc"
             >
-              <el-form-item label=".">
+              <el-form-item>
                 <el-button
-                  v-show="is_reset_load === true"
-                  @click="isResetLoad(model)"
-                  style="background-color: #36d887; color: white; border: none"
-                  ><i class="mr-2 fa-solid fa-plus fa-sm"></i>reset
-                </el-button>
-                <el-button
-                  v-show="is_reset_load === false"
-                  @click="submitFormPro(model)"
+                  @click="PlusToLoad()"
                   style="background-color: #36d887; color: white; border: none"
                   ><i class="mr-2 fa-solid fa-plus fa-sm"></i>Qo'shish
                 </el-button>
@@ -606,7 +596,7 @@ const download = () => {
             <div class="text-gray-700 mb-1 text-[13px]">Anytown, USA</div>
           </div>
         </div>
-        <div class="rounded min-h-[15px] mt-10 text-[10px]">
+        <!-- <div class="rounded min-h-[15px] mt-10 text-[10px]">
           <el-table
             style="font-size: 12px"
             load
@@ -676,10 +666,6 @@ const download = () => {
               align="center"
             >
               <template #default="scope">
-                <!-- <router-link to="" @click="OpenModalById(scope.row._id)"
-                                    class="inline-flex items-center  ml-2 text-red bg-yellow-300 hover:bg-yellow-400 font-medium rounded-md text-sm w-full sm:w-auto px-3 py-3 text-center">
-                                    <i class="text-black fa-sharp fa-solid fa-check fa-xs"></i>
-                                </router-link> -->
                 <router-link
                   to=""
                   class="inline-flex items-center ml-2 text-red hover:bg-red-600 font-medium rounded-md text-sm w-full sm:w-auto px-2 py-3 text-center"
@@ -689,9 +675,9 @@ const download = () => {
               </template>
             </el-table-column>
           </el-table>
-        </div>
+        </div> -->
 
-        <!-- <div class="relative overflow-x-auto shadow rounded mt-10">
+        <div class="relative overflow-x-auto shadow rounded mt-10">
           <table
             class="w-full text-[11px] text-left rtl:text-right text-white dark:text-blue-100"
           >
@@ -704,7 +690,11 @@ const download = () => {
                 <th scope="col-2" class="px-2 py-2">Rang kod</th>
                 <th scope="col-2" class="px-2 py-2">Birligi</th>
                 <th scope="col-2" class="px-2 py-2">Miqdori</th>
-                <th scope="col-1" class="px-2 py-2"></th>
+                <th
+                  v-show="is_trash === true"
+                  scope="col-1"
+                  class="px-2 py-2"
+                ></th>
               </tr>
             </thead>
             <tbody>
@@ -720,7 +710,7 @@ const download = () => {
                 <td scope="col-2" class="px-2 py-2">
                   {{ item.raw_material_quantity }}
                 </td>
-                <td scope="col-1" class="px-2 py-2">
+                <td v-show="is_trash == true" scope="col-1" class="px-2 py-2">
                   <router-link
                     to=""
                     class="inline-flex items-center ml-2 text-red hover:bg-red-600 font-medium rounded-md text-sm w-full sm:w-auto px-2 py-3 text-center"
@@ -731,7 +721,7 @@ const download = () => {
               </tr>
             </tbody>
           </table>
-        </div> -->
+        </div>
 
         <div class="flex justify-between mt-2 mb-20">
           <div class="text-gray-700 mr-2">Total:</div>
@@ -766,6 +756,12 @@ const download = () => {
 
       <div class="flex justify-end mt-3 mb-3 p-2 shadow-md">
         <el-button
+          v-show="
+            !is_download &&
+            !setQRCodeImageSrc &&
+            responsiblesBillingObj &&
+            loadArray.length
+          "
           @click="generateQRCode"
           size="small"
           style="background-color: #36d887; color: white; border: none"
@@ -783,8 +779,8 @@ const download = () => {
           size="small"
           style="background-color: #36d887; color: white; border: none"
         >
-          <i class="mr-2 fa-solid fa-check fa-sm"></i>Saqlash</el-button
-        >
+          <i class="mr-2 fa-solid fa-file-pdf fa-sm"></i>PDF
+        </el-button>
       </div>
     </div>
   </div>
