@@ -1,4 +1,4 @@
-<script setup>
+<!-- <script setup>
 import { computed, onMounted, ref } from "vue";
 import { useStore } from "vuex";
 const store = useStore();
@@ -135,4 +135,4 @@ const AccountGenerateToken = async () => {
       </div>
     </div>
   </section>
-</template>
+</template> -->

@@ -1,6 +1,14 @@
 const DepSeamWarehouseService = require("../../../services/Seam/warehouse/warehouse.service.js");
 // const userModel = require("../../models/user.model.js");
 class DepSeamWarehouseController {
+    async ResponsiblesModel(req, res, next) {
+        try {
+            const model = await DepSeamWarehouseService.ResponsiblesModel();
+            res.status(200).json(model);
+        } catch (error) {
+            next(error);
+        }
+    }
     async GenerateQRCode(req, res, next) {
         try {
             const { load, responsibles } = req.body
@@ -19,6 +27,15 @@ class DepSeamWarehouseController {
             next(error);
         }
     };
+    // async ExportExcel(req, res, next) {
+    //     try {
+    //         const data = await DepSeamWarehouseService.ExportExcel(req.body)
+    //         res.status(201).json({ msg: "", data })
+    //         res.download(data);
+    //     } catch (error) {
+    //         next(error);
+    //     }
+    // };
 };
 module.exports = new DepSeamWarehouseController();
 

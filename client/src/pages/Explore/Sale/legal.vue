@@ -4,18 +4,17 @@ import Title from "@/components/Title.vue";
 import ProccessModal from "../../../components/Sale/ProccessModal.component.vue";
 import StatusInfoModal from "../../../components/Sale/StatusModal.component.vue";
 import { SaleLegalService } from "@/ApiServices/Sale/saleLegal.service";
-import { useRouter } from "vue-router";
 import { ToastifyService } from "../../../utils/Toastify";
-import { loading } from ".././../../utils/Loader"
+import { loading } from ".././../../utils/Loader";
 import SaleUpdateCardModal from "../../../components/Sale/SaleUpdateCardModal.vue";
 import HeaderTabLink from "../../../components/Sale/HeaderTabLink.vue";
 import MainTable from "../../../components/Sale/MainTable.vue";
-const router = useRouter();
 
-const is_status_info_modal = ref(false)
+
+const is_status_info_modal = ref(false);
 const StatusModal = (id) => {
-  is_status_info_modal.value = !is_status_info_modal.value
-}
+  is_status_info_modal.value = !is_status_info_modal.value;
+};
 
 const Export_Excel = async (id) => {
   try {
@@ -25,11 +24,8 @@ const Export_Excel = async (id) => {
   }
 };
 
-
-
 onMounted(async () => {
   try {
-
   } catch (err) {
     console.log(err);
   }
@@ -46,7 +42,7 @@ onMounted(async () => {
     <HeaderTabLink />
     <MainTable />
     <!-- // Proccess Modal -->
-    <ProccessModal />
+    <ProccessModal  />
     <!-- ////// -->
     <!-- // EDIT Modal -->
     <SaleUpdateCardModal />

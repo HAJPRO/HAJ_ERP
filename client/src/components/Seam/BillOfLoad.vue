@@ -1,44 +1,77 @@
 <script setup>
-import { ref } from "vue";
+import { ref, onMounted } from "vue";
+import { read, utils, writeFileXLSX } from "xlsx";
+import Scanner from "../../components/Seam/Scanner.vue";
 import { ToastifyService } from "../../utils/Toastify";
 import { loading } from "./../../utils/Loader";
+import { SeamStore } from "../../stores/Seam/seam.store";
+const store = SeamStore();
+import { storeToRefs } from "pinia";
+const { isActive } = storeToRefs(store);
 import jsPDF from "jspdf";
 const pdf = jsPDF({
   orientation: "p",
   unit: "px",
   format: "letter",
+  compress: true,
+  putOnlyUsedFonts: true,
   hotfixes: ["px_scaling"],
 });
 import html2pdf from "html2pdf.js";
 import { SeamWarehouseService } from "../../ApiServices/Seam/warehouse/warehouse.service";
-const leaders = ref([
-  { name: "N.Boqiyev", id: 1, role: "Director" },
-  { name: "Sh.Shermuhammadov", id: 1, role: "Boss" },
-]);
-const responsibles = ref({
-  number: 125,
-  from_where: "",
-  to_where: "",
-  sender: "",
-  receiver: "",
-  accountant: "",
-  director: "",
+const Export_Excel = () => {
+  store.ExportExcel(loadArray.value);
+  const heading = [["ID", "Name", "Turi", "Rang kod", "Miqdori", "Birligi"]];
+  const ws = utils.json_to_sheet(loadArray.value);
+  const wb = utils.book_new();
+  utils.sheet_add_aoa(ws, heading);
+  utils.book_append_sheet(wb, ws, "Bill Of Load");
+  writeFileXLSX(wb, `${Date.now()}.xlsx`);
+};
+const leaders = ref([]);
+const sklads = ref([]);
+const responsibles = ref({});
+const load = ref({});
+const material_name = ref([]);
+const material_type = ref([]);
+const color_code = ref([]);
+const unit = ref([]);
+
+const GetModel = async () => {
+  try {
+    const data = await SeamWarehouseService.GetModel();
+    responsibles.value = data.data.responsibles;
+    load.value = data.data.load;
+    leaders.value = data.data.leaders;
+    sklads.value = data.data.sklads;
+    material_name.value = data.data.material_name;
+    material_type.value = data.data.material_type;
+    color_code.value = data.data.color_code;
+    unit.value = data.data.unit;
+  } catch (error) {
+    return error.message;
+  }
+};
+onMounted(() => {
+  GetModel();
 });
-const model = ref({
-  name: "",
-  type: "",
-  color_code: "",
-  raw_material_quantity: "",
-  unit: "",
-});
+
+const DeleteByIdFromArray = (data) => {
+  const load = data.load;
+  const filterLoad = loadArray.value.filter((item) => {
+    return item.id !== load.id;
+  });
+  loadArray.value = filterLoad;
+};
 const responsiblesBillingObj = ref({});
 const ResponsiblesSendToBilling = () => {
   responsiblesBillingObj.value = responsibles.value;
 };
 const loadArray = ref([]);
 const PlusToLoad = () => {
-  loadArray.value.push(model.value);
-  model.value = {};
+  load.value.id = Math.floor(Math.random() * 10000000);
+  loadArray.value.push(load.value);
+  load.value = {};
 };
 const is_trash = ref(true);
 const is_download = ref(false);
@@ -86,11 +119,13 @@ const download = () => {
   is_download.value = false;
   var element = document.getElementById("content");
   var opt = {
+    image: { quality: 10, type: "jpeg" },
+    x: 10,
+    y: 10,
     margin: 0.1,
-    filename: "doc.pdf",
-    image: { type: "jpeg", quality: 4 },
+    filename: "report.pdf",
     html2canvas: { scale: 4 },
-    jsPDF: { unit: "in", format: "a4", orientation: "landscape" },
+    // jsPDF: { unit: "in", format: "a4", orientation: "portait" },
   };
   html2pdf().set(opt).from(element).save();
   html2pdf(element, opt);
@@ -98,7 +133,11 @@ const download = () => {
 </script>
 
 <template>
-  <div class="grid grid-cols-7 gap-2 bg-white p-1 h-[400px]">
+  <Scanner v-show="isActive === 3" />
+  <div
+    v-show="isActive === 2"
+    class="grid grid-cols-7 gap-2 bg-white p-1 h-[400px]"
+  >
     <div class="col-span-2 shadow overflow-y-auto h-[800]">
       <div
         class="text-center text-[15px] font-semibold bg-[#e4e9e9] p-1 rounded"
@@ -109,7 +148,6 @@ const download = () => {
         class="text-[15px] font-semibold bg-white rounded shadow hover:shadow-md mt-2"
       >
         <el-form
-          :ref="responsible"
           :model="responsibles"
           label-width="auto"
           class="filter-box md:grid md:grid-cols-8 gap-1 sm:flex sm:flex-wrap rounded p-2 mt-1 mb-1 text-[12px]"
@@ -120,7 +158,7 @@ const download = () => {
           <div class="col-span-8">
             <el-form-item
               label="№"
-              prop="number"
+              prop="invoice_number"
               :rules="[
                 {
                   required: true,
@@ -130,7 +168,8 @@ const download = () => {
               ]"
             >
               <el-input
-                v-model="responsibles.number"
+                disabled
+                v-model="responsibles.invoice_number"
                 autocomplete="off"
                 placeholder="..."
               >
@@ -156,7 +195,7 @@ const download = () => {
               >
                 <el-option
                   autocomplete="on"
-                  v-for="item in leaders"
+                  v-for="item in sklads"
                   :key="item.id"
                   :label="item.name"
                   :value="item.name"
@@ -190,7 +229,7 @@ const download = () => {
                 placeholder="..."
               >
                 <el-option
-                  v-for="item in leaders"
+                  v-for="item in sklads"
                   :key="item.id"
                   :label="item.name"
                   :value="item.name"
@@ -286,12 +325,14 @@ const download = () => {
               ]"
             >
               <el-select
+                required
                 :disabled="responsiblesBillingObj.accountant"
                 v-model="responsibles.accountant"
                 clearable
                 placeholder="..."
               >
                 <el-option
+                  required
                   v-for="item in leaders"
                   :key="item.id"
                   :label="item.name"
@@ -320,12 +361,14 @@ const download = () => {
               ]"
             >
               <el-select
+                required
                 :disabled="responsiblesBillingObj.director"
                 v-model="responsibles.director"
                 clearable
                 placeholder="..."
               >
                 <el-option
+                  required
                   v-for="item in leaders"
                   :key="item.id"
                   :label="item.name"
@@ -361,7 +404,7 @@ const download = () => {
       >
         <div class="text-[15px] font-semibold bg-white rounded">
           <el-form
-            :model="model"
+            :model="load"
             label-width="auto"
             class="filter-box md:grid md:grid-cols-8 gap-1 sm:flex sm:flex-wrap rounded p-2 mt-1 mb-1 text-[12px]"
             size="small"
@@ -379,9 +422,9 @@ const download = () => {
                   },
                 ]"
               >
-                <el-select v-model="model.name" placeholder="...">
+                <el-select v-model="load.name" placeholder="...">
                   <el-option
-                    v-for="item in leaders"
+                    v-for="item in material_name"
                     :key="item.id"
                     :label="item.name"
                     :value="item.name"
@@ -410,9 +453,9 @@ const download = () => {
                   },
                 ]"
               >
-                <el-select v-model="model.type" clearable placeholder="...">
+                <el-select v-model="load.type" clearable placeholder="...">
                   <el-option
-                    v-for="item in leaders"
+                    v-for="item in material_type"
                     :key="item.id"
                     :label="item.name"
                     :value="item.name"
@@ -442,15 +485,15 @@ const download = () => {
                 ]"
               >
                 <el-select
-                  v-model="model.color_code"
+                  v-model="load.color_code"
                   clearable
                   placeholder="..."
                 >
                   <el-option
-                    v-for="item in leaders"
+                    v-for="item in color_code"
                     :key="item.id"
-                    :label="item.name"
-                    :value="item.name"
+                    :label="item.role"
+                    :value="item.role"
                   >
                     <span
                       style="float: left; font-size: 12px; color: #8492a6"
@@ -476,27 +519,13 @@ const download = () => {
                   },
                 ]"
               >
-                <el-select
-                  v-model="model.raw_material_quantity"
+                <el-input
+                  type="Number"
+                  v-model="load.raw_material_quantity"
                   clearable
                   placeholder="..."
                 >
-                  <el-option
-                    v-for="item in leaders"
-                    :key="item.id"
-                    :label="item.name"
-                    :value="item.name"
-                  >
-                    <span
-                      style="float: left; font-size: 12px; color: #8492a6"
-                      >{{ item.name }}</span
-                    >
-                    <span
-                      style="float: right; color: #36d887; font-size: 10px"
-                      >{{ item.role }}</span
-                    >
-                  </el-option>
-                </el-select>
+                </el-input>
               </el-form-item>
             </div>
             <div class="col-span-8">
@@ -511,9 +540,9 @@ const download = () => {
                   },
                 ]"
               >
-                <el-select v-model="model.unit" clearable placeholder="...">
+                <el-select v-model="load.unit" clearable placeholder="...">
                   <el-option
-                    v-for="item in leaders"
+                    v-for="item in unit"
                     :key="item.id"
                     :label="item.name"
                     :value="item.name"
@@ -553,23 +582,25 @@ const download = () => {
         <div class="flex items-center justify-between mb-8">
           <div class="flex items-center">
             <img
-              class="h-28 w-28 mr-2"
+              class="h-36 w-36 mr-2"
               src="../../../public/haj.jpg"
               alt="Logo"
             />
             <div class="text-gray-700 font-semibold flex flex-col">
-              <h5 class="text-[16px]">HAJ Textile Company</h5>
-              <p class="text-[9px]">Buxoro villoyati G'ijduvon tumani 41A uy</p>
-              <p class="text-[9px]">Tel: +998915005555</p>
-              <p class="text-[9px]">Email: HajTexCompany@gmail.com</p>
+              <h5 class="text-[17px]">HAJ Textile Company</h5>
+              <p class="text-[10px]">
+                Buxoro villoyati G'ijduvon tumani 41A uy
+              </p>
+              <p class="text-[10px]">Tel: +998915005555</p>
+              <p class="text-[10px]">Email: HajTexCompany@gmail.com</p>
             </div>
           </div>
           <div class="text-gray-700 flex flex-col">
-            <div class="font-bold text-[16px] mb-5">Yuk xati</div>
-            <div class="text-[9px]">
-              Invoice №: {{ responsiblesBillingObj.number }}
+            <div class="font-bold text-[17px] mb-5">Yuk xati</div>
+            <div class="text-[10px]">
+              Invoice №: {{ responsiblesBillingObj.invoice_number }}
             </div>
-            <div class="text-[9px]">
+            <div class="text-[10px]">
               Date: {{ String(new Date()).substr(0, 25) }}
             </div>
           </div>
@@ -596,86 +627,6 @@ const download = () => {
             <div class="text-gray-700 mb-1 text-[13px]">Anytown, USA</div>
           </div>
         </div>
-        <!-- <div class="rounded min-h-[15px] mt-10 text-[10px]">
-          <el-table
-            style="font-size: 12px"
-            load
-            class="w-full"
-            header-align="right"
-            header-hight="1"
-            empty-text="Mahsulot qo'shilmagan... "
-            :data="loadArray"
-            border
-            min-height="205"
-            max-height="205"
-          >
-            <el-table-column
-              header-align="center"
-              align="center"
-              type="index"
-              prop="index"
-              fixed="left"
-              label="№"
-              width="50"
-            />
-
-            <el-table-column
-              align="center"
-              header-align="center"
-              prop="name"
-              label="Nomi"
-              width="200"
-            />
-
-            <el-table-column
-              align="center"
-              header-align="center"
-              prop="type"
-              label="Turi"
-              width="200"
-            />
-            <el-table-column
-              prop="color_code"
-              label="Rang kod"
-              width="200"
-              header-align="center"
-              align="center"
-            />
-
-            <el-table-column
-              align="center"
-              prop="unit"
-              label="Birligi"
-              width="180"
-              header-align="center"
-            />
-            <el-table-column
-              prop="raw_material_quantity"
-              label="Miqdori"
-              width="200"
-              header-align="center"
-              align="center"
-            />
-            <el-table-column
-              v-show="is_download"
-              fixed="right"
-              prop="id"
-              label=""
-              width="60"
-              header-align="center"
-              align="center"
-            >
-              <template #default="scope">
-                <router-link
-                  to=""
-                  class="inline-flex items-center ml-2 text-red hover:bg-red-600 font-medium rounded-md text-sm w-full sm:w-auto px-2 py-3 text-center"
-                >
-                  <i class="text-black fa-trash fa-solid fa-trash fa-sm"></i>
-                </router-link>
-              </template>
-            </el-table-column>
-          </el-table>
-        </div> -->
 
         <div class="relative overflow-x-auto shadow rounded mt-10">
           <table
@@ -685,6 +636,7 @@ const download = () => {
               class="text-[10px] text-white uppercase bg-gray-900 border border-gray-900 dark:text-white"
             >
               <tr>
+                <th scope="col-2" class="px-2 py-2">№</th>
                 <th scope="col-2" class="px-2 py-2">Nomi</th>
                 <th scope="col-2" class="px-2 py-2">Turi</th>
                 <th scope="col-2" class="px-2 py-2">Rang kod</th>
@@ -699,10 +651,11 @@ const download = () => {
             </thead>
             <tbody>
               <tr
-                v-for="item in loadArray"
-                :key="item.index"
+                v-for="(item, index) in loadArray"
+                :key="index"
                 class="bg-slate-500 border border-gray-900 hover:bg-slate-400"
               >
+                <td scope="col-2" class="px-2 py-2">{{ index + 1 }}</td>
                 <td scope="col-2" class="px-2 py-2">{{ item.name }}</td>
                 <td scope="col-2" class="px-2 py-2">{{ item.type }}</td>
                 <td scope="col-2" class="px-2 py-2">{{ item.color_code }}</td>
@@ -713,6 +666,7 @@ const download = () => {
                 <td v-show="is_trash == true" scope="col-1" class="px-2 py-2">
                   <router-link
                     to=""
+                    @click="DeleteByIdFromArray({ load: item, i: index })"
                     class="inline-flex items-center ml-2 text-red hover:bg-red-600 font-medium rounded-md text-sm w-full sm:w-auto px-2 py-3 text-center"
                   >
                     <i class="text-black fa-trash fa-solid fa-trash fa-sm"></i>
@@ -722,38 +676,39 @@ const download = () => {
             </tbody>
           </table>
         </div>
-
-        <div class="flex justify-between mt-2 mb-20">
+        <!-- <div class="flex justify-between mt-2 mb-20">
           <div class="text-gray-700 mr-2">Total:</div>
           <div class="text-gray-700 font-bold text-xl">$450.50</div>
-        </div>
+        </div> -->
         <div
           v-show="setQRCodeImageSrc"
           class="QRCode mt-44 flex justify-between"
         >
-          <div class="text-gray-700 font-semibold flex flex-col">
-            <h5 class="text-[16px] mb-1">Mamuriyat:</h5>
-            <p class="text-[10px]">
-              Derektor:<span>{{ responsiblesBillingObj.director }}</span>
+          <div class="text-gray-700 flex flex-col text-[13px]">
+            <h5 class="text-[17px] font-semibold mb-3">Ma'muriyat:</h5>
+            <p>
+              Derektor: <span>{{ responsiblesBillingObj.director }}</span>
             </p>
-            <p class="text-[10px]">
-              Buhgalter:<span>{{ responsiblesBillingObj.accountant }}</span>
+            <p>
+              Buhgalter: <span>{{ responsiblesBillingObj.accountant }}</span>
             </p>
-            <p class="text-[10px]">
+            <p>
               Topshiruvchi: <span>{{ responsiblesBillingObj.sender }}</span>
             </p>
-            <p class="text-[10px]">
-              Qabul qiluvchi :<span>{{ responsiblesBillingObj.receiver }}</span>
+            <p>
+              Qabul qiluvchi: <span>{{ responsiblesBillingObj.receiver }}</span>
             </p>
           </div>
-          <img
-            class="w-[100px] h-[100px]"
-            :src="setQRCodeImageSrc"
-            alt="qr code"
-          />
+          <div>
+            <img
+              class="w-[120px] h-[120px]"
+              :src="setQRCodeImageSrc"
+              alt="qr code"
+            />
+            <!-- <p class="text-[11px] text-center">HAJ TEX COMPANY</p> -->
+          </div>
         </div>
       </div>
-
       <div class="flex justify-end mt-3 mb-3 p-2 shadow-md">
         <el-button
           v-show="
@@ -769,22 +724,22 @@ const download = () => {
           <i class="mr-2 fa-solid fa-plus fa-sm"></i>QR kod</el-button
         >
         <el-button
-          v-show="
-            is_download &&
-            setQRCodeImageSrc &&
-            responsiblesBillingObj &&
-            loadArray.length
-          "
+          v-if="setQRCodeImageSrc && responsiblesBillingObj && loadArray.length"
           @click="download()"
+          size="small"
+          style="background-color: #bfbf0f; color: white; border: none"
+        >
+          <i class="mr-2 fa-solid fa-file-pdf fa-sm"></i>PDF
+        </el-button>
+        <el-button
+          v-if="setQRCodeImageSrc && responsiblesBillingObj && loadArray.length"
+          @click="Export_Excel"
           size="small"
           style="background-color: #36d887; color: white; border: none"
         >
-          <i class="mr-2 fa-solid fa-file-pdf fa-sm"></i>PDF
+          <i class="mr-2 fa-solid fa-file-excel fa-sm"></i>Excel
         </el-button>
       </div>
     </div>
   </div>
 </template>
-<!-- v-show="
-!setQRCodeImageSrc && responsiblesBillingObj && loadArray.length
-" -->

@@ -2,12 +2,12 @@ import api from "@/helpers/api";
 // import $api from "../../helpers/$api";
 
 export const SeamWarehouseService = {
-    // getModel() {
-    //     let url = "spinning/spinning_model";
-    //     return api.get(url);
-    // },
-    // cancelReason(data) {
-    //     let url = "spinning/cancel_reason";
+    GetModel() {
+        let url = "seam/responsibles_model";
+        return api.get(url);
+    },
+    // ExportExcel(data) {
+    //     let url = "seam/export_excel";
     //     return api.post(url, data);
     // },
     GenerateQRCode(data) {
@@ -18,8 +18,5 @@ export const SeamWarehouseService = {
         let url = "seam/image_qrcode";
         return api.post(url, id);
     },
-    // getAll() {
-    //     let url = "spinning/spinning_all";
-    //     return api.get(url);
-    // },
+
 };

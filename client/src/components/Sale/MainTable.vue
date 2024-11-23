@@ -9,6 +9,7 @@ const getByIdForUpdate = async (id) => {
   const is_modal = !isModal.value;
   store.openModalById({ is_modal, id });
 };
+
 const confirm = async (id) => {
   await store.Confirm(id);
 };
@@ -167,13 +168,6 @@ const statusModalById = (id) => {
             class="inline-flex items-center mt-4 ml-2 text-white bg-red-500 hover:bg-red-600 font-medium rounded-md text-sm w-full sm:w-auto px-2 py-3 text-center"
           >
             <i class="text-black fa-sharp fa-solid fa-trash fa-xs"></i>
-          </router-link>
-          <router-link
-            to=""
-            @click="Export_Excel(scope.row._id)"
-            class="inline-flex items-center mt-4 ml-2 text-white bg-yellow-300 hover:bg-yellow-400 font-medium rounded-md text-sm w-full sm:w-auto px-2 py-3 text-center"
-          >
-            <i class="text-black fa-sharp fa-solid fa-file-excel fa-xs"></i>
           </router-link>
         </template>
       </el-table-column>

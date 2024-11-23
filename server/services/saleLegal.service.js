@@ -1,14 +1,18 @@
 const SaleLegalCardModel = require("../models/saleLegalCard.model");
 // const fileService = require("./file.service");
 const XLSX = require("xlsx");
-const excelJs = require("exceljs");
 const saleLegalCardModel = require("../models/saleLegalCard.model");
+const randomstring = require("randomstring");
 
 class SaleLegalService {
   async getModel() {
+    const order_num = randomstring.generate({
+      length: 7,
+      charset: ['numeric']
+    });
     const model = {
       customer_name: "",
-      order_number: "",
+      order_number: `AA${order_num}`,
       pro_name: "",
       pro_type: "",
       pro_color: "",
