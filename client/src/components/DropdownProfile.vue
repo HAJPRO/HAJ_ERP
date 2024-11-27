@@ -10,7 +10,7 @@
       <div class="flex items-center truncate">
         <span
           class="font-serif truncate ml-2 text-sm mr-2 font-medium dark:text-slate-300 group-hover:text-slate-800 dark:group-hover:text-slate-100"
-          >Umid Shomurodov
+          >{{ username }}
         </span>
         <!-- <svg class="w-3 h-3 shrink-0 ml-1 fill-current text-slate-400" viewBox="0 0 12 12">
           <path d="M5.9 11.4L.5 6l1.4-1.4 4 4 4-4L11.3 6z" />
@@ -43,10 +43,10 @@
           <div
             class="font-medium text-slate-800 dark:text-slate-100 font-serif"
           >
-            Umid Shomurodov
+            {{ username }}
           </div>
           <div class="text-xs text-slate-500 dark:text-slate-400 italic">
-            Administrator
+            {{ department }} bo'limi
           </div>
         </div>
         <ul
@@ -84,6 +84,7 @@ import UserAvatar from "../images/user-avatar-32.png";
 export default {
   name: "DropdownProfile",
   props: ["align"],
+
   data() {
     return {
       UserAvatar: UserAvatar,
@@ -93,7 +94,8 @@ export default {
     const dropdownOpen = ref(false);
     const trigger = ref(null);
     const dropdown = ref(null);
-
+    const username = ref(JSON.parse(Cookie.get("account")).username);
+    const department = ref(JSON.parse(Cookie.get("account")).department);
     function logout() {
       Cookie.remove("token");
       Cookie.remove("account");
@@ -135,6 +137,8 @@ export default {
       trigger,
       dropdown,
       logout,
+      username,
+      department,
     };
   },
 };

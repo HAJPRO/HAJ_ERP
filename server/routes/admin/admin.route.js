@@ -6,7 +6,7 @@ const onlyAdminAccess = require("../../middlewares/admin.middleware.js");
 
 const PermissionController = require("../../controllers/admin/permission.controller.js");
 const RoleController = require("../../controllers/admin/role.controller.js");
-const CreateUserController = require("../../controllers/admin/createUser.controller.js");
+const UserController = require("../../controllers/admin/User.controller.js");
 const {
   permissionAddValidator,
 } = require("../../helpers/admin/permissionValidator");
@@ -29,7 +29,13 @@ router.post(
   "/create_user",
   authMiddleware,
   onlyAdminAccess,
-  CreateUserController.createUser
+  UserController.createUser
+);
+router.post(
+  "/users",
+  authMiddleware,
+  onlyAdminAccess,
+  UserController.GetUsers
 );
 
 module.exports = router;

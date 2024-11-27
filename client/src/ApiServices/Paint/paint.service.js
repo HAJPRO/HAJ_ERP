@@ -6,6 +6,10 @@ export const PaintService = {
     let url = "paint/paint_model";
     return api.get(url);
   },
+  getAll(status) {
+    let url = "paint/get_all";
+    return api.post(url, status);
+  },
   create(data) {
     let url = "paint/paint_create";
     return api.post(url, data);
@@ -18,8 +22,5 @@ export const PaintService = {
   //   let url = "paint/";
   //   return api.post(url, status);
   // },
-  getQRImage() {
-    let url = "paint/image_qrcode";
-    return api.post(url);
-  },
+
 };

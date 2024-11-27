@@ -30,8 +30,7 @@ export const ProvidePlanStore = defineStore("ProvidePlanStore", {
             const res = await ProvideService.getAll(payload);
             this.items = res.data;
             this.departmen = res.data.length ? res.data[0].departmen : " "
-            console.log(this.departmen);
-            console.log(this.items);
+
         },
 
         async openModalById(payload) {

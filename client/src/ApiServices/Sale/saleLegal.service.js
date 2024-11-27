@@ -39,6 +39,7 @@ export const SaleLegalService = {
     return api.put(url, data);
   },
   getOne(id) {
+    console.log(id);
     let url = `sale/legal_get_one/${id}`;
     return api.get(url);
   },

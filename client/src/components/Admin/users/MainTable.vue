@@ -1,31 +1,10 @@
 <script setup>
 import { ref } from "vue";
-import { SaleStore } from "../../stores/Sale/sale.store";
-const store = SaleStore();
+import { UsersStore } from "../../../stores/Admin/users.store";
+const store = UsersStore();
 import { storeToRefs } from "pinia";
 const { items } = storeToRefs(store);
-const isModal = ref(false);
-const getByIdForUpdate = async (id) => {
-  const is_modal = !isModal.value;
-  store.openModalById({ is_modal, id });
-};
 
-const confirm = async (id) => {
-  await store.Confirm(id);
-};
-const deleteById = async (id) => {
-  await store.DeleteById(id);
-};
-const isProccessModal = ref(false);
-const proccessModalById = (id) => {
-  const is_modal = !isProccessModal.value;
-  store.ProccessModalById({ is_modal, id });
-};
-const isStatusModal = ref(false);
-const statusModalById = (id) => {
-  const is_modal = !isStatusModal.value;
-  store.StatusModalById({ is_modal, id });
-};
 </script>
 <template>
   <div class="shadow-md rounded min-h-[15px]">
@@ -36,13 +15,6 @@ const statusModalById = (id) => {
       hight="4"
       style="width: 100%"
       empty-text="Mahsulot tanlanmagan... "
-      :default-sort="[
-        { prop: 'customer_name', order: 'customer_name' },
-        { prop: 'order_number', order: 'order_number' },
-        { prop: 'pro_type', order: 'pro_type' },
-        { prop: 'order_status', order: 'order_status' },
-        { prop: 'delivery_time', order: 'delivery_time' },
-      ]"
       :data="items"
       border
       min-height="300"
@@ -61,22 +33,22 @@ const statusModalById = (id) => {
       <el-table-column
         header-align="center"
         sortable
-        prop="customer_name"
-        label="Buyurtmachi"
+        prop="username"
+        label="Username"
         width="200"
       />
 
       <el-table-column
         header-align="center"
         sortable
-        prop="order_number"
-        label="Buyurtma nomeri"
+        prop="Department"
+        label="department"
         width="200"
       />
       <el-table-column
-        prop="pro_type"
+        prop="password"
         sortable
-        label="Turi"
+        label="Password"
         width="180"
         header-align="center"
         align="center"
@@ -89,40 +61,27 @@ const statusModalById = (id) => {
         align="center"
       />
       <el-table-column
-        prop="pro_color"
-        label="Rangi"
+        prop="role"
+        label="role"
         width="180"
         header-align="center"
         align="center"
       />
       <el-table-column
-        prop="order_quantity"
-        label="Miqdori"
+        prop="permissions"
+        label="Permissions"
         width="180"
         header-align="center"
         align="center"
       />
       <el-table-column
-        prop="delivery_time"
+        prop="isActive"
         sortable
-        label="Muddati"
-        width="190"
+        label="isActive"
+        width="180"
         header-align="center"
         align="center"
-      >
-        <template #default="scope">
-          <el-date-picker
-            style="width: 100%"
-            disabled
-            v-model="scope.row.delivery_time"
-            clearable
-            type="date"
-            placeholder=""
-            :size="size"
-          />
-        </template>
-      </el-table-column>
-
+      />
       <el-table-column
         fixed="right"
         prop="order_status"
@@ -139,7 +98,7 @@ const statusModalById = (id) => {
             :class="{ status_bg: scope.row.order_status === 'Tasdiqlanmagan' }"
             class="cursor-pointer inline-flex items-center text-red bg-[#e4e9e9] hover:bg-[#d7ebeb] font-medium rounded-md text-[12px] w-ful p-[5px] sm:w-auto text-center"
           >
-            {{ scope.row.order_status }}
+            Active
           </router-link>
         </template>
       </el-table-column>

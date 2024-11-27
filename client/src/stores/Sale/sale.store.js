@@ -6,7 +6,8 @@ import { defineStore } from "pinia";
 export const SaleStore = defineStore("saleStore", {
   state: () => {
     return {
-      items: "",
+      length: "",
+      items: [],
       card_id: "",
       is_modal: false,
       model: "",
@@ -18,12 +19,19 @@ export const SaleStore = defineStore("saleStore", {
         id: "",
         isModal: false,
       },
+      is_active: ""
     };
   },
   actions: {
+    IsActive(payload) {
+      this.is_active = payload.is_active
+    },
     async getAll(payload) {
+      const loader = loading.show();
       const res = await SaleLegalService.getAll(payload);
-      this.items = res.data;
+      this.length = res.data.length
+      this.items = res.data.all;
+      loader.hide();
     },
     async openModalById(payload) {
       this.card_id = payload.id;

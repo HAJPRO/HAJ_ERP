@@ -33,7 +33,6 @@ app.use("/api/v1/spinning", require("./routes/spinning/spinning.route.js"));
 app.use("/api/v1/seam", require("./routes/seam/seam.router.js"));
 app.use("/api/v1/admin", require("./routes/admin/admin.route.js"));
 
-app.use("/api/v1/report", require("./routes/report/BillOfLading.router.js"));
 
 const START = async () => {
   try {

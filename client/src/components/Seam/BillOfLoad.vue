@@ -55,6 +55,14 @@ const GetModel = async () => {
 onMounted(() => {
   GetModel();
 });
+const Refresh = () => {
+  responsiblesBillingObj.value = {};
+  loadArray.value = [];
+  setQRCodeImageSrc.value = "";
+  is_trash.value = true;
+  is_download.value = false;
+  GetModel();
+};
 
 const DeleteByIdFromArray = (data) => {
   const load = data.load;
@@ -63,15 +71,53 @@ const DeleteByIdFromArray = (data) => {
   });
   loadArray.value = filterLoad;
 };
+const error_alert = ref(false);
 const responsiblesBillingObj = ref({});
 const ResponsiblesSendToBilling = () => {
-  responsiblesBillingObj.value = responsibles.value;
+  if (
+    responsibles.value.from_where === "" ||
+    responsibles.value.to_where === "" ||
+    responsibles.value.receiver === "" ||
+    responsibles.value.sender === "" ||
+    responsibles.value.accountant === "" ||
+    responsibles.value.director === ""
+  ) {
+    error_alert.value = true;
+  } else {
+    responsiblesBillingObj.value = responsibles.value;
+    error_alert.value = false;
+  }
 };
+const IsAlert = (id) => {
+  if (id == 1) {
+    error_alert.value = false;
+  } else if (id == 2) {
+    error_alert_load.value = false;
+  }
+};
+const error_alert_load = ref(false);
 const loadArray = ref([]);
 const PlusToLoad = () => {
-  load.value.id = Math.floor(Math.random() * 10000000);
-  loadArray.value.push(load.value);
-  load.value = {};
+  if (
+    load.value.name === "" ||
+    load.value.type === "" ||
+    load.value.color_code === "" ||
+    load.value.raw_material_quantity === "" ||
+    load.value.unit === ""
+  ) {
+    error_alert_load.value = true;
+  } else {
+    load.value.id = Math.floor(Math.random() * 10000000);
+    loadArray.value.push(load.value);
+    error_alert_load.value = false;
+    load.value = {
+      name: "",
+      type: "",
+      color_code: "",
+      raw_material_quantity: "",
+      unit: "",
+    };
+  }
 };
 const is_trash = ref(true);
 const is_download = ref(false);
@@ -96,7 +142,7 @@ const generateQRCode = async () => {
     console.log(error);
   }
 };
-const setQRCodeImageSrc = ref();
+const setQRCodeImageSrc = ref("");
 const getQRImage = async (id) => {
   const item = await SeamWarehouseService.getQRImage({ id });
   if (item) {
@@ -122,18 +168,17 @@ const download = () => {
     image: { quality: 10, type: "jpeg" },
     x: 10,
     y: 10,
-    margin: 0.1,
-    filename: "report.pdf",
+    margin: 0,
+    filename: "BillOfLoad.pdf",
     html2canvas: { scale: 4 },
-    // jsPDF: { unit: "in", format: "a4", orientation: "portait" },
   };
   html2pdf().set(opt).from(element).save();
-  html2pdf(element, opt);
+  // html2pdf(element, opt);
 };
 </script>
 
 <template>
-  <Scanner v-show="isActive === 3" />
+  <Scanner v-if="isActive === 3" />
   <div
     v-show="isActive === 2"
     class="grid grid-cols-7 gap-2 bg-white p-1 h-[400px]"
@@ -386,20 +431,29 @@ const download = () => {
           </div>
           <div
             class="col-span-8 flex justify-end"
-            v-show="!responsiblesBillingObj.from_where"
+            v-if="!responsiblesBillingObj.director"
           >
             <el-form-item>
               <el-button
-                @click="ResponsiblesSendToBilling()"
+                @click="ResponsiblesSendToBilling"
                 style="background-color: #36d887; color: white; border: none"
                 >Yuborish <i class="ml-2 fa-solid fa-arrow-right fa-sm"></i
               ></el-button>
             </el-form-item>
           </div>
         </el-form>
+        <el-alert
+          @click="IsAlert(1)"
+          v-if="error_alert"
+          title="Xatolik !"
+          type="error"
+          description="Barcha maydon to'ldirilishi zarur !"
+          show-icon
+        />
       </div>
 
       <div
+        v-show="responsiblesBillingObj.director"
         class="col-span-8 text-[15px] font-semibold bg-white rounded mt-4 shadow hover:shadow-md"
       >
         <div class="text-[15px] font-semibold bg-white rounded">
@@ -422,7 +476,11 @@ const download = () => {
                   },
                 ]"
               >
-                <el-select v-model="load.name" placeholder="...">
+                <el-select
+                  :disabled="is_trash === false"
+                  v-model="load.name"
+                  placeholder="..."
+                >
                   <el-option
                     v-for="item in material_name"
                     :key="item.id"
@@ -453,7 +511,12 @@ const download = () => {
                   },
                 ]"
               >
-                <el-select v-model="load.type" clearable placeholder="...">
+                <el-select
+                  :disabled="is_trash === false"
+                  v-model="load.type"
+                  clearable
+                  placeholder="..."
+                >
                   <el-option
                     v-for="item in material_type"
                     :key="item.id"
@@ -485,6 +548,7 @@ const download = () => {
                 ]"
               >
                 <el-select
+                  :disabled="is_trash === false"
                   v-model="load.color_code"
                   clearable
                   placeholder="..."
@@ -520,6 +584,7 @@ const download = () => {
                 ]"
               >
                 <el-input
+                  :disabled="is_trash === false"
                   type="Number"
                   v-model="load.raw_material_quantity"
                   clearable
@@ -540,7 +605,12 @@ const download = () => {
                   },
                 ]"
               >
-                <el-select v-model="load.unit" clearable placeholder="...">
+                <el-select
+                  :disabled="is_trash === false"
+                  v-model="load.unit"
+                  clearable
+                  placeholder="..."
+                >
                   <el-option
                     v-for="item in unit"
                     :key="item.id"
@@ -572,6 +642,14 @@ const download = () => {
               </el-form-item>
             </div>
           </el-form>
+          <el-alert
+            @click="IsAlert(2)"
+            v-if="error_alert_load"
+            title="Xatolik !"
+            type="error"
+            description="Barcha maydon to'ldirilishi zarur !"
+            show-icon
+          />
         </div>
       </div>
     </div>
@@ -663,7 +741,7 @@ const download = () => {
                 <td scope="col-2" class="px-2 py-2">
                   {{ item.raw_material_quantity }}
                 </td>
-                <td v-show="is_trash == true" scope="col-1" class="px-2 py-2">
+                <td v-if="is_trash == true" scope="col-1" class="px-2 py-2">
                   <router-link
                     to=""
                     @click="DeleteByIdFromArray({ load: item, i: index })"
@@ -709,37 +787,65 @@ const download = () => {
           </div>
         </div>
       </div>
-      <div class="flex justify-end mt-3 mb-3 p-2 shadow-md">
-        <el-button
-          v-show="
-            !is_download &&
-            !setQRCodeImageSrc &&
-            responsiblesBillingObj &&
-            loadArray.length
-          "
-          @click="generateQRCode"
-          size="small"
-          style="background-color: #36d887; color: white; border: none"
-        >
-          <i class="mr-2 fa-solid fa-plus fa-sm"></i>QR kod</el-button
-        >
-        <el-button
-          v-if="setQRCodeImageSrc && responsiblesBillingObj && loadArray.length"
-          @click="download()"
-          size="small"
-          style="background-color: #bfbf0f; color: white; border: none"
-        >
-          <i class="mr-2 fa-solid fa-file-pdf fa-sm"></i>PDF
-        </el-button>
-        <el-button
-          v-if="setQRCodeImageSrc && responsiblesBillingObj && loadArray.length"
-          @click="Export_Excel"
-          size="small"
-          style="background-color: #36d887; color: white; border: none"
-        >
-          <i class="mr-2 fa-solid fa-file-excel fa-sm"></i>Excel
-        </el-button>
+      <div class="flex justify-between mt-2 mb-2 p-2 shadow-md">
+        <div>
+          <el-button
+            v-if="
+              setQRCodeImageSrc && responsiblesBillingObj && loadArray.length
+            "
+            @click="Refresh()"
+            size="small"
+            style="background-color: #36d887; color: white; border: none"
+          >
+            <i class="mr-2 fa-solid fa-arrows-rotate fa-sm"></i>Refresh
+          </el-button>
+        </div>
+        <div>
+          <el-button
+            v-show="
+              !is_download &&
+              setQRCodeImageSrc === '' &&
+              responsiblesBillingObj &&
+              loadArray.length
+            "
+            @click="generateQRCode"
+            size="small"
+            style="background-color: #36d887; color: white; border: none"
+          >
+            <i class="mr-2 fa-solid fa-qrcode fa-sm"></i>QR kod</el-button
+          >
+          <el-button
+            v-if="
+              setQRCodeImageSrc && responsiblesBillingObj && loadArray.length
+            "
+            @click="download"
+            size="small"
+            style="background-color: #bfbf0f; color: white; border: none"
+          >
+            <i class="mr-2 fa-solid fa-file-pdf fa-sm"></i>PDF
+          </el-button>
+
+          <el-button
+            v-if="
+              setQRCodeImageSrc && responsiblesBillingObj && loadArray.length
+            "
+            @click="Export_Excel"
+            size="small"
+            style="background-color: #36d887; color: white; border: none"
+          >
+            <i class="mr-2 fa-solid fa-file-excel fa-sm"></i>Excel
+          </el-button>
+        </div>
       </div>
     </div>
   </div>
 </template>
+<style scoped>
+.el-alert {
+  margin: 4px 0 0;
+  padding: 2px;
+}
+.el-alert:first-child {
+  margin: 0;
+}
+</style>

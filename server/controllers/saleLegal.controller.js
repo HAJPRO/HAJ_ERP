@@ -23,8 +23,8 @@ class saleLegalController {
   }
   async getAllLength(req, res, next) {
     try {
-      const all = await SaleLegalService.getAllLength();
-      res.status(200).json(all);
+      const allLength = await SaleLegalService.getAllLength(req.user.id);
+      res.status(200).json(allLength);
 
     } catch (error) {
       next(error);
@@ -32,7 +32,7 @@ class saleLegalController {
   }
   async getAll(req, res, next) {
     try {
-      const all = await SaleLegalService.getAll(req.body.status);
+      const all = await SaleLegalService.getAll(req.body, req.user);
       res.status(200).json(all);
 
     } catch (error) {

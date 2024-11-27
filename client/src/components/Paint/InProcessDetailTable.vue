@@ -4,6 +4,7 @@ import { PaintPlanStore } from "../../stores/Paint/paintPlan.store";
 const store_paint = PaintPlanStore();
 import { storeToRefs } from "pinia";
 const { items, is_active } = storeToRefs(store_paint);
+console.log(items);
 const OpenModalById = async (id) => {
   await store_paint.openModalById({ id, is_modal: true });
 };
@@ -39,54 +40,54 @@ const OpenModalById = async (id) => {
       <el-table-column
         header-align="center"
         sortable
-        prop="customer_name"
+        prop="in_process_detail.customer_name"
         label="Buyurtmachi nomi"
         width="200"
       />
       <el-table-column
         header-align="center"
         sortable
-        prop="order_number"
+        prop="in_process_detail.order_number"
         label="Buyurtma miqdori"
         width="200"
       />
       <el-table-column
-        prop="pro_type"
+        prop="in_process_detail.pro_type"
         label="Mahsulot turi"
         width="180"
         header-align="center"
         align="center"
       />
       <el-table-column
-        prop="pro_name"
+        prop="in_process_detail.pro_name"
         label="Mahsulot nomi"
         width="180"
         header-align="center"
         align="center"
       />
       <el-table-column
-        prop="pro_color"
+        prop="in_process_detail.pro_color"
         label="Mahsulot rangi"
         width="180"
         header-align="center"
         align="center"
       />
       <el-table-column
-        prop="order_quantity"
+        prop="in_process_detail.order_quantity"
         label="Buyurtma miqdori"
         width="180"
         header-align="center"
         align="center"
       />
       <el-table-column
-        prop="order_quantity"
+        prop="in_process_detail.order_quantity"
         label="Tayyor mahsulot"
         width="180"
         header-align="center"
         align="center"
       />
       <el-table-column
-        prop="order_quantity"
+        prop="in_process_detail.order_quantity"
         label="Tayyorlanishi kerak"
         width="180"
         header-align="center"
@@ -94,7 +95,7 @@ const OpenModalById = async (id) => {
       />
       <el-table-column
         fixed="right"
-        prop="order_status"
+        prop="status"
         label="Holati"
         width="150"
         header-align="center"
@@ -105,7 +106,7 @@ const OpenModalById = async (id) => {
             to=""
             class="inline-flex items-center text-red bg-[#e4e9e9] hover:bg-[#d7ebeb] font-medium rounded-md text-[12px] w-ful p-[5px] sm:w-auto text-center"
           >
-            {{ scope.row.order_status }}
+            {{ scope.row.status }}
           </router-link>
         </template>
       </el-table-column>
@@ -118,16 +119,15 @@ const OpenModalById = async (id) => {
         align="center"
       >
         <template #default="scope">
-          <router-link
+          <!-- <router-link
             v-show="scope.row.order_status === `Bo'yoqqa yuborildi`"
             to=""
             @click="OpenModalById(scope.row._id)"
             class="inline-flex items-center ml-2 text-red bg-yellow-300 hover:bg-yellow-400 font-medium rounded-md text-sm w-full sm:w-auto px-3 py-3 text-center"
           >
             <i class="text-black fa-sharp fa-solid fa-check fa-xs"></i>
-          </router-link>
+          </router-link> -->
           <router-link
-            v-show="scope.row.order_status === `To'quvga yuborildi`"
             to=""
             class="inline-flex items-center ml-2 text-red bg-red-500 hover:bg-red-600 font-medium rounded-md text-sm w-full sm:w-auto px-3 py-3 text-center"
           >

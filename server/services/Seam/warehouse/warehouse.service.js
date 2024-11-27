@@ -80,7 +80,7 @@ class DepSeamWarehouseService {
 
         try {
             const qr_code_data = JSON.stringify(item.load)
-            const qrCodeBuffer = await QR.toBuffer(qr_code_data, { color: "#36d887" });
+            const qrCodeBuffer = await QR.toBuffer(qr_code_data, { color: '#36d887' });
             const NewQRCode = {
                 qrCodeImage: qrCodeBuffer
             };

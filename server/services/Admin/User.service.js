@@ -1,7 +1,7 @@
 const UserModel = require("../../models/user.model");
 const bcrypt = require("bcrypt");
 
-class CreateUserService {
+class UserService {
   async CreateUser(data) {
     try {
       const { username, department, password, role } = data;
@@ -32,6 +32,23 @@ class CreateUserService {
       return err;
     }
   }
+  async GetUsers(data) {
+    try {
+      const users = await UserModel.find()
+      // .then((items) => {
+      // for (let i = 0; i <= items.length; i++) {
+
+      //   const password = bcrypt.verify(`${items[i].password}`, 10)
+      //   console.log(password);
+      // }
+
+      // })
+
+      return users
+    } catch (error) {
+      return error.messages
+    }
+  }
 }
 
-module.exports = new CreateUserService();
+module.exports = new UserService();

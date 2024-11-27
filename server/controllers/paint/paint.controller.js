@@ -9,6 +9,14 @@ class DepPaintController {
       next(error);
     }
   }
+  async getAll(req, res, next) {
+    try {
+      const data = await DepPaintService.getAll({ status: req.body, user: req.user });
+      res.status(200).json(data);
+    } catch (error) {
+      next(error);
+    }
+  }
 
   async PaintConfirmedOrders(req, res, next) {
     try {
@@ -63,25 +71,7 @@ class DepPaintController {
       next(error);
     }
   }
-  async GenerateQRCode(req, res, next) {
-    try {
 
-      const qr = await DepPaintService.GenerateQRCode(req.body)
-      return qr
-    }
-    catch (error) {
-      next(error);
-    }
-  }
-  async getQRImage(req, res, next) {
-    try {
-      const data = await DepPaintService.getQRImage()
-      return data
-    }
-    catch (error) {
-      next(error);
-    }
-  }
 }
 
 

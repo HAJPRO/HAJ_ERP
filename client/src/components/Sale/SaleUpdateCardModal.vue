@@ -41,11 +41,12 @@ const Update = async () => {
             >Buyurtma nomeri</label
           >
           <el-input
+            disabled
             v-model="model.order_number"
             clearable
             class="w-[100%]"
             size="smal"
-            type="Number"
+            type="String"
             placeholder="..."
           />
         </div>

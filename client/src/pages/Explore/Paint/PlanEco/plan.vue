@@ -2,23 +2,24 @@
 import { ref, onMounted } from "vue";
 import Title from "@/components/Title.vue";
 import { PaintPlanStore } from "../../../../stores/Paint/paintPlan.store";
-const store = PaintPlanStore();
-import { PaintService } from "../../../../ApiServices/Paint/paint.service";
+const store_paint = PaintPlanStore();
+import { SaleStore } from "../../../../stores/Sale/sale.store";
+const store_sale = SaleStore();
+import { storeToRefs } from "pinia";
 import HeaderTabLink from "../../../../components/Paint/HeaderTabLink.vue";
 import MainTable from "../../../../components/Paint/MainTable.vue";
 import ModalConfirm from "../../../../components/Paint/ModalConfirm.vue";
 import ModalForProvide from "../../../../components/Paint/ModalForProvide.vue";
+import InProcessDetailTable from "../../../../components/Paint/InProcessDetailTable.vue";
+import ProvideTable from "../../../../components/Paint/ProvideTable.vue";
+const { is_active } = storeToRefs(store_paint);
 const getModel = async () => {
-  await store.GetModel();
+  await store_paint.GetModel();
 };
-const getQRImage = async () => {
-  const qr = await PaintService.getQRImage()
-  console.log(qr);
-}
 
 onMounted(async () => {
   try {
-    await getModel(); getQRImage()
+    await getModel();
   } catch (err) {
     console.log(err);
   }
@@ -32,8 +33,9 @@ onMounted(async () => {
     </template>
   </Title>
   <HeaderTabLink />
-  <MainTable />
+  <MainTable v-if="is_active !== 1 && is_active !== 5" />
+  <InProcessDetailTable v-if="is_active === 1" />
+  <ProvideTable v-if="is_active === 5" />
   <ModalConfirm />
   <ModalForProvide />
-
 </template>

@@ -4,7 +4,6 @@ import Title from "@/components/Title.vue";
 import { SaleLegalService } from "@/ApiServices/Sale/saleLegal.service";
 import { ToastifyService } from "../../../utils/Toastify.js";
 import { useRouter } from "vue-router";
-import Cookies from "js-cookie";
 const router = useRouter();
 
 const model = ref({});
@@ -200,18 +199,16 @@ onMounted(async () => {
         <label
           name="resul"
           class="block mb-1 text-[12px] font-medium text-gray-900 dark:text-white"
-          >Yetkazib berish muddati</label
+          >Tayyorlash muddati</label
         >
-        <el-input
+        <el-date-picker
+          style="width: 100%"
           v-model="model.delivery_time"
           clearable
-          class="w-[100%]"
-          size="smal"
           type="date"
-          placeholder=""
+          placeholder="..."
+          :size="size"
         />
-        <!-- <el-date-picker class="w-[100%]" v-model="model.delivery_time" clearable type="date"
-          placeholder="Yetkazish vaqti" :size="200" /> -->
       </div>
     </form>
 

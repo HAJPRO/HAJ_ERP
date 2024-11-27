@@ -3,6 +3,7 @@ const SaleLegalCardModel = require("../models/saleLegalCard.model");
 const XLSX = require("xlsx");
 const saleLegalCardModel = require("../models/saleLegalCard.model");
 const randomstring = require("randomstring");
+const InProcessModel = require("../models/InProcess.model");
 
 class SaleLegalService {
   async getModel() {
@@ -89,62 +90,91 @@ class SaleLegalService {
       return error.message
     }
   }
-  async getAllLength() {
-    try {
-      const Sale = await this.getAllSale()
-      const sale_length = Sale ? Sale.length : 0
-      const Paint = await this.getAllPaint()
-      const paint_length = Paint ? Paint.length : 0
-      const Weaving = await this.getAllWeaving()
-      const weaving_length = Weaving ? Weaving.length : 0
-      const Spinning = await this.getAllSpinning()
-      const spinning_length = Spinning ? Spinning.length : 0
-      const Provide = await this.getAllProvide()
-      const provide_length = Provide ? Provide.length : 0
-      const allLength = { sale_length, paint_length, weaving_length, spinning_length, provide_length }
-      return allLength
-    } catch (error) {
-      return error.message
-    }
+  async getAllLength(id) {
+    const sale_length = (await SaleLegalCardModel.find({ author: id })).length
+    const paint_length = (await SaleLegalCardModel.find({ $and: [{ $and: [{ author: id }, { order_status: "Bo'yoqqa yuborildi" }] }] })).length
+    const weaving_length = (await SaleLegalCardModel.find({ $and: [{ author: id }, { order_status: "To'quvga yuborildi" }, { order_status: "To'quv bekor qildi" }] })).length
+    const spinning_length = (await SaleLegalCardModel.find({ $and: [{ author: id }, { order_status: "Yigiruvga yuborildi" }, { order_status: "Yigiruv bekor qildi" }] })).length
+    const provide_length = (await SaleLegalCardModel.find({ $and: [{ author: id }, { order_status: "Taminotga yuborildi" }, { order_status: "Tamin bekor qildi" }] })).length
+    return { sale_length, paint_length, weaving_length, spinning_length, provide_length }
   }
-  async getAll(status) {
+
+  async getAll(status, user) {
+    const is_status = status.status
+    const user_id = user.id
+    const department = user.department
     try {
-      if (status === 1) {
-        return await this.getAllSale()
+      if (is_status === 0) {
+        return await this.getAllInProcess(department)
+      } else if (is_status === 1) {
+        return await this.getAllSale(user_id)
       }
-      else if (status === 2) {
-        return await this.getAllPaint()
-      } else if (status === 3) {
-        return await this.getAllWeaving()
-      } else if (status === 4) {
-        return await this.getAllSpinning()
-      } else if (status === 5) {
-        return await this.getAllProvide()
+      else if (is_status === 2) {
+        return await this.getAllPaint(user_id)
+      } else if (is_status === 3) {
+        return await this.getAllWeaving(user_id)
+      } else if (is_status === 4) {
+        return await this.getAllSpinning(user_id)
+      } else if (is_status === 5) {
+        return await this.getAllProvide(user_id)
       }
     } catch (error) {
       return error.message
     }
   }
-
-  async getAllSale() {
+  async getAllInProcess(department) {
     try {
-      const allSale = await SaleLegalCardModel.find({ $or: [{ in_department_order: 'Sotuv' }, { in_department_order: "Bo'yoq" }, { in_department_order: "To'quv" }, { in_department_order: "Yigiruv" }] })
-      return allSale;
+      const allInProcess = await InProcessModel.aggregate([
+        { $match: { department: department } },
+        {
+          $lookup: {
+            from: "salecards",
+            localField: "order_id",
+            foreignField: "_id",
+            as: "in_process_detail",
+          },
+        },
+        {
+          $project: {
+            status: 1,
+            in_process_detail: {
+              $cond: {
+                if: { $isArray: "$in_process_detail" },
+                then: { $arrayElemAt: ["$in_process_detail", 0] },
+                else: null,
+              },
+            },
+
+          },
+        },
+
+      ])
+      return allInProcess;
     } catch (error) {
       return error.message
     }
 
   }
-  async getAllPaint() {
+  async getAllSale(user_id) {
     try {
-      const allPaint = await SaleLegalCardModel.find({ $or: [{ in_department_order: "Bo'yoq" }, { order_status: "Bo'yoqqa yuborildi" }, { isConfirm: "Bo'yoq bekor qildi" }] }).populate([
+      const all = await SaleLegalCardModel.find({ author: user_id })
+      const length = all ? all.length : 0
+      return { all, length };
+    } catch (error) {
+      return error.message
+    }
+
+  }
+  async getAllPaint(user_id) {
+    try {
+      const all = await SaleLegalCardModel.find({ $and: [{ author: user_id }, { order_status: "Bo'yoqqa yuborildi" }] }).populate([
         "author",
         "dep_paint_data",
         "dep_provider_data",
         "dep_weaving_data",
       ]);
-
-      return allPaint
+      const length = all ? all.length : 0
+      return { all, length }
     } catch (error) {
       return error.message
     }

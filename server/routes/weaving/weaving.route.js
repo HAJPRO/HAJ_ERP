@@ -20,13 +20,11 @@ router.post(
 router.put(
   "/weaving_edit/:id",
   authMiddleware,
-  authorMiddleware,
   DepWeavingController.edit
 );
 router.get(
   "/weaving_get-one/:id",
   authMiddleware,
-  authorMiddleware,
   DepWeavingController.getOne
 );
 

@@ -5,9 +5,10 @@ const DepPaintController = require("../../controllers/paint/paint.controller.js"
 
 const router = express.Router();
 router.get("/paint_model", DepPaintController.getModel);
+router.post("/get_all", authMiddleware, DepPaintController.getAll);
 router.post("/paint_confirmed_orders", authMiddleware, DepPaintController.PaintConfirmedOrders);
-router.post("/paint_", authMiddleware, DepPaintController.create);
-router.delete("/paint_delete/:id", authMiddleware, DepPaintController.delete);
+router.post("/paint_create", authMiddleware, DepPaintController.create);
+router.delete("/paint_delete/:id", authMiddleware, authorMiddleware, DepPaintController.delete);
 router.put(
   "/paint_edit/:id",
   authMiddleware,
@@ -22,7 +23,6 @@ router.post(
 router.get(
   "/paint_get-one/:id",
   authMiddleware,
-  authorMiddleware,
   DepPaintController.getOne
 );
 

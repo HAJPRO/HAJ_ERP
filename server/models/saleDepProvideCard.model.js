@@ -1,11 +1,10 @@
 const { Schema, model } = require("mongoose");
-const mongoose = require("mongoose");
 const SaleDepProvideCardSchema = new Schema(
   {
-    delivery_product_box_id: { type: mongoose.Schema.ObjectId },
-    sale_order_id: { type: Schema.ObjectId, ref: "SaleCard" },
-    departmen: { type: String },
-    author: { type: mongoose.Schema.ObjectId },
+    department: { type: String },
+    delivery_product_box: { type: Object, required: true },
+    author_id: { type: String },
+    author: { type: Schema.ObjectId, ref: "User" },
     status: { type: String, default: "Tasdiqlanmagan" },
     proccess_status: { type: Array },
     state: { type: Boolean, default: true },

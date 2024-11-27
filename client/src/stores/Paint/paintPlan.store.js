@@ -8,16 +8,20 @@ import { defineStore } from "pinia";
 export const PaintPlanStore = defineStore("paintPlanStore", {
     state: () => {
         return {
-            items: "",
             card_id: "",
             is_modal: false,
             items: [],
+            item: [],
             confirmed_orders: [],
             model: "",
-            is_provide: false
+            is_provide: false,
+            is_active: ""
         };
     },
     actions: {
+        IsActive(payload) {
+            this.is_active = payload.is_active
+        },
         async GetModel() {
             try {
                 const data = await SaleLegalService.getModel();
@@ -27,11 +31,20 @@ export const PaintPlanStore = defineStore("paintPlanStore", {
                 console.log(err);
             }
         },
+        async GetAll(status) {
+            try {
+                const data = await PaintService.getAll(status);
+                this.items = data.data
+                console.log(data.data);
+            } catch (err) {
+                console.log(err);
+            }
+        },
         async openModalById(payload) {
             this.card_id = payload.id;
             this.is_modal = payload.is_modal;
             const data = await SaleLegalService.getOne(payload.id);
-            this.items = Array(data.data);
+            this.item = Array(data.data);
         },
         async PaintConfirmedOrders(payload) {
             const data = await PaintService.PaintConfirmedOrders(payload.status).then((items) => {
