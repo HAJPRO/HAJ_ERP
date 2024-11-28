@@ -25,5 +25,10 @@ router.get(
   authMiddleware,
   DepPaintController.getOne
 );
+router.post(
+  "/paint_get_inprocess",
+  authMiddleware,
+  DepPaintController.getOneFromInProcess
+);
 
 module.exports = router;

@@ -18,9 +18,9 @@ export const PaintService = {
     let url = "paint/cancel_reason";
     return api.post(url, data);
   },
-  // PaintConfirmedOrders(status) {
-  //   let url = "paint/";
-  //   return api.post(url, status);
-  // },
+  getOneFromInProcess(id) {
+    let url = "paint/paint_get_inprocess";
+    return api.post(url, id);
+  },
 
 };

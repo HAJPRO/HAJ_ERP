@@ -1,18 +1,10 @@
 <script setup>
 import { ref, onMounted } from "vue";
-// import Cookies from "js-cookie";
-// const dep = ref(JSON.parse(Cookies.get("account")).department);
-import { ToastifyService } from "../../utils/Toastify";
 import { loading } from "../../utils/Loader";
-import { SaleStore } from "../../stores/Sale/sale.store";
 import { PaintPlanStore } from "../../stores/Paint/paintPlan.store";
 const store_paint = PaintPlanStore();
 import { storeToRefs } from "pinia";
-const all_length = ref();
-// const getAllLength = async () => {
-//   const data = await SaleLegalService.getAllLength();
-//   all_length.value = data.data ? data.data : {};
-// };
+const { all_length } = storeToRefs(store_paint);
 const getAll = async () => {
   const loader = loading.show();
   await store_paint.GetAll({ status: isActive.value });
@@ -75,7 +67,7 @@ onMounted(async () => {
             class="inline-flex items-center justify-center h-5 text-[11px] font-medium text-white bg-[#36d887] px-3 py-2 rounded"
           >
             <span class=" ">0</span>/{{
-              (all_length ? all_length.sale_length : 0) || 0
+              (all_length ? all_length.process_length : 0) || 0
             }}</span
           >
         </div>
@@ -92,7 +84,7 @@ onMounted(async () => {
             class="inline-flex items-center justify-center h-5 text-[11px] font-medium text-white bg-red-500 px-3 py-2 rounded"
           >
             <span class=" ">0</span>/{{
-              (all_length ? all_length.paint_length : 0) || 0
+              (all_length ? all_length.sale_length : 0) || 0
             }}</span
           >
         </div>

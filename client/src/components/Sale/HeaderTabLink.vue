@@ -17,7 +17,6 @@ const spinning_length = ref();
 const provide_length = ref();
 const getAllLength = async () => {
   const all_length = await SaleLegalService.getAllLength();
-  console.log(all_length);
   sale_length.value = all_length.data.sale_length;
   paint_length.value = all_length.data.paint_length;
   weaving_length.value = all_length.data.weaving_length;

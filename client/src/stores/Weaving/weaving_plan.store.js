@@ -7,12 +7,14 @@ import { defineStore } from "pinia";
 export const WeavingPlanStore = defineStore("WeavingPlan", {
     state: () => {
         return {
-            items: "",
+            item: [],
             card_id: "",
             is_modal: false,
             items: [],
             model: "",
-            is_provide: false
+            is_provide: false,
+            is_active: "",
+            order_id: ""
         };
     },
     actions: {
@@ -25,12 +27,23 @@ export const WeavingPlanStore = defineStore("WeavingPlan", {
                 console.log(err);
             }
         },
+        IsActive(payload) {
+            this.is_active = payload.is_active
+        },
+        async GetAll(status) {
+            try {
+                const data = await WeavingService.getAll(status);
+                this.items = data.data;
+            } catch (err) {
+                console.log(err);
+            }
+        },
         async openModalById(payload) {
             this.card_id = payload.id;
             this.is_modal = payload.is_modal;
-            const data = await SaleLegalService.getOne(payload.id);
-            this.items = Array(data.data);
-            console.log(Array(data.data));
+            const data = await WeavingService.getOne(payload.id);
+            this.item = data.data;
+            this.order_id = data.data[0].in_process_detail._id
         },
 
         async cancelSendReason(payload) {
@@ -61,6 +74,7 @@ export const WeavingPlanStore = defineStore("WeavingPlan", {
                 const data = await WeavingService.create({
                     items: payload.data,
                     card_id: payload.id,
+                    order_id: payload.order_id
                 });
                 loader.hide();
                 const TimeOut = () => {

@@ -4,9 +4,8 @@ import { PaintPlanStore } from "../../stores/Paint/paintPlan.store";
 const store_paint = PaintPlanStore();
 import { storeToRefs } from "pinia";
 const { items, is_active } = storeToRefs(store_paint);
-console.log(items);
-const OpenModalById = async (id) => {
-  await store_paint.openModalById({ id, is_modal: true });
+const openReportModalById = async (id) => {
+  await store_paint.OpenReportModalById({ id });
 };
 </script>
 <template>
@@ -94,6 +93,13 @@ const OpenModalById = async (id) => {
         align="center"
       />
       <el-table-column
+        prop="in_process_detail.delivery_time"
+        label="Muddati"
+        width="190"
+        header-align="center"
+        align="center"
+      />
+      <el-table-column
         fixed="right"
         prop="status"
         label="Holati"
@@ -106,7 +112,7 @@ const OpenModalById = async (id) => {
             to=""
             class="inline-flex items-center text-red bg-[#e4e9e9] hover:bg-[#d7ebeb] font-medium rounded-md text-[12px] w-ful p-[5px] sm:w-auto text-center"
           >
-            {{ scope.row.status }}
+            {{ scope.row.status ? scope.row.status : scope.row.status_weaving }}
           </router-link>
         </template>
       </el-table-column>
@@ -119,14 +125,14 @@ const OpenModalById = async (id) => {
         align="center"
       >
         <template #default="scope">
-          <!-- <router-link
-            v-show="scope.row.order_status === `Bo'yoqqa yuborildi`"
+          <router-link
+            v-show="scope.row.status === `Jarayonda`"
             to=""
-            @click="OpenModalById(scope.row._id)"
-            class="inline-flex items-center ml-2 text-red bg-yellow-300 hover:bg-yellow-400 font-medium rounded-md text-sm w-full sm:w-auto px-3 py-3 text-center"
+            @click="openReportModalById(scope.row._id)"
+            class="inline-flex items-center ml-2 text-red bg-[#36d887] hover:bg-[#3dcc84] font-medium rounded-md text-sm w-full sm:w-auto px-3 py-3 text-center"
           >
-            <i class="text-black fa-sharp fa-solid fa-check fa-xs"></i>
-          </router-link> -->
+            <i class="text-black fa-sharp fa-solid fa-plus fa-xs"></i>
+          </router-link>
           <router-link
             to=""
             class="inline-flex items-center ml-2 text-red bg-red-500 hover:bg-red-600 font-medium rounded-md text-sm w-full sm:w-auto px-3 py-3 text-center"

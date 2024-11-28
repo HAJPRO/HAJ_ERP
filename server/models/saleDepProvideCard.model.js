@@ -3,7 +3,6 @@ const SaleDepProvideCardSchema = new Schema(
   {
     department: { type: String },
     delivery_product_box: { type: Object, required: true },
-    author_id: { type: String },
     author: { type: Schema.ObjectId, ref: "User" },
     status: { type: String, default: "Tasdiqlanmagan" },
     proccess_status: { type: Array },

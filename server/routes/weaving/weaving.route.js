@@ -5,7 +5,7 @@ const DepWeavingController = require("../../controllers/weaving/weaving.controll
 
 const router = express.Router();
 router.get("/weaving_model", DepWeavingController.getModel);
-router.get("/weaving_all", DepWeavingController.getAll);
+router.post("/weaving_all", authMiddleware, DepWeavingController.getAll);
 router.post("/weaving_create", authMiddleware, DepWeavingController.create);
 router.delete(
   "/weaving_delete/:id",
@@ -23,9 +23,13 @@ router.put(
   DepWeavingController.edit
 );
 router.get(
-  "/weaving_get-one/:id",
+  "/weaving_get_one/:id",
   authMiddleware,
   DepWeavingController.getOne
 );
-
+router.post(
+  "/weaving_get_inprocess",
+  authMiddleware,
+  DepWeavingController.getOneFromInProcess
+);
 module.exports = router;

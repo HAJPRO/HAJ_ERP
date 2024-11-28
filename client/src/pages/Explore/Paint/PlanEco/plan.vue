@@ -12,7 +12,9 @@ import ModalConfirm from "../../../../components/Paint/ModalConfirm.vue";
 import ModalForProvide from "../../../../components/Paint/ModalForProvide.vue";
 import InProcessDetailTable from "../../../../components/Paint/InProcessDetailTable.vue";
 import ProvideTable from "../../../../components/Paint/ProvideTable.vue";
-const { is_active } = storeToRefs(store_paint);
+// import ModalDayReport from "../../../../components/Paint/ModalDayReport.vue";
+import ModalDayProdactionReport from "../../../../components/General/ModalDayProdactionReport.vue";
+const { is_active, is_report_modal } = storeToRefs(store_paint);
 const getModel = async () => {
   await store_paint.GetModel();
 };
@@ -33,9 +35,10 @@ onMounted(async () => {
     </template>
   </Title>
   <HeaderTabLink />
-  <MainTable v-if="is_active !== 1 && is_active !== 5" />
-  <InProcessDetailTable v-if="is_active === 1" />
+  <MainTable v-if="is_active === 2" />
+  <InProcessDetailTable v-if="is_active === 1 || is_active === 3" />
   <ProvideTable v-if="is_active === 5" />
+  <ModalDayProdactionReport v-if="is_report_modal === true" />
   <ModalConfirm />
   <ModalForProvide />
 </template>

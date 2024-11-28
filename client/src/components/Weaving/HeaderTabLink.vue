@@ -1,28 +1,26 @@
 <script setup>
-import { ref, onMounted, beforeMount } from "vue";
+import { ref, onMounted } from "vue";
 import { loading } from "../../utils/Loader";
-import { SaleLegalService } from "../../ApiServices/Sale/saleLegal.service";
-import { SaleStore } from "../../stores/Sale/sale.store";
-// import Cookies from "js-cookie";
-// const dep = ref(JSON.parse(Cookies.get("account")).department);
-const store = SaleStore();
+// import { SaleLegalService } from "../../ApiServices/Sale/saleLegal.service";
+import { WeavingPlanStore } from "../../stores/Weaving/weaving_plan.store";
+const store = WeavingPlanStore();
 const all_length = ref();
-const getAllLength = async () => {
-  const loader = loading.show();
-  const data = await SaleLegalService.getAllLength();
-  loader.hide();
-  all_length.value = data.data ? data.data : {};
-};
+// const getAllLength = async () => {
+//   const loader = loading.show();
+//   const data = await SaleLegalService.getAllLength();
+//   loader.hide();
+//   all_length.value = data.data ? data.data : {};
+// };
 
 const getAll = async () => {
   const loader = loading.show();
-  const items = await store.getAll();
+  await store.GetAll({ is_active: isActive.value });
   loader.hide();
 };
 const is_Active = () => {
   store.IsActive({ is_active: isActive.value });
 };
-const isActive = ref(0);
+const isActive = ref(1);
 const ActiveTabLink = (num) => {
   if (num === 0) {
     isActive.value = 0;
@@ -58,7 +56,7 @@ const ActiveTabLink = (num) => {
 
 onMounted(async () => {
   try {
-    await getAllLength(), getAll();
+    await getAll();
     is_Active();
   } catch (err) {
     console.log(err);
@@ -72,8 +70,8 @@ onMounted(async () => {
     <div class="col-span-9 grid-flow-col">
       <router-link
         to=""
-        @click="ActiveTabLink(0)"
-        :class="{ activeTab: isActive === 0 }"
+        @click="ActiveTabLink(1)"
+        :class="{ activeTab: isActive === 1 }"
         class="inline-flex text-[13px] items-center mr-1 px-4 py-1 mb-1 font-medium text-center text-red hover:border-b-2 border-solid border-[#36d887] bg-[#e4e9e9] text-bold rounded"
       >
         <i class="fa-solid fa-info mr-2 fa-xm"></i> Jarayonda
@@ -89,8 +87,8 @@ onMounted(async () => {
       </router-link>
       <router-link
         to=""
-        @click="ActiveTabLink(3)"
-        :class="{ activeTab: isActive === 3 }"
+        @click="ActiveTabLink(2)"
+        :class="{ activeTab: isActive === 2 }"
         class="inline-flex text-[13px] items-center mr-1 px-4 py-1 mb-1 font-medium text-center text-red hover:border-b-2 border-solid border-[#36d887] bg-[#e4e9e9] text-bold rounded"
       >
         <i class="fa-solid fa-info mr-2 fa-xm"></i> Bo'yoq

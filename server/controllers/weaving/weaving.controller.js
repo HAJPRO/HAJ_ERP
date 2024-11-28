@@ -12,8 +12,8 @@ class DepWeavingController {
 
   async getAll(req, res, next) {
     try {
-      const allSale = await DepWeavingService.getAll();
-      res.status(200).json(allSale);
+      const all = await DepWeavingService.getAll({ status: req.body, user: req.user });
+      res.status(200).json(all);
     } catch (error) {
       next(error);
     }
@@ -57,6 +57,14 @@ class DepWeavingController {
   async getOne(req, res, next) {
     try {
       const data = await DepWeavingService.getOne(req.params.id);
+      res.status(200).json(data);
+    } catch (error) {
+      next(error);
+    }
+  }
+  async getOneFromInProcess(req, res, next) {
+    try {
+      const data = await DepWeavingService.getOneFromInProcess(req.body);
       res.status(200).json(data);
     } catch (error) {
       next(error);

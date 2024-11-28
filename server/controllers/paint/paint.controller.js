@@ -71,6 +71,14 @@ class DepPaintController {
       next(error);
     }
   }
+  async getOneFromInProcess(req, res, next) {
+    try {
+      const data = await DepPaintService.getOneFromInProcess(req.body);
+      res.status(200).json(data);
+    } catch (error) {
+      next(error);
+    }
+  }
 
 }
 

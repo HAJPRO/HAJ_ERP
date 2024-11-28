@@ -71,54 +71,43 @@ const DeleteByIdFromArray = (data) => {
   });
   loadArray.value = filterLoad;
 };
-const error_alert = ref(false);
 const responsiblesBillingObj = ref({});
+const formRef = ref();
 const ResponsiblesSendToBilling = () => {
-  if (
-    responsibles.value.from_where === "" ||
-    responsibles.value.to_where === "" ||
-    responsibles.value.receiver === "" ||
-    responsibles.value.sender === "" ||
-    responsibles.value.accountant === "" ||
-    responsibles.value.director === ""
-  ) {
-    error_alert.value = true;
-  } else {
-    responsiblesBillingObj.value = responsibles.value;
-    error_alert.value = false;
-  }
+  responsiblesBillingObj.value = responsibles.value;
 };
-const IsAlert = (id) => {
-  if (id == 1) {
-    error_alert.value = false;
-  } else if (id == 2) {
-    error_alert_load.value = false;
-  }
+const ResponsiblesValidate = async (formRef) => {
+  await formRef.validate((valid) => {
+    if (valid === true) {
+      ResponsiblesSendToBilling();
+    } else {
+      return false;
+    }
+  });
 };
-const error_alert_load = ref(false);
 const loadArray = ref([]);
+const formRefLoad = ref();
 const PlusToLoad = () => {
-  if (
-    load.value.name === "" ||
-    load.value.type === "" ||
-    load.value.color_code === "" ||
-    load.value.raw_material_quantity === "" ||
-    load.value.unit === ""
-  ) {
-    error_alert_load.value = true;
-  } else {
-    load.value.id = Math.floor(Math.random() * 10000000);
-    loadArray.value.push(load.value);
-    error_alert_load.value = false;
-    load.value = {
-      name: "",
-      type: "",
-      color_code: "",
-      raw_material_quantity: "",
-      unit: "",
-    };
-  }
+  load.value.id = Math.floor(Math.random() * 10000000);
+  loadArray.value.push(load.value);
+  load.value = {
+    name: "",
+    type: "",
+    color_code: "",
+    raw_material_quantity: "",
+    unit: "",
+  };
 };
+const PlusToLoadValidate = async (formRefLoad) => {
+  await formRefLoad.validate((valid) => {
+    if (valid === true) {
+      PlusToLoad();
+    } else {
+      return false;
+    }
+  });
+};
+
 const is_trash = ref(true);
 const is_download = ref(false);
 const generateQRCode = async () => {
@@ -175,6 +164,11 @@ const download = () => {
   html2pdf().set(opt).from(element).save();
   // html2pdf(element, opt);
 };
+const rules = ref({
+  required: true,
+  message: `Maydon to'ldirilishi zarur !`,
+  trigger: "blur",
+});
 </script>
 
 <template>
@@ -193,6 +187,7 @@ const download = () => {
         class="text-[15px] font-semibold bg-white rounded shadow hover:shadow-md mt-2"
       >
         <el-form
+          ref="formRef"
           :model="responsibles"
           label-width="auto"
           class="filter-box md:grid md:grid-cols-8 gap-1 sm:flex sm:flex-wrap rounded p-2 mt-1 mb-1 text-[12px]"
@@ -201,17 +196,7 @@ const download = () => {
           status-icon
         >
           <div class="col-span-8">
-            <el-form-item
-              label="№"
-              prop="invoice_number"
-              :rules="[
-                {
-                  required: true,
-                  message: `Maydon to'ldirilishi zarur !`,
-                  trigger: 'blur',
-                },
-              ]"
-            >
+            <el-form-item label="№" prop="invoice_number" :rules="rules">
               <el-input
                 disabled
                 v-model="responsibles.invoice_number"
@@ -222,17 +207,7 @@ const download = () => {
             </el-form-item>
           </div>
           <div class="col-span-8">
-            <el-form-item
-              label="Kimdan"
-              prop="from_where"
-              :rules="[
-                {
-                  required: true,
-                  message: `Maydon to'ldirilishi zarur !`,
-                  trigger: 'blur',
-                },
-              ]"
-            >
+            <el-form-item label="Kimdan" prop="from_where" :rules="rules">
               <el-select
                 :disabled="responsiblesBillingObj.from_where"
                 v-model="responsibles.from_where"
@@ -256,17 +231,7 @@ const download = () => {
             </el-form-item>
           </div>
           <div class="col-span-8">
-            <el-form-item
-              label="Kimga"
-              prop="to_where"
-              :rules="[
-                {
-                  required: true,
-                  message: `Maydon to'ldirilishi zarur !`,
-                  trigger: 'blur',
-                },
-              ]"
-            >
+            <el-form-item label="Kimga" prop="to_where" :rules="rules">
               <el-select
                 :disabled="responsiblesBillingObj.to_where"
                 v-model="responsibles.to_where"
@@ -290,17 +255,7 @@ const download = () => {
             </el-form-item>
           </div>
           <div class="col-span-8">
-            <el-form-item
-              label="Topshiruvchi"
-              prop="sender"
-              :rules="[
-                {
-                  required: true,
-                  message: `Maydon to'ldirilishi zarur !`,
-                  trigger: 'blur',
-                },
-              ]"
-            >
+            <el-form-item label="Topshiruvchi" prop="sender" :rules="rules">
               <el-select
                 :disabled="responsiblesBillingObj.sender"
                 v-model="responsibles.sender"
@@ -324,17 +279,7 @@ const download = () => {
             </el-form-item>
           </div>
           <div class="col-span-8">
-            <el-form-item
-              label="Qabul qiluvchi"
-              prop="receiver"
-              :rules="[
-                {
-                  required: true,
-                  message: `Maydon to'ldirilishi zarur !`,
-                  trigger: 'blur',
-                },
-              ]"
-            >
+            <el-form-item label="Qabul qiluvchi" prop="receiver" :rules="rules">
               <el-select
                 :disabled="responsiblesBillingObj.receiver"
                 v-model="responsibles.receiver"
@@ -358,17 +303,7 @@ const download = () => {
             </el-form-item>
           </div>
           <div class="col-span-8">
-            <el-form-item
-              label="Hisobchi"
-              prop="accountant"
-              :rules="[
-                {
-                  required: true,
-                  message: `Maydon to'ldirilishi zarur !`,
-                  trigger: 'blur',
-                },
-              ]"
-            >
+            <el-form-item label="Hisobchi" prop="accountant" :rules="rules">
               <el-select
                 required
                 :disabled="responsiblesBillingObj.accountant"
@@ -394,17 +329,7 @@ const download = () => {
             </el-form-item>
           </div>
           <div class="col-span-8">
-            <el-form-item
-              label="Rahbar"
-              prop="director"
-              :rules="[
-                {
-                  required: true,
-                  message: `Maydon to'ldirilishi zarur !`,
-                  trigger: 'blur',
-                },
-              ]"
-            >
+            <el-form-item label="Rahbar" prop="director" :rules="rules">
               <el-select
                 required
                 :disabled="responsiblesBillingObj.director"
@@ -435,21 +360,13 @@ const download = () => {
           >
             <el-form-item>
               <el-button
-                @click="ResponsiblesSendToBilling"
+                @click="ResponsiblesValidate(formRef)"
                 style="background-color: #36d887; color: white; border: none"
                 >Yuborish <i class="ml-2 fa-solid fa-arrow-right fa-sm"></i
               ></el-button>
             </el-form-item>
           </div>
         </el-form>
-        <el-alert
-          @click="IsAlert(1)"
-          v-if="error_alert"
-          title="Xatolik !"
-          type="error"
-          description="Barcha maydon to'ldirilishi zarur !"
-          show-icon
-        />
       </div>
 
       <div
@@ -458,6 +375,7 @@ const download = () => {
       >
         <div class="text-[15px] font-semibold bg-white rounded">
           <el-form
+            ref="formRefLoad"
             :model="load"
             label-width="auto"
             class="filter-box md:grid md:grid-cols-8 gap-1 sm:flex sm:flex-wrap rounded p-2 mt-1 mb-1 text-[12px]"
@@ -635,7 +553,7 @@ const download = () => {
             >
               <el-form-item>
                 <el-button
-                  @click="PlusToLoad()"
+                  @click="PlusToLoadValidate(formRefLoad)"
                   style="background-color: #36d887; color: white; border: none"
                   ><i class="mr-2 fa-solid fa-plus fa-sm"></i>Qo'shish
                 </el-button>

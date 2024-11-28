@@ -1,783 +1,457 @@
 <template>
   <div class="">
-    <Title>
+    <!-- <Title>
       <template v-slot:title>
         <h3>Dashboard</h3>
       </template>
-    </Title>
-<div class="grid grid-cols-3 mt-4">
-    <div
-      class="max-w-sm w-full bg-white rounded-lg shadow dark:bg-gray-800 p-4 md:p-6"
-    >
-      <div
-        class="flex justify-between pb-4 mb-4 border-b border-gray-200 dark:border-gray-700"
-      >
-        <div class="flex items-center">
-          <div
-            class="w-12 h-12 rounded-lg bg-gray-100 dark:bg-gray-700 flex items-center justify-center me-3"
-          >
-            <svg
-              class="w-6 h-6 text-gray-500 dark:text-gray-400"
-              aria-hidden="true"
-              xmlns="http://www.w3.org/2000/svg"
-              fill="currentColor"
-              viewBox="0 0 20 19"
-            >
-              <path
-                d="M14.5 0A3.987 3.987 0 0 0 11 2.1a4.977 4.977 0 0 1 3.9 5.858A3.989 3.989 0 0 0 14.5 0ZM9 13h2a4 4 0 0 1 4 4v2H5v-2a4 4 0 0 1 4-4Z"
-              />
-              <path
-                d="M5 19h10v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2ZM5 7a5.008 5.008 0 0 1 4-4.9 3.988 3.988 0 1 0-3.9 5.859A4.974 4.974 0 0 1 5 7Zm5 3a3 3 0 1 0 0-6 3 3 0 0 0 0 6Zm5-1h-.424a5.016 5.016 0 0 1-1.942 2.232A6.007 6.007 0 0 1 17 17h2a1 1 0 0 0 1-1v-2a5.006 5.006 0 0 0-5-5ZM5.424 9H5a5.006 5.006 0 0 0-5 5v2a1 1 0 0 0 1 1h2a6.007 6.007 0 0 1 4.366-5.768A5.016 5.016 0 0 1 5.424 9Z"
-              />
-            </svg>
-          </div>
-          <div>
-            <h5
-              class="leading-none text-2xl font-bold text-gray-900 dark:text-white pb-1"
-            >
-              3.4k
-            </h5>
-            <p class="text-sm font-normal text-gray-500 dark:text-gray-400">
-              Leads generated per week
-            </p>
-          </div>
-        </div>
-        <div>
-          <span
-            class="bg-green-100 text-green-800 text-xs font-medium inline-flex items-center px-2.5 py-1 rounded-md dark:bg-green-900 dark:text-green-300"
-          >
-            <svg
-              class="w-2.5 h-2.5 me-1.5"
-              aria-hidden="true"
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 10 14"
-            >
-              <path
-                stroke="currentColor"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M5 13V1m0 0L1 5m4-4 4 4"
-              />
-            </svg>
-            42.5%
-          </span>
-        </div>
-      </div>
-
-      <div class="grid grid-cols-2">
-        <dl class="flex items-center">
-          <dt class="text-gray-500 dark:text-gray-400 text-sm font-normal me-1">
-            Money spent:
-          </dt>
-          <dd class="text-gray-900 text-sm dark:text-white font-semibold">
-            $3,232
-          </dd>
-        </dl>
-        <dl class="flex items-center justify-end">
-          <dt class="text-gray-500 dark:text-gray-400 text-sm font-normal me-1">
-            Conversion rate:
-          </dt>
-          <dd class="text-gray-900 text-sm dark:text-white font-semibold">
-            1.2%
-          </dd>
-        </dl>
-      </div>
-
-      <div id="column-chart"></div>
-      <div
-        class="grid grid-cols-1 items-center border-gray-200 border-t dark:border-gray-700 justify-between"
-      >
-        <div class="flex justify-between items-center pt-5">
-          <!-- Button -->
-          <button
-            id="dropdownDefaultButton"
-            data-dropdown-toggle="lastDaysdropdown"
-            data-dropdown-placement="bottom"
-            class="text-sm font-medium text-gray-500 dark:text-gray-400 hover:text-gray-900 text-center inline-flex items-center dark:hover:text-white"
-            type="button"
-          >
-            Last 7 days
-            <svg
-              class="w-2.5 m-2.5 ms-1.5"
-              aria-hidden="true"
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 10 6"
-            >
-              <path
-                stroke="currentColor"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="m1 1 4 4 4-4"
-              />
-            </svg>
-          </button>
-          <!-- Dropdown menu -->
-          <div
-            id="lastDaysdropdown"
-            class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700"
-          >
-            <ul
-              class="py-2 text-sm text-gray-700 dark:text-gray-200"
-              aria-labelledby="dropdownDefaultButton"
-            >
-              <li>
-                <a
-                  href="#"
-                  class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
-                  >Yesterday</a
-                >
-              </li>
-              <li>
-                <a
-                  href="#"
-                  class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
-                  >Today</a
-                >
-              </li>
-              <li>
-                <a
-                  href="#"
-                  class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
-                  >Last 7 days</a
-                >
-              </li>
-              <li>
-                <a
-                  href="#"
-                  class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
-                  >Last 30 days</a
-                >
-              </li>
-              <li>
-                <a
-                  href="#"
-                  class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
-                  >Last 90 days</a
-                >
-              </li>
-            </ul>
-          </div>
-          <a
-            href="#"
-            class="uppercase text-sm font-semibold inline-flex items-center rounded-lg text-blue-600 hover:text-blue-700 dark:hover:text-blue-500 hover:bg-gray-100 dark:hover:bg-gray-700 dark:focus:ring-gray-700 dark:border-gray-700 px-3 py-2"
-          >
-            Leads Report
-            <svg
-              class="w-2.5 h-2.5 ms-1.5 rtl:rotate-180"
-              aria-hidden="true"
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 6 10"
-            >
-              <path
-                stroke="currentColor"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="m1 9 4-4-4-4"
-              />
-            </svg>
-          </a>
-        </div>
-      </div>
-    </div>
-
-    <div
-      id="modal"
-      tabindex="-1"
-      aria-hidden="true"
-      class="fixed top-0 left-0 right-0 z-50 hidden w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full"
-    >
-      <div class="relative w-full max-w-2xl max-h-full">
-        <!-- Modal content -->
-        <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
-          <!-- Modal header -->
-          <div
-            class="flex items-start justify-between p-5 border-b rounded-t dark:border-gray-600"
-          >
-            <h3
-              class="text-xl font-semibold text-gray-900 lg:text-2xl dark:text-white"
-            >
-              Terms of Service
-            </h3>
-            <button
-              id="closeButton"
-              type="button"
-              class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white"
+    </Title> -->
+    <div class="flex antialiased text-gray-800 h-[505px]">
+      <div class="flex flex-row h-full w-full">
+        <div class="flex flex-col py-2 pl-4 pr-4 w-64 bg-white flex-shrink-0">
+          <div class="flex flex-row items-center justify-center h-12 w-full">
+            <div
+              class="flex items-center justify-center rounded-2xl text-indigo-700 bg-indigo-100 h-10 w-10"
             >
               <svg
-                class="w-5 h-5"
-                fill="currentColor"
-                viewBox="0 0 20 20"
+                class="w-6 h-6"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
                 xmlns="http://www.w3.org/2000/svg"
               >
                 <path
-                  fill-rule="evenodd"
-                  d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
-                  clip-rule="evenodd"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"
                 ></path>
               </svg>
-            </button>
+            </div>
+            <div class="ml-2 font-bold text-md text-gray-600">HAJ CHAT</div>
           </div>
-          <!-- Modal body -->
-          <div class="p-6 space-y-6">
-            <p
-              class="text-base leading-relaxed text-gray-500 dark:text-gray-400"
-            >
-              With less than a month to go before the European Union enacts new
-              consumer privacy laws for its citizens, companies around the world
-              are updating their terms of service agreements to comply.
-            </p>
-            <p
-              class="text-base leading-relaxed text-gray-500 dark:text-gray-400"
-            >
-              The European Union’s General Data Protection Regulation (G.D.P.R.)
-              goes into effect on May 25 and is meant to ensure a common set of
-              data rights in the European Union. It requires organizations to
-              notify users as soon as possible of high-risk data breaches that
-              could personally affect them.
-            </p>
-          </div>
-          <!-- Modal footer -->
           <div
-            class="flex items-center p-6 space-x-2 border-t border-gray-200 rounded-b dark:border-gray-600"
+            class="flex flex-col items-center bg-indigo-100 border border-gray-200 mt-2 w-full py-2 rounded-lg"
           >
-            <button
-              type="button"
-              class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-            >
-              I accept
-            </button>
-            <button
-              type="button"
-              class="text-gray-500 bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-blue-300 rounded-lg border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500 dark:hover:text-white dark:hover:bg-gray-600"
-            >
-              Decline
-            </button>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div
-      class="max-w-sm w-full bg-white rounded-lg shadow dark:bg-gray-800 p-4 md:p-6"
-    >
-      <div
-        class="flex justify-between pb-4 mb-4 border-b border-gray-200 dark:border-gray-700"
-      >
-        <div class="flex items-center">
-          <div
-            class="w-12 h-12 rounded-lg bg-gray-100 dark:bg-gray-700 flex items-center justify-center me-3"
-          >
-            <svg
-              class="w-6 h-6 text-gray-500 dark:text-gray-400"
-              aria-hidden="true"
-              xmlns="http://www.w3.org/2000/svg"
-              fill="currentColor"
-              viewBox="0 0 20 19"
-            >
-              <path
-                d="M14.5 0A3.987 3.987 0 0 0 11 2.1a4.977 4.977 0 0 1 3.9 5.858A3.989 3.989 0 0 0 14.5 0ZM9 13h2a4 4 0 0 1 4 4v2H5v-2a4 4 0 0 1 4-4Z"
+            <div class="h-9 w-9 rounded-2xl border">
+              <img
+                src="https://sumanta.gallerycdn.vsassets.io/extensions/sumanta/nodejs-developer-extension-pack/0.0.1/1674193532749/Microsoft.VisualStudio.Services.Icons.Default"
+                alt="Avatar"
+                class="h-full w-full"
               />
-              <path
-                d="M5 19h10v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2ZM5 7a5.008 5.008 0 0 1 4-4.9 3.988 3.988 0 1 0-3.9 5.859A4.974 4.974 0 0 1 5 7Zm5 3a3 3 0 1 0 0-6 3 3 0 0 0 0 6Zm5-1h-.424a5.016 5.016 0 0 1-1.942 2.232A6.007 6.007 0 0 1 17 17h2a1 1 0 0 0 1-1v-2a5.006 5.006 0 0 0-5-5ZM5.424 9H5a5.006 5.006 0 0 0-5 5v2a1 1 0 0 0 1 1h2a6.007 6.007 0 0 1 4.366-5.768A5.016 5.016 0 0 1 5.424 9Z"
-              />
-            </svg>
-          </div>
-          <div>
-            <h5
-              class="leading-none text-2xl font-bold text-gray-900 dark:text-white pb-1"
-            >
-              3.4k
-            </h5>
-            <p class="text-sm font-normal text-gray-500 dark:text-gray-400">
-              Leads generated per week
-            </p>
-          </div>
-        </div>
-        <div>
-          <span
-            class="bg-green-100 text-green-800 text-xs font-medium inline-flex items-center px-2.5 py-1 rounded-md dark:bg-green-900 dark:text-green-300"
-          >
-            <svg
-              class="w-2.5 h-2.5 me-1.5"
-              aria-hidden="true"
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 10 14"
-            >
-              <path
-                stroke="currentColor"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M5 13V1m0 0L1 5m4-4 4 4"
-              />
-            </svg>
-            42.5%
-          </span>
-        </div>
-      </div>
-
-      <div class="grid grid-cols-2">
-        <dl class="flex items-center">
-          <dt class="text-gray-500 dark:text-gray-400 text-sm font-normal me-1">
-            Money spent:
-          </dt>
-          <dd class="text-gray-900 text-sm dark:text-white font-semibold">
-            $3,232
-          </dd>
-        </dl>
-        <dl class="flex items-center justify-end">
-          <dt class="text-gray-500 dark:text-gray-400 text-sm font-normal me-1">
-            Conversion rate:
-          </dt>
-          <dd class="text-gray-900 text-sm dark:text-white font-semibold">
-            1.2%
-          </dd>
-        </dl>
-      </div>
-
-      <div id="column-chart"></div>
-      <div
-        class="grid grid-cols-1 items-center border-gray-200 border-t dark:border-gray-700 justify-between"
-      >
-        <div class="flex justify-between items-center pt-5">
-          <!-- Button -->
-          <button
-            id="dropdownDefaultButton"
-            data-dropdown-toggle="lastDaysdropdown"
-            data-dropdown-placement="bottom"
-            class="text-sm font-medium text-gray-500 dark:text-gray-400 hover:text-gray-900 text-center inline-flex items-center dark:hover:text-white"
-            type="button"
-          >
-            Last 7 days
-            <svg
-              class="w-2.5 m-2.5 ms-1.5"
-              aria-hidden="true"
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 10 6"
-            >
-              <path
-                stroke="currentColor"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="m1 1 4 4 4-4"
-              />
-            </svg>
-          </button>
-          <!-- Dropdown menu -->
-          <div
-            id="lastDaysdropdown"
-            class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700"
-          >
-            <ul
-              class="py-2 text-sm text-gray-700 dark:text-gray-200"
-              aria-labelledby="dropdownDefaultButton"
-            >
-              <li>
-                <a
-                  href="#"
-                  class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
-                  >Yesterday</a
-                >
-              </li>
-              <li>
-                <a
-                  href="#"
-                  class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
-                  >Today</a
-                >
-              </li>
-              <li>
-                <a
-                  href="#"
-                  class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
-                  >Last 7 days</a
-                >
-              </li>
-              <li>
-                <a
-                  href="#"
-                  class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
-                  >Last 30 days</a
-                >
-              </li>
-              <li>
-                <a
-                  href="#"
-                  class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
-                  >Last 90 days</a
-                >
-              </li>
-            </ul>
-          </div>
-          <a
-            href="#"
-            class="uppercase text-sm font-semibold inline-flex items-center rounded-lg text-blue-600 hover:text-blue-700 dark:hover:text-blue-500 hover:bg-gray-100 dark:hover:bg-gray-700 dark:focus:ring-gray-700 dark:border-gray-700 px-3 py-2"
-          >
-            Leads Report
-            <svg
-              class="w-2.5 h-2.5 ms-1.5 rtl:rotate-180"
-              aria-hidden="true"
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 6 10"
-            >
-              <path
-                stroke="currentColor"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="m1 9 4-4-4-4"
-              />
-            </svg>
-          </a>
-        </div>
-      </div>
-    </div>
-
-    <div
-      id="modal"
-      tabindex="-1"
-      aria-hidden="true"
-      class="fixed top-0 left-0 right-0 z-50 hidden w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full"
-    >
-      <div class="relative w-full max-w-2xl max-h-full">
-        <!-- Modal content -->
-        <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
-          <!-- Modal header -->
-          <div
-            class="flex items-start justify-between p-5 border-b rounded-t dark:border-gray-600"
-          >
-            <h3
-              class="text-xl font-semibold text-gray-900 lg:text-2xl dark:text-white"
-            >
-              Terms of Service
-            </h3>
-            <button
-              id="closeButton"
-              type="button"
-              class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white"
-            >
-              <svg
-                class="w-5 h-5"
-                fill="currentColor"
-                viewBox="0 0 20 20"
-                xmlns="http://www.w3.org/2000/svg"
+            </div>
+            <div class="text-sm font-semibold mt-2">Umid Shomurodov</div>
+            <div class="text-xs text-gray-500">Paint department</div>
+            <div class="flex flex-row items-center mt-3">
+              <div
+                class="flex flex-col justify-center h-4 w-8 bg-indigo-500 rounded-full"
               >
-                <path
-                  fill-rule="evenodd"
-                  d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
-                  clip-rule="evenodd"
-                ></path>
-              </svg>
-            </button>
+                <div class="h-3 w-3 bg-white rounded-full self-end mr-1"></div>
+              </div>
+              <div class="leading-none ml-1 text-xs">Active</div>
+            </div>
           </div>
-          <!-- Modal body -->
-          <div class="p-6 space-y-6">
-            <p
-              class="text-base leading-relaxed text-gray-500 dark:text-gray-400"
-            >
-              With less than a month to go before the European Union enacts new
-              consumer privacy laws for its citizens, companies around the world
-              are updating their terms of service agreements to comply.
-            </p>
-            <p
-              class="text-base leading-relaxed text-gray-500 dark:text-gray-400"
-            >
-              The European Union’s General Data Protection Regulation (G.D.P.R.)
-              goes into effect on May 25 and is meant to ensure a common set of
-              data rights in the European Union. It requires organizations to
-              notify users as soon as possible of high-risk data breaches that
-              could personally affect them.
-            </p>
-          </div>
-          <!-- Modal footer -->
-          <div
-            class="flex items-center p-6 space-x-2 border-t border-gray-200 rounded-b dark:border-gray-600"
-          >
-            <button
-              type="button"
-              class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-            >
-              I accept
-            </button>
-            <button
-              type="button"
-              class="text-gray-500 bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-blue-300 rounded-lg border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500 dark:hover:text-white dark:hover:bg-gray-600"
-            >
-              Decline
-            </button>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div
-      class="max-w-sm w-full bg-white rounded-lg shadow dark:bg-gray-800 p-4 md:p-6"
-    >
-      <div
-        class="flex justify-between pb-4 mb-4 border-b border-gray-200 dark:border-gray-700"
-      >
-        <div class="flex items-center">
-          <div
-            class="w-12 h-12 rounded-lg bg-gray-100 dark:bg-gray-700 flex items-center justify-center me-3"
-          >
-            <svg
-              class="w-6 h-6 text-gray-500 dark:text-gray-400"
-              aria-hidden="true"
-              xmlns="http://www.w3.org/2000/svg"
-              fill="currentColor"
-              viewBox="0 0 20 19"
-            >
-              <path
-                d="M14.5 0A3.987 3.987 0 0 0 11 2.1a4.977 4.977 0 0 1 3.9 5.858A3.989 3.989 0 0 0 14.5 0ZM9 13h2a4 4 0 0 1 4 4v2H5v-2a4 4 0 0 1 4-4Z"
-              />
-              <path
-                d="M5 19h10v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2ZM5 7a5.008 5.008 0 0 1 4-4.9 3.988 3.988 0 1 0-3.9 5.859A4.974 4.974 0 0 1 5 7Zm5 3a3 3 0 1 0 0-6 3 3 0 0 0 0 6Zm5-1h-.424a5.016 5.016 0 0 1-1.942 2.232A6.007 6.007 0 0 1 17 17h2a1 1 0 0 0 1-1v-2a5.006 5.006 0 0 0-5-5ZM5.424 9H5a5.006 5.006 0 0 0-5 5v2a1 1 0 0 0 1 1h2a6.007 6.007 0 0 1 4.366-5.768A5.016 5.016 0 0 1 5.424 9Z"
-              />
-            </svg>
-          </div>
-          <div>
-            <h5
-              class="leading-none text-2xl font-bold text-gray-900 dark:text-white pb-1"
-            >
-              3.4k
-            </h5>
-            <p class="text-sm font-normal text-gray-500 dark:text-gray-400">
-              Leads generated per week
-            </p>
-          </div>
-        </div>
-        <div>
-          <span
-            class="bg-green-100 text-green-800 text-xs font-medium inline-flex items-center px-2.5 py-1 rounded-md dark:bg-green-900 dark:text-green-300"
-          >
-            <svg
-              class="w-2.5 h-2.5 me-1.5"
-              aria-hidden="true"
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 10 14"
-            >
-              <path
-                stroke="currentColor"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M5 13V1m0 0L1 5m4-4 4 4"
-              />
-            </svg>
-            42.5%
-          </span>
-        </div>
-      </div>
-
-      <div class="grid grid-cols-2">
-        <dl class="flex items-center">
-          <dt class="text-gray-500 dark:text-gray-400 text-sm font-normal me-1">
-            Money spent:
-          </dt>
-          <dd class="text-gray-900 text-sm dark:text-white font-semibold">
-            $3,232
-          </dd>
-        </dl>
-        <dl class="flex items-center justify-end">
-          <dt class="text-gray-500 dark:text-gray-400 text-sm font-normal me-1">
-            Conversion rate:
-          </dt>
-          <dd class="text-gray-900 text-sm dark:text-white font-semibold">
-            1.2%
-          </dd>
-        </dl>
-      </div>
-
-      <div id="column-chart"></div>
-      <div
-        class="grid grid-cols-1 items-center border-gray-200 border-t dark:border-gray-700 justify-between"
-      >
-        <div class="flex justify-between items-center pt-5">
-          <!-- Button -->
-          <button
-            id="dropdownDefaultButton"
-            data-dropdown-toggle="lastDaysdropdown"
-            data-dropdown-placement="bottom"
-            class="text-sm font-medium text-gray-500 dark:text-gray-400 hover:text-gray-900 text-center inline-flex items-center dark:hover:text-white"
-            type="button"
-          >
-            Last 7 days
-            <svg
-              class="w-2.5 m-2.5 ms-1.5"
-              aria-hidden="true"
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 10 6"
-            >
-              <path
-                stroke="currentColor"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="m1 1 4 4 4-4"
-              />
-            </svg>
-          </button>
-          <!-- Dropdown menu -->
-          <div
-            id="lastDaysdropdown"
-            class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700"
-          >
-            <ul
-              class="py-2 text-sm text-gray-700 dark:text-gray-200"
-              aria-labelledby="dropdownDefaultButton"
-            >
-              <li>
-                <a
-                  href="#"
-                  class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
-                  >Yesterday</a
-                >
-              </li>
-              <li>
-                <a
-                  href="#"
-                  class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
-                  >Today</a
-                >
-              </li>
-              <li>
-                <a
-                  href="#"
-                  class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
-                  >Last 7 days</a
-                >
-              </li>
-              <li>
-                <a
-                  href="#"
-                  class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
-                  >Last 30 days</a
-                >
-              </li>
-              <li>
-                <a
-                  href="#"
-                  class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
-                  >Last 90 days</a
-                >
-              </li>
-            </ul>
-          </div>
-          <a
-            href="#"
-            class="uppercase text-sm font-semibold inline-flex items-center rounded-lg text-blue-600 hover:text-blue-700 dark:hover:text-blue-500 hover:bg-gray-100 dark:hover:bg-gray-700 dark:focus:ring-gray-700 dark:border-gray-700 px-3 py-2"
-          >
-            Leads Report
-            <svg
-              class="w-2.5 h-2.5 ms-1.5 rtl:rotate-180"
-              aria-hidden="true"
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 6 10"
-            >
-              <path
-                stroke="currentColor"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="m1 9 4-4-4-4"
-              />
-            </svg>
-          </a>
-        </div>
-      </div>
-    </div>
-
-    <div
-      id="modal"
-      tabindex="-1"
-      aria-hidden="true"
-      class="fixed top-0 left-0 right-0 z-50 hidden w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full"
-    >
-      <div class="relative w-full max-w-2xl max-h-full">
-        <!-- Modal content -->
-        <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
-          <!-- Modal header -->
-          <div
-            class="flex items-start justify-between p-5 border-b rounded-t dark:border-gray-600"
-          >
-            <h3
-              class="text-xl font-semibold text-gray-900 lg:text-2xl dark:text-white"
-            >
-              Terms of Service
-            </h3>
-            <button
-              id="closeButton"
-              type="button"
-              class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white"
-            >
-              <svg
-                class="w-5 h-5"
-                fill="currentColor"
-                viewBox="0 0 20 20"
-                xmlns="http://www.w3.org/2000/svg"
+          <div class="flex flex-col mt-8">
+            <div class="flex flex-row items-center justify-between text-xs">
+              <span class="font-bold">Active Conversations</span>
+              <span
+                class="flex items-center justify-center bg-gray-300 h-4 w-4 rounded-full"
+                >4</span
               >
-                <path
-                  fill-rule="evenodd"
-                  d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
-                  clip-rule="evenodd"
-                ></path>
-              </svg>
-            </button>
-          </div>
-          <!-- Modal body -->
-          <div class="p-6 space-y-6">
-            <p
-              class="text-base leading-relaxed text-gray-500 dark:text-gray-400"
+            </div>
+            <div
+              class="flex flex-col space-y-1 mt-4 -mx-2 h-56 overflow-y-auto"
             >
-              With less than a month to go before the European Union enacts new
-              consumer privacy laws for its citizens, companies around the world
-              are updating their terms of service agreements to comply.
-            </p>
-            <p
-              class="text-base leading-relaxed text-gray-500 dark:text-gray-400"
+              <button
+                class="flex flex-row items-center hover:bg-gray-100 rounded-xl p-2"
+              >
+                <div
+                  class="flex items-center justify-center h-8 w-8 bg-indigo-200 rounded-full"
+                >
+                  H
+                </div>
+                <div class="ml-2 text-sm font-semibold">Henry Boyd</div>
+              </button>
+              <button
+                class="flex flex-row items-center hover:bg-gray-100 rounded-xl p-2"
+              >
+                <div
+                  class="flex items-center justify-center h-8 w-8 bg-gray-200 rounded-full"
+                >
+                  M
+                </div>
+                <div class="ml-2 text-sm font-semibold">Marta Curtis</div>
+                <div
+                  class="flex items-center justify-center ml-auto text-xs text-white bg-red-500 h-4 w-4 rounded leading-none"
+                >
+                  2
+                </div>
+              </button>
+              <button
+                class="flex flex-row items-center hover:bg-gray-100 rounded-xl p-2"
+              >
+                <div
+                  class="flex items-center justify-center h-8 w-8 bg-orange-200 rounded-full"
+                >
+                  P
+                </div>
+                <div class="ml-2 text-sm font-semibold">Philip Tucker</div>
+              </button>
+              <button
+                class="flex flex-row items-center hover:bg-gray-100 rounded-xl p-2"
+              >
+                <div
+                  class="flex items-center justify-center h-8 w-8 bg-pink-200 rounded-full"
+                >
+                  C
+                </div>
+                <div class="ml-2 text-sm font-semibold">Christine Reid</div>
+              </button>
+              <button
+                class="flex flex-row items-center hover:bg-gray-100 rounded-xl p-2"
+              >
+                <div
+                  class="flex items-center justify-center h-8 w-8 bg-purple-200 rounded-full"
+                >
+                  J
+                </div>
+                <div class="ml-2 text-sm font-semibold">Jerry Guzman</div>
+              </button>
+              <button
+                class="flex flex-row items-center hover:bg-gray-100 rounded-xl p-2"
+              >
+                <div
+                  class="flex items-center justify-center h-8 w-8 bg-purple-200 rounded-full"
+                >
+                  K
+                </div>
+                <div class="ml-2 text-sm font-semibold">Kamel Guzman</div>
+              </button>
+              <button
+                class="flex flex-row items-center hover:bg-gray-100 rounded-xl p-2"
+              >
+                <div
+                  class="flex items-center justify-center h-8 w-8 bg-purple-200 rounded-full"
+                >
+                  S
+                </div>
+                <div class="ml-2 text-sm font-semibold">Sasha Guzman</div>
+              </button>
+              <button
+                class="flex flex-row items-center hover:bg-gray-100 rounded-xl p-2"
+              >
+                <div
+                  class="flex items-center justify-center h-8 w-8 bg-purple-200 rounded-full"
+                >
+                  G
+                </div>
+                <div class="ml-2 text-sm font-semibold">Guzman</div>
+              </button>
+            </div>
+            <!-- <div
+              class="flex flex-row items-center justify-between text-xs mt-6"
             >
-              The European Union’s General Data Protection Regulation (G.D.P.R.)
-              goes into effect on May 25 and is meant to ensure a common set of
-              data rights in the European Union. It requires organizations to
-              notify users as soon as possible of high-risk data breaches that
-              could personally affect them.
-            </p>
+              <span class="font-bold">Archivied</span>
+              <span
+                class="flex items-center justify-center bg-gray-300 h-4 w-4 rounded-full"
+                >7</span
+              >
+            </div> -->
+            <!-- <div class="flex flex-col space-y-1 mt-4 -mx-2">
+              <button
+                class="flex flex-row items-center hover:bg-gray-100 rounded-xl p-2"
+              >
+                <div
+                  class="flex items-center justify-center h-8 w-8 bg-indigo-200 rounded-full"
+                >
+                  H
+                </div>
+                <div class="ml-2 text-sm font-semibold">Henry Boyd</div>
+              </button>
+            </div> -->
           </div>
-          <!-- Modal footer -->
+        </div>
+        <div class="flex flex-col flex-auto h-full">
           <div
-            class="flex items-center p-6 space-x-2 border-t border-gray-200 rounded-b dark:border-gray-600"
+            class="flex flex-col flex-auto flex-shrink-0 rounded-2xl bg-gray-100 h-full p-1"
           >
-            <button
-              type="button"
-              class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+            <div class="flex flex-col h-full overflow-x-auto mb-4">
+              <div class="flex flex-col h-full">
+                <div class="grid grid-cols-12 gap-y-2">
+                  <div class="col-start-1 col-end-8 p-3 rounded-lg">
+                    <div class="flex flex-row items-center">
+                      <div
+                        class="flex items-center justify-center h-10 w-10 rounded-full bg-indigo-500 flex-shrink-0"
+                      >
+                        A
+                      </div>
+                      <div
+                        class="relative ml-3 text-sm bg-white py-2 px-4 shadow rounded-xl"
+                      >
+                        <div>Hey How are you today?</div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-start-1 col-end-8 p-3 rounded-lg">
+                    <div class="flex flex-row items-center">
+                      <div
+                        class="flex items-center justify-center h-10 w-10 rounded-full bg-indigo-500 flex-shrink-0"
+                      >
+                        A
+                      </div>
+                      <div
+                        class="relative ml-3 text-sm bg-white py-2 px-4 shadow rounded-xl"
+                      >
+                        <div>
+                          Lorem ipsum dolor sit amet, consectetur adipisicing
+                          elit. Vel ipsa commodi illum saepe numquam maxime
+                          asperiores voluptate sit, minima perspiciatis.
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-start-6 col-end-13 p-3 rounded-lg">
+                    <div
+                      class="flex items-center justify-start flex-row-reverse"
+                    >
+                      <div
+                        class="flex items-center justify-center h-10 w-10 rounded-full bg-indigo-500 flex-shrink-0"
+                      >
+                        A
+                      </div>
+                      <div
+                        class="relative mr-3 text-sm bg-indigo-100 py-2 px-4 shadow rounded-xl"
+                      >
+                        <div>I'm ok what about you?</div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-start-6 col-end-13 p-3 rounded-lg">
+                    <div
+                      class="flex items-center justify-start flex-row-reverse"
+                    >
+                      <div
+                        class="flex items-center justify-center h-10 w-10 rounded-full bg-indigo-500 flex-shrink-0"
+                      >
+                        A
+                      </div>
+                      <div
+                        class="relative mr-3 text-sm bg-indigo-100 py-2 px-4 shadow rounded-xl"
+                      >
+                        <div>
+                          Lorem ipsum dolor sit, amet consectetur adipisicing. ?
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-start-1 col-end-8 p-3 rounded-lg">
+                    <div class="flex flex-row items-center">
+                      <div
+                        class="flex items-center justify-center h-10 w-10 rounded-full bg-indigo-500 flex-shrink-0"
+                      >
+                        A
+                      </div>
+                      <div
+                        class="relative ml-3 text-sm bg-white py-2 px-4 shadow rounded-xl"
+                      >
+                        <div>Lorem ipsum dolor sit amet !</div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-start-6 col-end-13 p-3 rounded-lg">
+                    <div
+                      class="flex items-center justify-start flex-row-reverse"
+                    >
+                      <div
+                        class="flex items-center justify-center h-10 w-10 rounded-full bg-indigo-500 flex-shrink-0"
+                      >
+                        A
+                      </div>
+                      <div
+                        class="relative mr-3 text-sm bg-indigo-100 py-2 px-4 shadow rounded-xl"
+                      >
+                        <div>
+                          Lorem ipsum dolor sit, amet consectetur adipisicing. ?
+                        </div>
+                        <div
+                          class="absolute text-xs bottom-0 right-0 -mb-5 mr-2 text-gray-500"
+                        >
+                          Seen
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-start-1 col-end-8 p-3 rounded-lg">
+                    <div class="flex flex-row items-center">
+                      <div
+                        class="flex items-center justify-center h-10 w-10 rounded-full bg-indigo-500 flex-shrink-0"
+                      >
+                        A
+                      </div>
+                      <div
+                        class="relative ml-3 text-sm bg-white py-2 px-4 shadow rounded-xl"
+                      >
+                        <div>
+                          Lorem ipsum dolor sit amet consectetur adipisicing
+                          elit. Perspiciatis, in.
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-start-1 col-end-8 p-3 rounded-lg">
+                    <div class="flex flex-row items-center">
+                      <div
+                        class="flex items-center justify-center h-10 w-10 rounded-full bg-indigo-500 flex-shrink-0"
+                      >
+                        A
+                      </div>
+                      <div
+                        class="relative ml-3 text-sm bg-white py-2 px-4 shadow rounded-xl"
+                      >
+                        <div class="flex flex-row items-center">
+                          <button
+                            class="flex items-center justify-center bg-indigo-600 hover:bg-indigo-800 rounded-full h-8 w-10"
+                          >
+                            <svg
+                              class="w-6 h-6 text-white"
+                              fill="none"
+                              stroke="currentColor"
+                              viewBox="0 0 24 24"
+                              xmlns="http://www.w3.org/2000/svg"
+                            >
+                              <path
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                stroke-width="1.5"
+                                d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"
+                              ></path>
+                              <path
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                stroke-width="1.5"
+                                d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                              ></path>
+                            </svg>
+                          </button>
+                          <div
+                            class="flex flex-row items-center space-x-px ml-4"
+                          >
+                            <div class="h-2 w-1 bg-gray-500 rounded-lg"></div>
+                            <div class="h-2 w-1 bg-gray-500 rounded-lg"></div>
+                            <div class="h-4 w-1 bg-gray-500 rounded-lg"></div>
+                            <div class="h-8 w-1 bg-gray-500 rounded-lg"></div>
+                            <div class="h-8 w-1 bg-gray-500 rounded-lg"></div>
+                            <div class="h-10 w-1 bg-gray-500 rounded-lg"></div>
+                            <div class="h-10 w-1 bg-gray-500 rounded-lg"></div>
+                            <div class="h-12 w-1 bg-gray-500 rounded-lg"></div>
+                            <div class="h-10 w-1 bg-gray-500 rounded-lg"></div>
+                            <div class="h-6 w-1 bg-gray-500 rounded-lg"></div>
+                            <div class="h-5 w-1 bg-gray-500 rounded-lg"></div>
+                            <div class="h-4 w-1 bg-gray-500 rounded-lg"></div>
+                            <div class="h-3 w-1 bg-gray-500 rounded-lg"></div>
+                            <div class="h-2 w-1 bg-gray-500 rounded-lg"></div>
+                            <div class="h-2 w-1 bg-gray-500 rounded-lg"></div>
+                            <div class="h-2 w-1 bg-gray-500 rounded-lg"></div>
+                            <div class="h-10 w-1 bg-gray-500 rounded-lg"></div>
+                            <div class="h-2 w-1 bg-gray-500 rounded-lg"></div>
+                            <div class="h-10 w-1 bg-gray-500 rounded-lg"></div>
+                            <div class="h-8 w-1 bg-gray-500 rounded-lg"></div>
+                            <div class="h-8 w-1 bg-gray-500 rounded-lg"></div>
+                            <div class="h-1 w-1 bg-gray-500 rounded-lg"></div>
+                            <div class="h-1 w-1 bg-gray-500 rounded-lg"></div>
+                            <div class="h-2 w-1 bg-gray-500 rounded-lg"></div>
+                            <div class="h-8 w-1 bg-gray-500 rounded-lg"></div>
+                            <div class="h-8 w-1 bg-gray-500 rounded-lg"></div>
+                            <div class="h-2 w-1 bg-gray-500 rounded-lg"></div>
+                            <div class="h-2 w-1 bg-gray-500 rounded-lg"></div>
+                            <div class="h-2 w-1 bg-gray-500 rounded-lg"></div>
+                            <div class="h-2 w-1 bg-gray-500 rounded-lg"></div>
+                            <div class="h-4 w-1 bg-gray-500 rounded-lg"></div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div
+              class="flex flex-row items-center h-16 rounded-xl bg-white w-full px-4"
             >
-              I accept
-            </button>
-            <button
-              type="button"
-              class="text-gray-500 bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-blue-300 rounded-lg border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500 dark:hover:text-white dark:hover:bg-gray-600"
-            >
-              Decline
-            </button>
+              <div>
+                <button
+                  class="flex items-center justify-center text-gray-400 hover:text-gray-600"
+                >
+                  <svg
+                    class="w-5 h-5"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M15.172 7l-6.586 6.586a2 2 0 102.828 2.828l6.414-6.586a4 4 0 00-5.656-5.656l-6.415 6.585a6 6 0 108.486 8.486L20.5 13"
+                    ></path>
+                  </svg>
+                </button>
+              </div>
+              <div class="flex-grow ml-4">
+                <div class="relative w-full">
+                  <input
+                    type="text"
+                    class="flex w-full border rounded-xl focus:outline-none focus:border-indigo-300 pl-4 h-10"
+                  />
+                  <button
+                    class="absolute flex items-center justify-center h-full w-12 right-0 top-0 text-gray-400 hover:text-gray-600"
+                  >
+                    <svg
+                      class="w-6 h-6"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M14.828 14.828a4 4 0 01-5.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                      ></path>
+                    </svg>
+                  </button>
+                </div>
+              </div>
+              <div class="ml-4">
+                <button
+                  class="flex items-center justify-center bg-indigo-500 hover:bg-indigo-600 rounded-xl text-white px-4 py-1 flex-shrink-0"
+                >
+                  <span>Send</span>
+                  <span class="ml-2">
+                    <svg
+                      class="w-4 h-4 transform rotate-45 -mt-px"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"
+                      ></path>
+                    </svg>
+                  </span>
+                </button>
+              </div>
+            </div>
           </div>
         </div>
       </div>
     </div>
   </div>
-  
-</div>
 </template>
 
 <script setup>

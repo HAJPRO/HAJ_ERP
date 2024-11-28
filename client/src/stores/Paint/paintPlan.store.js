@@ -3,7 +3,7 @@ import { PaintService } from "../../ApiServices/Paint/paint.service";
 import { ToastifyService } from "../../utils/Toastify";
 import { loading } from "./../../utils/Loader";
 import { defineStore } from "pinia";
-// import PaintService from "../../../../server/services/Paint/paint.service";
+
 
 export const PaintPlanStore = defineStore("paintPlanStore", {
     state: () => {
@@ -11,8 +11,11 @@ export const PaintPlanStore = defineStore("paintPlanStore", {
             card_id: "",
             is_modal: false,
             items: [],
+            all_length: {},
             item: [],
             confirmed_orders: [],
+            order_report_at_progress: [],
+            is_report_modal: false,
             model: "",
             is_provide: false,
             is_active: ""
@@ -34,8 +37,8 @@ export const PaintPlanStore = defineStore("paintPlanStore", {
         async GetAll(status) {
             try {
                 const data = await PaintService.getAll(status);
-                this.items = data.data
-                console.log(data.data);
+                this.items = data.data.items;
+                this.all_length = data.data.all_length
             } catch (err) {
                 console.log(err);
             }
@@ -133,6 +136,11 @@ export const PaintPlanStore = defineStore("paintPlanStore", {
             } catch (error) {
                 return ToastifyService.ToastError({ msg: error.messages });
             }
+        },
+        async OpenReportModalById(payload) {
+            const data = await PaintService.getOneFromInProcess({ id: payload.id })
+            this.order_report_at_progress = data.data
+            this.is_report_modal = true
         },
 
         async DeleteById(id) {

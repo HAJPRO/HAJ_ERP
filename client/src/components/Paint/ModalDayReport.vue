@@ -1,29 +1,14 @@
 <script setup>
-import { ref } from "vue";
-import { WeavingPlanStore } from "../../stores/Weaving/weaving_plan.store";
-const store = WeavingPlanStore();
+import { ref, onMounted } from "vue";
+import { PaintPlanStore } from "../../stores/Paint/paintPlan.store";
+const store = PaintPlanStore();
 import { storeToRefs } from "pinia";
-const { is_modal, card_id, item, order_id } = storeToRefs(store);
-const is_cancel = ref(false);
-const Cancel = () => {
-  is_cancel.value = !is_cancel.value;
-};
-const cancel_reason = ref();
-const sendReason = async () => {
-  await store.cancelSendReason({
-    id: card_id.value,
-    reason: cancel_reason.value,
-  });
-  is_modal.value = false;
-};
-const isConfirm = () => {
-  store.isConfirmModal({ is_modal: true, order_id });
-};
+const { is_report_modal, order_report_at_progress, model } = storeToRefs(store);
 </script>
 <template>
   <el-dialog
-    v-model="is_modal"
-    title="Buyurtmani qabul qilish oynasi! "
+    v-model="is_report_modal"
+    title="Kunlik ishlab chiqarilgan mahsulot hisbot oynasi "
     width="800"
   >
     <span>
@@ -34,7 +19,7 @@ const isConfirm = () => {
           header-align="center"
           hight="5"
           empty-text="Mahsulot tanlanmagan... "
-          :data="item"
+          :data="order_report_at_progress"
           border
           style="width: 100%"
           min-height="300"
@@ -52,54 +37,54 @@ const isConfirm = () => {
 
           <el-table-column
             header-align="center"
-            prop="in_process_detail.customer_name"
+            prop="customer_name"
             label="Buyurtmachi"
             width="180"
           />
 
           <el-table-column
             header-align="center"
-            prop="in_process_detail.order_number"
+            prop="order_number"
             label="Buyurtma nomeri"
             width="150"
           />
           <el-table-column
-            prop="in_process_detail.pro_type"
+            prop="pro_type"
             label="Turi"
             width="100"
             header-align="center"
             align="center"
           />
           <el-table-column
-            prop="in_process_detail.pro_name"
+            prop="pro_name"
             label="Nomi"
             width="100"
             header-align="center"
             align="center"
           />
           <el-table-column
-            prop="in_process_detail.pro_color"
+            prop="pro_color"
             label="Rangi"
             width="100"
             header-align="center"
             align="center"
           />
           <el-table-column
-            prop="in_process_detail.pro_width"
+            prop="pro_width"
             label="Eni"
             width="100"
             header-align="center"
             align="center"
           />
           <el-table-column
-            prop="in_process_detail.grammaj"
+            prop="grammaj"
             label="Gramaji"
             width="100"
             header-align="center"
             align="center"
           />
           <el-table-column
-            prop="in_process_detail.order_quantity"
+            prop="order_quantity"
             label="Miqdori"
             fixed="right"
             width="100"
@@ -107,7 +92,7 @@ const isConfirm = () => {
             align="center"
           />
           <el-table-column
-            prop="in_process_detail.delivery_time"
+            prop="delivery_time"
             label="Yetkazish vaqti"
             width="200"
             header-align="center"
@@ -149,32 +134,14 @@ const isConfirm = () => {
     <template #footer>
       <div class="dialog-footer">
         <router-link
-          v-show="!is_cancel"
-          to=""
-          @click="Cancel()"
-          class="inline-flex text-[12px] items-center ml-2 px-3 py-1 mb-1 mt-2 text-sm font-medium text-center text-white bg-red-500 text-bold rounded"
-        >
-          <i class="mr-2 fa-solid fa-xmark fa-sm"></i>Bekor qilish</router-link
-        >
-        <router-link
-          v-show="!is_cancel"
           type=""
-          to=""
-          @click="isConfirm()"
-          class="inline-flex text-[12px] items-center ml-2 px-3 py-1 mb-1 mt-2 text-sm font-medium text-center text-white bg-[#36d887] text-bold rounded"
-        >
-          <i class="mr-2 fa-solid fa-check fa-sm"></i>Qabul qilish</router-link
-        >
-        <router-link
-          v-show="is_cancel"
-          type=""
-          @click="is_cancel = false"
+          @click="is_report_modal = false"
           to=""
           class="inline-flex text-[12px] items-center ml-2 px-3 py-1 mb-1 mt-2 text-sm font-medium text-center text-white bg-red-500 text-bold rounded"
         >
-          <i class="mr-2 fa-solid fa-arrow-left fa-sm"></i>Orqaga</router-link
+          <i class="mr-2 fa-solid fa-xmark fa-sm"></i>Yopish</router-link
         >
-        <router-link
+        <!-- <router-link
           v-show="is_cancel"
           type=""
           to=""
@@ -182,7 +149,7 @@ const isConfirm = () => {
           class="inline-flex text-[12px] items-center ml-2 px-3 py-1 mb-1 mt-2 text-sm font-medium text-center text-white bg-[#36d887] text-bold rounded"
         >
           <i class="mr-2 fa-solid fa-check fa-sm"></i>Yuborish</router-link
-        >
+        > -->
       </div>
     </template>
   </el-dialog>

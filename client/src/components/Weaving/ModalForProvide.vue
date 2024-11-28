@@ -4,14 +4,14 @@ import { WeavingService } from "@/ApiServices/Weaving/weaving.service";
 import { WeavingPlanStore } from "../../stores/Weaving/weaving_plan.store";
 const StoreWeaving = WeavingPlanStore();
 import { storeToRefs } from "pinia";
-const { is_provide, card_id } = storeToRefs(StoreWeaving);
+const { is_provide, card_id , order_id} = storeToRefs(StoreWeaving);
 const model = ref({});
 const getModel = async () => {
   const data = await WeavingService.getModel();
-model.value = data.data
+  model.value = data.data;
 };
 const SaveToProvide = async () => {
-  await StoreWeaving.SaveToProvide({ id: card_id.value, data: model.value });
+  await StoreWeaving.SaveToProvide({ id: card_id.value, data: model.value ,order_id });
   is_provide.value = false;
 };
 

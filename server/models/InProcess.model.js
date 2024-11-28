@@ -4,7 +4,6 @@ const InProcessSchema = new Schema(
     {
         department: { type: String, required: true },
         author: { type: Schema.ObjectId, ref: "User" },
-        author_id: { type: String },
         order_id: { type: Schema.ObjectId, ref: "SaleCard" },
         order_report_at_progress: { type: Array },
         status: { type: String, required: true, default: "Jarayonda" },
