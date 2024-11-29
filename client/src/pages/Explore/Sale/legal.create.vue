@@ -11,42 +11,25 @@ const getModel = async () => {
   const data = await SaleLegalService.getModel();
   model.value = data.data;
 };
+const formRef = ref();
+const CreateValidate = async (formRef) => {
+  await formRef.validate((valid) => {
+    if (valid === true) {
+      Save();
+    } else {
+      return false;
+    }
+  });
+};
 const Save = async () => {
   try {
-    const {
-      customer_name,
-      order_number,
-      pro_name,
-      pro_type,
-      pro_color,
-      pro_width,
-      grammaj,
-      delivery_time,
-      order_quantity,
-    } = model.value;
-    if (
-      customer_name &&
-      order_number &&
-      pro_name &&
-      pro_type &&
-      pro_color &&
-      pro_width &&
-      grammaj &&
-      delivery_time &&
-      order_quantity
-    ) {
-      const data = await SaleLegalService.create(model.value);
-      model.value = {};
-      const TimeOut = () => {
-        window.location.href = "/explore/sale/legal";
-      };
-      ToastifyService.ToastSuccess({ msg: data.data.msg });
-      setTimeout(TimeOut, 1500);
-    } else {
-      return ToastifyService.ToastError({
-        msg: "Barcha qatorlarni to'ldiring !",
-      });
-    }
+    const data = await SaleLegalService.create(model.value);
+    model.value = {};
+    const TimeOut = () => {
+      window.location.href = "/explore/sale/legal";
+    };
+    ToastifyService.ToastSuccess({ msg: data.data.msg });
+    setTimeout(TimeOut, 1500);
   } catch (error) {
     return ToastifyService.ToastError({ msg: error.message });
   }
@@ -58,6 +41,11 @@ onMounted(async () => {
     return ToastifyService.ToastError({ msg: error.message });
   }
 });
+const rules = ref({
+  required: true,
+  message: `Maydon to'ldirilishi zarur !`,
+  trigger: "blur",
+});
 </script>
 
 <template>
@@ -67,160 +55,163 @@ onMounted(async () => {
         <h3>Sotuv karta yaratish</h3>
       </template>
     </Title>
-    <form
-      class="filter-box md:grid md:grid-cols-3 gap-2 sm:flex sm:flex-wrap rounded shadow-md bg-white p-3 mt-1 mb-3 text-[12px]"
+    <el-form
+      ref="formRef"
+      :model="model"
+      label-width="auto"
+      class="filter-box bg-white md:grid md:grid-cols-9 gap-1 sm:flex sm:flex-wrap rounded shadow-sm p-2 mt-2 mb-2 text-[13px]"
+      size="small"
+      label-position="top"
     >
-      <div class="mb-1 col-span-1">
-        <label
-          name="resul"
-          class="block mb-1 text-[12px] font-medium text-gray-900 dark:text-white"
-          >Buyurtmachi nomi</label
+      <div class="mb-1 col-span-3">
+        <el-form-item
+          label="Buyurtmachi nomi"
+          prop="customer_name"
+          :rules="rules"
         >
-        <el-input
-          required
-          v-model="model.customer_name"
-          clearable
-          class="w-[100%]"
-          size="smal"
-          type="String"
-          placeholder="..."
-        />
+          <el-input
+            required
+            v-model="model.customer_name"
+            clearable
+            class="w-[100%]"
+            size="smal"
+            type="String"
+            placeholder="..."
+          />
+        </el-form-item>
       </div>
-      <div class="mb-1 col-span-1">
-        <label
-          name="resul"
-          class="block mb-1 text-[12px] font-medium text-gray-900 dark:text-white"
-          >Buyurtma nomeri</label
+      <div class="mb-1 col-span-3">
+        <el-form-item
+          label="Buyurtma nomeri"
+          prop="order_number"
+          :rules="rules"
         >
-        <el-input
-          disabled
-          v-model="model.order_number"
-          clearable
-          class="w-[100%]"
-          size="smal"
-          type="String"
-          placeholder="..."
-        />
+          <el-input
+            disabled
+            required
+            v-model="model.order_number"
+            clearable
+            class="w-[100%]"
+            size="smal"
+            type="String"
+            placeholder="..."
+          />
+        </el-form-item>
       </div>
+      <div class="mb-1 col-span-3">
+        <el-form-item label="Mahsulot nomi" prop="pro_name" :rules="rules">
+          <el-input
+            required
+            v-model="model.pro_name"
+            clearable
+            class="w-[100%]"
+            size="smal"
+            type="String"
+            placeholder="..."
+          />
+        </el-form-item>
+      </div>
+      <div class="mb-1 col-span-3">
+        <el-form-item label="Mahsulot turi" prop="pro_type" :rules="rules">
+          <el-input
+            required
+            v-model="model.pro_type"
+            clearable
+            class="w-[100%]"
+            size="smal"
+            type="String"
+            placeholder="..."
+          />
+        </el-form-item>
+      </div>
+      <div class="mb-1 col-span-3">
+        <el-form-item label="Mahsulot rangi" prop="pro_color" :rules="rules">
+          <el-input
+            required
+            v-model="model.pro_color"
+            clearable
+            class="w-[100%]"
+            size="smal"
+            type="String"
+            placeholder="..."
+          />
+        </el-form-item>
+      </div>
+      <div class="mb-1 col-span-3">
+        <el-form-item label="Eni" prop="pro_width" :rules="rules">
+          <el-input
+            required
+            v-model="model.pro_width"
+            clearable
+            class="w-[100%]"
+            size="smal"
+            type="Number"
+            placeholder="..."
+          />
+        </el-form-item>
+      </div>
+      <div class="mb-1 col-span-3">
+        <el-form-item label="Grammaji" prop="grammaj" :rules="rules">
+          <el-input
+            required
+            v-model="model.grammaj"
+            clearable
+            class="w-[100%]"
+            size="smal"
+            type="Number"
+            placeholder="..."
+          />
+        </el-form-item>
+      </div>
+      <div class="mb-1 col-span-3">
+        <el-form-item
+          label="Yetkazish miqdori"
+          prop="order_quantity"
+          :rules="rules"
+        >
+          <el-input
+            required
+            v-model="model.order_quantity"
+            clearable
+            class="w-[100%]"
+            size="smal"
+            type="Number"
+            placeholder="..."
+          />
+        </el-form-item>
+      </div>
+      <div class="mb-1 col-span-3">
+        <el-form-item
+          label="Tayyorlash muddati"
+          prop="delivery_time"
+          :rules="rules"
+        >
+          <el-date-picker
+            required
+            v-model="model.delivery_time"
+            clearable
+            style="width: 100%"
+            size="smal"
+            type="date"
+            placeholder="..."
+          />
+        </el-form-item>
+      </div>
+    </el-form>
 
-      <div class="mb-1 col-span-1">
-        <label
-          name="resul"
-          class="block mb-1 text-[12px] font-medium text-gray-900 dark:text-white"
-          >Mahsulot nomi</label
-        >
-        <el-input
-          v-model="model.pro_name"
-          clearable
-          class="w-[100%]"
-          size="smal"
-          type="String"
-          placeholder="..."
-        />
-      </div>
-      <div class="mb-1 col-span-1">
-        <label
-          name="resul"
-          class="block mb-1 text-[12px] font-medium text-gray-900 dark:text-white"
-          >Mahsulot turi</label
-        >
-        <el-input
-          v-model="model.pro_type"
-          clearable
-          class="w-[100%]"
-          size="smal"
-          type="String"
-          placeholder="..."
-        />
-      </div>
-      <div class="mb-1 col-span-1">
-        <label
-          name="resul"
-          class="block mb-1 text-[12px] font-medium text-gray-900 dark:text-white"
-          >Mahsulot rangi</label
-        >
-        <el-input
-          v-model="model.pro_color"
-          clearable
-          class="w-[100%]"
-          size="smal"
-          type="String"
-          placeholder="..."
-        />
-      </div>
-      <div class="mb-1 col-span-1">
-        <label
-          name="resul"
-          class="block mb-1 text-[12px] font-medium text-gray-900 dark:text-white"
-          >Eni</label
-        >
-        <el-input
-          v-model="model.pro_width"
-          clearable
-          class="w-[100%]"
-          size="smal"
-          type="Number"
-          placeholder="..."
-        />
-      </div>
-
-      <div class="mb-1 col-span-1">
-        <label
-          name="resul"
-          class="block mb-1 text-[12px] font-medium text-gray-900 dark:text-white"
-          >Grammaji</label
-        >
-        <el-input
-          v-model="model.grammaj"
-          clearable
-          class="w-[100%]"
-          size="smal"
-          type="String"
-          placeholder="..."
-        />
-      </div>
-
-      <div class="mb-1 col-span-1">
-        <label
-          name="resul"
-          class="block mb-1 text-[12px] font-medium text-gray-900 dark:text-white"
-          >Yetkazish miqdori</label
-        >
-        <el-input
-          v-model="model.order_quantity"
-          clearable
-          class="w-[100%]"
-          size="smal"
-          type="Number"
-          placeholder="..."
-        />
-      </div>
-      <div class="mb-1 col-span-1">
-        <label
-          name="resul"
-          class="block mb-1 text-[12px] font-medium text-gray-900 dark:text-white"
-          >Tayyorlash muddati</label
-        >
-        <el-date-picker
-          style="width: 100%"
-          v-model="model.delivery_time"
-          clearable
-          type="date"
-          placeholder="..."
-          :size="size"
-        />
-      </div>
-    </form>
-
-    <div class="flex justify-end bg-white rounded-md shadow-md p-3">
+    <div class="flex justify-end bg-white rounded-md shadow-md p-2">
       <div></div>
-      <router-link
-        @click="Save()"
-        to=""
-        class="inline-flex text-[13px] items-center px-4 py-2 mb-1 font-medium text-center text-white bg-[#36d887] text-bold rounded focus:ring-4 focus:outline-none"
+      <el-button
+        @click="CreateValidate(formRef)"
+        style="
+          background-color: #36d887;
+          color: white;
+          border: none;
+          cursor: pointer;
+        "
       >
-        <i class="fa-solid fa-check mr-2 fa-lg"></i> Saqlash
-      </router-link>
+        <i class="fa-solid fa-check mr-2 fa-md"></i> Saqlash
+      </el-button>
     </div>
   </div>
 </template>

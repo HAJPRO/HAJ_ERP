@@ -44,6 +44,8 @@ export const WeavingPlanStore = defineStore("WeavingPlan", {
             const data = await WeavingService.getOne(payload.id);
             this.item = data.data;
             this.order_id = data.data[0].in_process_detail._id
+           
+            
         },
 
         async cancelSendReason(payload) {

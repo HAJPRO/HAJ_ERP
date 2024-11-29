@@ -49,71 +49,83 @@ class DepWeavingService {
     }
   }
   async create(data, author) {
-    const user = await userModel.findById(author);
-    const weaving_process_status = {
-      author: author,
-      is_confirm: { status: true, reason: "" },
-      sent_time: new Date(),
-    };
-    const box_item = {
-      likra: data.items.likra,
-      polister: data.items.polister,
-      melaks_yarn: data.items.melaks_yarn,
-      yarn_wrap: data.items.yarn_wrap,
-      duration_time: data.items.duration_time,
-    }
-
-    const newDataForProvide = {
-      department: user.department,
-      delivery_product_box: box_item,
-      author: author,
-      proccess_status: {
-        confirm: true,
-        reason: "",
-        status: "Taminotga yuborildi",
-      },
-    };
-    const provideData = await SaleDepProvideCardModel.create(newDataForProvide);
-    const provide_id = provideData._id;
-    if (provideData) {
-      const userData = await userModel.findById(author);
-      const department = userData.department;
-      const Data = await SaleDepWeavingCardModel.create({
-        author,
-        sale_order_id: data.order_id,
-        weaving_process_status,
-        provide_id,
-      });
-      const LegalDataById = await SaleLegalCardModel.findById(data.order_id);
-      const newLegalData = LegalDataById;
-      newLegalData.order_status = "Yigiruvga yuborildi";
-      newLegalData.in_department_order = "Yigiruv";
-      newLegalData.isConfirm = "To'quv tasdiqladi";
-      newLegalData.process_status.push({
-        department: userData.department,
-        author: userData.username,
-        is_confirm: { status: true, reason: "" },
-        status: "Yigiruvga yuborildi",
-        sent_time: new Date(),
-      });
-
-      if (Data._id) {
-        newLegalData.dep_weaving_data = Data._id;
-        const updateDataLegal = await SaleLegalCardModel.findByIdAndUpdate(
-          data.card_id,
-          newLegalData,
-          { new: true }
-        );
-        const in_process_data = {
-          author: author,
-          order_id: data.card_id,
-          department: department,
-        };
-        const inProcess = await InProcessModel.create(in_process_data);
+    console.log(data, author);
+    try {
+      const user = await userModel.findById(author);
+      const box_item = {
+        likra: data.items.likra,
+        polister: data.items.polister,
+        melaks_yarn: data.items.melaks_yarn,
+        yarn_wrap: data.items.yarn_wrap,
+        duration_time: data.items.duration_time,
       }
-    }
+      const newDataForProvide = {
+        department: user.department,
+        delivery_product_box: box_item,
+        author: author,
+        proccess_status: {
+          confirm: true,
+          reason: "",
+          status: "Taminotga yuborildi",
+        },
+      };
+      const provideData = await SaleDepProvideCardModel.create(newDataForProvide);
 
-    return provideData;
+      if (provideData) {
+        const provide_id = provideData._id;
+        const weaving_process_status = {
+          author: author,
+          is_confirm: { status: true, reason: "" },
+          sent_time: new Date(),
+        };
+
+        const Data = await SaleDepWeavingCardModel.create({
+          author: author,
+          sale_order_id: data.order_id,
+          weaving_process_status: weaving_process_status,
+          provide_id: provide_id,
+        });
+        const LegalDataById = await SaleLegalCardModel.findById(data.order_id);
+        const newLegalData = LegalDataById;
+        newLegalData.order_status = "Yigiruvga yuborildi";
+        newLegalData.in_department_order = "Yigiruv";
+        newLegalData.isConfirm = "To'quv tasdiqladi";
+        newLegalData.process_status.push({
+          department: user.department,
+          author: user.username,
+          is_confirm: { status: true, reason: "" },
+          status: "Yigiruvga yuborildi",
+          sent_time: new Date(),
+        });
+
+        if (Data._id) {
+          newLegalData.dep_paint_data = Data._id;
+          const updateDataLegal = await SaleLegalCardModel.findByIdAndUpdate(
+            data.order_id,
+            newLegalData,
+            { new: true }
+          );
+          const in_process_data = {
+            author: author,
+            order_id: data.order_id,
+            department: user.department,
+          };
+          const inProcess = await InProcessModel.create(in_process_data);
+          if (inProcess) {
+            const updateData = {
+              status: "To'quv tasdiqladi"
+            }
+            const update = inProcess.findByIdAndUpdate(data.card_id, updateData, { new: true })
+          }
+        }
+      }
+
+      return provideData;
+
+
+    } catch (error) {
+      return error.message
+    }
   }
 
   async getAll(data) {
@@ -125,7 +137,7 @@ class DepWeavingService {
         return this.getAllInProcess(user_id);
       }
       if (is_status === 2) {
-        return this.AllSentToWeaving();
+        return this.AllSentFromPaint();
       }
       if (is_status === 4) {
         return this.AllSentToSpinning({ id: user_id, department });
@@ -168,7 +180,7 @@ class DepWeavingService {
     }
   }
 
-  async AllSentToWeaving() {
+  async AllSentFromPaint() {
     try {
       const allInProcess = await InProcessModel.aggregate([
         { $match: { department: "Bo'yoq" } },

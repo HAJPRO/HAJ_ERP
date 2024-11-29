@@ -1,9 +1,11 @@
 <script setup>
+const today = ref(new Date());
 import { ref } from "vue";
 import { SaleStore } from "../../stores/Sale/sale.store";
 const store = SaleStore();
 import { storeToRefs } from "pinia";
 const { items } = storeToRefs(store);
+console.log(items);
 const isModal = ref(false);
 const getByIdForUpdate = async (id) => {
   const is_modal = !isModal.value;
@@ -120,6 +122,24 @@ const statusModalById = (id) => {
             placeholder=""
             :size="size"
           />
+          <!-- {{ String(scope.row.delivery_time).substr(0, 10) }} -->
+          <!-- {{
+            `${
+              String(scope.row.delivery_time).substr(0, 4) -
+                today.getFullYear() <
+                0 ||
+              String(scope.row.delivery_time).substr(5, 2) -
+                (today.getMonth() + 1) <
+                0 ||
+              (String(scope.row.delivery_time).substr(5, 2) -
+                (today.getMonth() + 1) ===
+                0 &&
+                String(scope.row.delivery_time).substr(8, 2) - today.getDate() <
+                  0)
+                ? "Muddat tugadi"
+                : String(scope.row.delivery_time).substr(0, 10)
+            } `
+          }} -->
         </template>
       </el-table-column>
 

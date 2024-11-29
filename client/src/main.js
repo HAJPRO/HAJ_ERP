@@ -12,7 +12,6 @@ import toast from "vue3-toastify";
 import Loading from 'vue-loading-overlay';
 
 
-
 import router from "./router/index";
 
 import App from "./App.vue";
@@ -25,6 +24,8 @@ app.use(ElementPlusIconsVue);
 app.use(ElementPlus, {
     locale: zhCn,
 })
+// app.use(VueMoment);
+
 // app.use(JsonExcel)
 // app.component("downloadExcel", JsonExcel);
 app.use(QrReader);
