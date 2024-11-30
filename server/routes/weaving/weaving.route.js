@@ -32,4 +32,14 @@ router.post(
   authMiddleware,
   DepWeavingController.getOneFromInProcess
 );
+router.post(
+  "/weaving_get_inprocess",
+  authMiddleware,
+  DepWeavingController.getOneFromInProcess
+);
+router.post(
+  "/weaving_add_day_report",
+  authMiddleware,
+  DepWeavingController.addDayReportInProcess
+);
 module.exports = router;

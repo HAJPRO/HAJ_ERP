@@ -64,6 +64,7 @@ const OpenModalById = async (id) => {
         header-align="center"
         align="center"
       />
+
       <el-table-column
         prop="delivery_product_box.duration_time"
         label="Yetkazish vaqti"

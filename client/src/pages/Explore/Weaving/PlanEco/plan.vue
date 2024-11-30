@@ -4,11 +4,13 @@ import HeaderTabLink from "../../../../components/Weaving/HeaderTabLink.vue";
 import MainTable from "../../../../components/Weaving/MainTabel.component.vue";
 import ModalConfirm from "../../../../components/Weaving/ModalConfirm.vue";
 import ModalForProvide from "../../../../components/Weaving/ModalForProvide.vue";
-import InProcessDetailTable from "../../../../components/Paint/InProcessDetailTable.vue";
-import { SaleStore } from "../../../../stores/Sale/sale.store";
-const store_sale = SaleStore();
+import { WeavingPlanStore } from "../../../../stores/Weaving/weaving_plan.store";
+const store_weaving = WeavingPlanStore();
 import { storeToRefs } from "pinia";
-const { is_active } = storeToRefs(store_sale);
+import ProvideTable from "../../../../components/Weaving/ProvideTable.vue";
+import InProcessDetailTable from "../../../../components/Weaving/InProcessDetailTable.vue";
+import ModalDayReport from "../../../../components/Weaving/ModalDayReport.vue";
+const { is_active, is_report_modal } = storeToRefs(store_weaving);
 // import PaganationWeavingComponents from "../../../../components/Weaving/PaganationWeaving.components.vue";
 </script>
 
@@ -20,8 +22,10 @@ const { is_active } = storeToRefs(store_sale);
       </template>
     </Title>
     <HeaderTabLink />
-    <MainTable v-if="is_active !== 0" />
-    <InProcessDetailTable v-if="is_active === 0" />
+    <MainTable v-if="is_active === 2" />
+    <InProcessDetailTable v-if="is_active === 1 || is_active === 4" />
+    <ProvideTable v-if="is_active === 5" />
+    <ModalDayReport v-if="is_report_modal === true" />
     <ModalForProvide />
     <ModalConfirm />
 

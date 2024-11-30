@@ -3,7 +3,7 @@ const SaleLegalCardModel = require("../models/saleLegalCard.model");
 const XLSX = require("xlsx");
 const saleLegalCardModel = require("../models/saleLegalCard.model");
 const randomstring = require("randomstring");
-const InProcessModel = require("../models/InProcess.model");
+const InProcessPaintModel = require("../models/Paint/InProcess.model");
 
 class SaleLegalService {
   async getModel() {
@@ -124,7 +124,7 @@ class SaleLegalService {
   }
   async getAllInProcess(department) {
     try {
-      const allInProcess = await InProcessModel.aggregate([
+      const allInProcess = await InProcessPaintModel.aggregate([
         { $match: { department: department } },
         {
           $lookup: {

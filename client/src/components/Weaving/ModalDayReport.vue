@@ -1,12 +1,12 @@
 <script setup>
 import { ref, onMounted } from "vue";
-import { PaintPlanStore } from "../../stores/Paint/paintPlan.store";
-const store = PaintPlanStore();
+import { WeavingPlanStore } from "../../stores/Weaving/weaving_plan.store";
+const store = WeavingPlanStore();
 import { storeToRefs } from "pinia";
 const { is_report_modal, order_report } = storeToRefs(store);
-// const addDayReportInProcess = async () => {
-//   await store.addDayReportInProcess(model.value);
-// };
+const addDayReportInProcess = async () => {
+  await store.addDayReportInProcess(model.value);
+};
 const model = ref({
   quantity: "",
   unit: "",

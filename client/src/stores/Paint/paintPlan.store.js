@@ -14,7 +14,7 @@ export const PaintPlanStore = defineStore("paintPlanStore", {
             all_length: {},
             item: [],
             confirmed_orders: [],
-            order_report_at_progress: [],
+            order_report: [],
             is_report_modal: false,
             model: "",
             is_provide: false,
@@ -139,8 +139,9 @@ export const PaintPlanStore = defineStore("paintPlanStore", {
         },
         async OpenReportModalById(payload) {
             const data = await PaintService.getOneFromInProcess({ id: payload.id })
-            this.order_report_at_progress = data.data
+            this.order_report = data.data
             this.is_report_modal = true
+
         },
 
         async DeleteById(id) {

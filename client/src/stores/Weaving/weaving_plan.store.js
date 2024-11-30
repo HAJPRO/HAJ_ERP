@@ -14,7 +14,12 @@ export const WeavingPlanStore = defineStore("WeavingPlan", {
             model: "",
             is_provide: false,
             is_active: "",
-            order_id: ""
+            order_id: "",
+            paint_process_id: "",
+            all_length: {},
+            order_report: [],
+            is_report_modal: false,
+            update_process_id: ""
         };
     },
     actions: {
@@ -33,7 +38,8 @@ export const WeavingPlanStore = defineStore("WeavingPlan", {
         async GetAll(status) {
             try {
                 const data = await WeavingService.getAll(status);
-                this.items = data.data;
+                this.items = data.data.items;
+                this.all_length = data.data.all_length
             } catch (err) {
                 console.log(err);
             }
@@ -44,8 +50,9 @@ export const WeavingPlanStore = defineStore("WeavingPlan", {
             const data = await WeavingService.getOne(payload.id);
             this.item = data.data;
             this.order_id = data.data[0].in_process_detail._id
-           
-            
+            this.paint_process_id = data.data[0]._id
+
+
         },
 
         async cancelSendReason(payload) {
@@ -76,7 +83,8 @@ export const WeavingPlanStore = defineStore("WeavingPlan", {
                 const data = await WeavingService.create({
                     items: payload.data,
                     card_id: payload.id,
-                    order_id: payload.order_id
+                    order_id: payload.order_id,
+                    paint_process_id: payload.paint_process_id
                 });
                 loader.hide();
                 const TimeOut = () => {
@@ -94,22 +102,17 @@ export const WeavingPlanStore = defineStore("WeavingPlan", {
             const data = await SaleLegalService.getOne(payload.id)
             this.model = data.data
         },
-        // async Update(payload) {
-        //     try {
-        //         const loader = loading.show();
-        //         const updateData = await SaleLegalService.Edit(this.card_id, payload);
-        //         loader.hide();
-        //         ToastifyService.ToastSuccess({
-        //             msg: updateData.data.msg,
-        //         });
-        //         const Refresh = () => {
-        //             window.location.href = "/explore/sale/legal";
-        //         };
-        //         setTimeout(Refresh, 1500);
-        //     } catch (error) {
-        //         return ToastifyService.ToastError({ msg: error.messages });
-        //     }
-        // },
+        async OpenReportModalById(payload) {
+            const data = await WeavingService.getOneFromInProcess({ id: payload.id })
+            this.order_report = data.data
+            this.is_report_modal = true
+            this.update_process_id = payload.id
+
+        },
+        async addDayReportInProcess(items) {
+            const data = await WeavingService.addDayReportInProcess({ items, id: this.update_process_id })
+
+        },
 
         async Confirm(id) {
             try {
@@ -127,6 +130,25 @@ export const WeavingPlanStore = defineStore("WeavingPlan", {
                 return ToastifyService.ToastError({ msg: error.messages });
             }
         },
+
+
+        // async Update(payload) {
+        //     try {
+        //         const loader = loading.show();
+        //         const updateData = await SaleLegalService.Edit(this.card_id, payload);
+        //         loader.hide();
+        //         ToastifyService.ToastSuccess({
+        //             msg: updateData.data.msg,
+        //         });
+        //         const Refresh = () => {
+        //             window.location.href = "/explore/sale/legal";
+        //         };
+        //         setTimeout(Refresh, 1500);
+        //     } catch (error) {
+        //         return ToastifyService.ToastError({ msg: error.messages });
+        //     }
+        // },
+
 
         // async DeleteById(id) {
         //     try {

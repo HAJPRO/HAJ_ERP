@@ -27,4 +27,8 @@ export const WeavingService = {
     let url = "weaving/weaving_get_inprocess";
     return api.post(url, id);
   },
+  addDayReportInProcess(data) {
+    let url = "weaving/weaving_add_day_report";
+    return api.post(url, data);
+  },
 };

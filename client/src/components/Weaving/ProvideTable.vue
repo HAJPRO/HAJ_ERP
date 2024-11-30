@@ -1,12 +1,12 @@
 <script setup>
 import { ref, onMounted } from "vue";
-import { PaintPlanStore } from "../../stores/Paint/paintPlan.store";
-const store_paint = PaintPlanStore();
+import { WeavingPlanStore } from "../../stores/Weaving/weaving_plan.store";
+const store_weaving = WeavingPlanStore();
 import { storeToRefs } from "pinia";
-const { items, is_active } = storeToRefs(store_paint);
-const OpenModalById = async (id) => {
-  await store_paint.openModalById({ id, is_modal: true });
-};
+const { items, is_active } = storeToRefs(store_weaving);
+// const OpenModalById = async (id) => {
+//   await store_paint.openModalById({ id, is_modal: true });
+// };
 </script>
 <template>
   <div class="shadow-md rounded min-h-[15px]">
@@ -39,71 +39,41 @@ const OpenModalById = async (id) => {
       <el-table-column
         header-align="center"
         sortable
-        prop="customer_name"
-        label="Buyurtmachi nomi"
+        prop="delivery_product_box.likra"
+        label="Likra (kg)"
         width="200"
       />
       <el-table-column
-        header-align="center"
-        sortable
-        prop="order_number"
-        label="Buyurtma miqdori"
-        width="200"
-      />
-      <el-table-column
-        prop="pro_type"
-        label="Mahsulot turi"
+        prop="delivery_product_box.melaks_yarn"
+        label="Melaks Ip (kg)"
         width="180"
         header-align="center"
         align="center"
       />
       <el-table-column
-        prop="pro_name"
-        label="Mahsulot nomi"
+        prop="delivery_product_box.polister"
+        label="Polister (kg)"
         width="180"
         header-align="center"
         align="center"
       />
       <el-table-column
-        prop="pro_color"
-        label="Mahsulot rangi"
+        prop="delivery_product_box.yarn_wrap"
+        label="Ip kalava"
         width="180"
         header-align="center"
         align="center"
       />
       <el-table-column
-        prop="order_quantity"
-        label="Buyurtma miqdori"
+        prop="delivery_product_box.duration_time"
+        label="Yetkazish vaqti"
         width="180"
         header-align="center"
         align="center"
       />
-      <el-table-column
-        prop="delivery_time"
-        sortable
-        label="Muddati"
-        width="190"
-        header-align="center"
-        align="center"
-      />
-       
-      <!-- <el-table-column
-        prop="order_quantity"
-        label="Tayyor mahsulot"
-        width="180"
-        header-align="center"
-        align="center"
-      />
-      <el-table-column
-        prop="order_quantity"
-        label="Tayyorlanishi kerak"
-        width="180"
-        header-align="center"
-        align="center"
-      /> -->
       <el-table-column
         fixed="right"
-        prop="order_status"
+        prop="status"
         label="Holati"
         width="150"
         header-align="center"
@@ -114,7 +84,7 @@ const OpenModalById = async (id) => {
             to=""
             class="inline-flex items-center text-red bg-[#e4e9e9] hover:bg-[#d7ebeb] font-medium rounded-md text-[12px] w-ful p-[5px] sm:w-auto text-center"
           >
-            {{ scope.row.order_status }}
+            {{ scope.row.status }}
           </router-link>
         </template>
       </el-table-column>
@@ -128,15 +98,6 @@ const OpenModalById = async (id) => {
       >
         <template #default="scope">
           <router-link
-            v-show="scope.row.order_status === `Bo'yoqqa yuborildi`"
-            to=""
-            @click="OpenModalById(scope.row._id)"
-            class="inline-flex items-center ml-2 text-red bg-yellow-300 hover:bg-yellow-400 font-medium rounded-md text-sm w-full sm:w-auto px-3 py-3 text-center"
-          >
-            <i class="text-black fa-sharp fa-solid fa-check fa-xs"></i>
-          </router-link>
-          <router-link
-            v-show="scope.row.order_status === `To'quvga yuborildi`"
             to=""
             class="inline-flex items-center ml-2 text-red bg-red-500 hover:bg-red-600 font-medium rounded-md text-sm w-full sm:w-auto px-3 py-3 text-center"
           >

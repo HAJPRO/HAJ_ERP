@@ -78,7 +78,7 @@ const openReportModalById = async (id) => {
         header-align="center"
         align="center"
       />
-      <el-table-column
+      <!-- <el-table-column
         prop="in_process_detail.order_quantity"
         label="Tayyor mahsulot"
         width="180"
@@ -91,14 +91,16 @@ const openReportModalById = async (id) => {
         width="180"
         header-align="center"
         align="center"
-      />
+      /> -->
       <el-table-column
         prop="in_process_detail.delivery_time"
+        sortable
         label="Muddati"
         width="190"
         header-align="center"
         align="center"
       />
+
       <el-table-column
         fixed="right"
         prop="status"
@@ -126,7 +128,7 @@ const openReportModalById = async (id) => {
       >
         <template #default="scope">
           <router-link
-            v-show="scope.row.status === `Jarayonda`"
+            v-show="scope.row.status === `To'quv tasdiqladi`"
             to=""
             @click="openReportModalById(scope.row._id)"
             class="inline-flex items-center ml-2 text-red bg-[#36d887] hover:bg-[#3dcc84] font-medium rounded-md text-sm w-full sm:w-auto px-3 py-3 text-center"

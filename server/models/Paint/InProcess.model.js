@@ -1,6 +1,6 @@
 const { Schema, model } = require("mongoose");
 
-const InProcessSchema = new Schema(
+const InProcessPaintSchema = new Schema(
     {
         department: { type: String, required: true },
         author: { type: Schema.ObjectId, ref: "User" },
@@ -12,4 +12,4 @@ const InProcessSchema = new Schema(
     { timestamps: true }
 );
 
-module.exports = model("InProcessModel", InProcessSchema);
+module.exports = model("InProcessPaintModel", InProcessPaintSchema);

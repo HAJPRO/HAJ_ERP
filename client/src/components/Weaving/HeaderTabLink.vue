@@ -4,14 +4,8 @@ import { loading } from "../../utils/Loader";
 // import { SaleLegalService } from "../../ApiServices/Sale/saleLegal.service";
 import { WeavingPlanStore } from "../../stores/Weaving/weaving_plan.store";
 const store = WeavingPlanStore();
-const all_length = ref();
-// const getAllLength = async () => {
-//   const loader = loading.show();
-//   const data = await SaleLegalService.getAllLength();
-//   loader.hide();
-//   all_length.value = data.data ? data.data : {};
-// };
-
+import { storeToRefs } from "pinia";
+const { all_length } = storeToRefs(store);
 const getAll = async () => {
   const loader = loading.show();
   await store.GetAll({ is_active: isActive.value });
@@ -22,11 +16,6 @@ const is_Active = () => {
 };
 const isActive = ref(1);
 const ActiveTabLink = (num) => {
-  if (num === 0) {
-    isActive.value = 0;
-    is_Active();
-    getAll();
-  }
   if (num === 1) {
     isActive.value = 1;
     is_Active();
@@ -80,7 +69,7 @@ onMounted(async () => {
             class="inline-flex items-center justify-center h-5 text-[11px] font-medium text-white bg-[#36d887] px-3 py-2 rounded"
           >
             <span class=" ">0</span>/{{
-              (all_length ? all_length.sale_length : 0) || 0
+              (all_length ? all_length.process_length : 0) || 0
             }}</span
           >
         </div>
@@ -97,7 +86,7 @@ onMounted(async () => {
             class="inline-flex items-center justify-center h-5 text-[11px] font-medium text-white bg-[#36d887] px-3 py-2 rounded"
           >
             <span class=" ">0</span>/{{
-              (all_length ? all_length.weaving_length : 0) || 0
+              (all_length ? all_length.paint_length : 0) || 0
             }}</span
           >
         </div>
@@ -130,7 +119,7 @@ onMounted(async () => {
             class="inline-flex items-center justify-center h-5 text-[11px] font-medium text-white bg-[#36d887] px-3 py-2 rounded"
           >
             <span class=" ">0</span>/{{
-              (all_length ? all_length.provide_length_length : 0) || 0
+              (all_length ? all_length.provide_length : 0) || 0
             }}</span
           >
         </div>

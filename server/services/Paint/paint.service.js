@@ -3,7 +3,8 @@ const SaleLegalCardModel = require("../../models/saleLegalCard.model.js");
 const SaleDepPaintCardModel = require("../../models/saleDepPaintCard.model");
 const SaleDepProvideCardModel = require("../../models/saleDepProvideCard.model.js");
 const userModel = require("../../models/user.model");
-const InProcessModel = require("../../models/InProcess.model.js");
+const InProcessPaintModel = require("../../models/Paint/InProcess.model.js");
+const InProcessWeavingModel = require('../../models/Weaving/InProcess.model.js')
 
 // const fileService = require("./file.service");
 
@@ -108,7 +109,7 @@ class DepPaintService {
             order_id: data.card_id,
             department: user.department,
           };
-          const inProcess = await InProcessModel.create(in_process_data);
+          const inProcess = await InProcessPaintModel.create(in_process_data);
         }
       }
 
@@ -158,7 +159,7 @@ class DepPaintService {
   async getAllInProcess(id) {
     let ID = new mongoose.Types.ObjectId(id);
     try {
-      const allInProcess = await InProcessModel.aggregate([
+      const allInProcess = await InProcessPaintModel.aggregate([
         { $match: { author: ID } },
         {
           $lookup: {
@@ -270,9 +271,39 @@ class DepPaintService {
     return data;
   }
   async getOneFromInProcess(payload) {
-    const data = await InProcessModel.findById(payload.id);
-    const reportArray = data.order_report_at_progress;
-    return reportArray;
+    const data = await InProcessPaintModel.findById(payload.id);
+    if (data.order_id) {
+      const item = await InProcessWeavingModel.aggregate([{ $match: { order_id: data.order_id } }, {
+        $lookup: {
+          from: "salecards",
+          localField: "order_id",
+          foreignField: "_id",
+          as: "in_process_detail",
+        },
+      },
+      {
+        $project: {
+          order_report_at_progress: 1,
+          in_process_detail: {
+            $cond: {
+              if: { $isArray: "$in_process_detail" },
+              then: { $arrayElemAt: ["$in_process_detail", 0] },
+              else: null,
+            },
+          },
+        },
+      },]);
+      console.log({ report: item[0].order_report_at_progress, customer_name: item[0].in_process_detail.customer_name, order_number: item[0].in_process_detail.order_number });
+    }
+    // const reportArray = data.order_report_at_progress;
+    // return { reportArray, order_id: data.order_id };
+  }
+  async addDayReportInProcess(data) {
+    let order_report_at_progress = []
+    order_report_at_progress.push(data.items)
+    const ID = data.id;
+    const newData = await InProcessPaintModel.findByIdAndUpdate(ID, { order_report_at_progress }, { new: true });
+    return newData;
   }
 }
 

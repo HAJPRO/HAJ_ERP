@@ -4,8 +4,8 @@ import { WeavingService } from "@/ApiServices/Weaving/weaving.service";
 import { WeavingPlanStore } from "../../stores/Weaving/weaving_plan.store";
 const StoreWeaving = WeavingPlanStore();
 import { storeToRefs } from "pinia";
-const { is_provide, card_id, order_id } = storeToRefs(StoreWeaving);
-console.log(order_id.value);
+const { is_provide, card_id, order_id, paint_process_id } =
+  storeToRefs(StoreWeaving);
 const model = ref({});
 const getModel = async () => {
   const data = await WeavingService.getModel();
@@ -16,6 +16,7 @@ const SaveToProvide = async () => {
     id: card_id.value,
     data: model.value,
     order_id: order_id.value,
+    paint_process_id: paint_process_id.value,
   });
   is_provide.value = false;
 };
@@ -106,13 +107,13 @@ onMounted(async () => {
             class="block mb-1 text-[12px] font-medium text-gray-900 dark:text-white"
             >Tayyorlash muddati</label
           >
-          <el-input
+          <el-date-picker
+            style="width: 100%"
             v-model="model.duration_time"
             clearable
-            class="w-[100%]"
-            size="smal"
-            type="Date"
+            type="date"
             placeholder="..."
+            size="smal"
           />
         </div>
       </form>

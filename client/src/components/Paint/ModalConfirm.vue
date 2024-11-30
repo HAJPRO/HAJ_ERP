@@ -131,15 +131,7 @@ const rules = ref({
             align="center"
           >
             <template #default="scope">
-              <el-date-picker
-                style="width: 100%"
-                disabled
-                v-model="scope.row.delivery_time"
-                clearable
-                type="date"
-                placeholder=""
-                size="smal"
-              />
+              {{ scope.row.delivery_time.substring(0, 10) }}
             </template>
           </el-table-column>
         </el-table>

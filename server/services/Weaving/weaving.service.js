@@ -4,7 +4,9 @@ const SaleDepPaintCardModel = require("../../models/saleDepPaintCard.model");
 const SaleDepWeavingCardModel = require("../../models/saleDepWeavingCard.model");
 const userModel = require("../../models/user.model");
 const SaleDepProvideCardModel = require("../../models/saleDepProvideCard.model");
-const InProcessModel = require("../../models/InProcess.model");
+const InProcessPaintModel = require("../../models/Paint/InProcess.model");
+const InProcessWeavingModel = require("../../models/Weaving/InProcess.model");
+
 
 // const fileService = require("./file.service");
 class DepWeavingService {
@@ -49,7 +51,6 @@ class DepWeavingService {
     }
   }
   async create(data, author) {
-    console.log(data, author);
     try {
       const user = await userModel.findById(author);
       const box_item = {
@@ -110,13 +111,16 @@ class DepWeavingService {
             order_id: data.order_id,
             department: user.department,
           };
-          const inProcess = await InProcessModel.create(in_process_data);
+
+          const inProcess = await InProcessWeavingModel.create(in_process_data);
           if (inProcess) {
-            const updateData = {
-              status: "To'quv tasdiqladi"
-            }
-            const update = inProcess.findByIdAndUpdate(data.card_id, updateData, { new: true })
+            const updateInPaintProcessStatus = await InProcessPaintModel.findByIdAndUpdate(
+              data.paint_process_id,
+              { status: "To'quv tasdiqladi" },
+              { new: true }
+            );
           }
+
         }
       }
 
@@ -127,23 +131,36 @@ class DepWeavingService {
       return error.message
     }
   }
-
+  async getAllLength(data) {
+    const user_id = new mongoose.Types.ObjectId(data.user.id);
+    const department = data.user.department;
+    const process_length = await this.getAllInProcess(user_id).then((data) => data.length)
+    const paint_length = await this.AllSentFromPaint().then((data) => data.length)
+    const spinning_length = await this.AllSentToSpinning(user_id).then((data) => data.length)
+    const provide_length = await this.AllSentToProvide({ id: user_id, department }).then((data) => data.length)
+    return { process_length, paint_length, spinning_length, provide_length }
+  }
   async getAll(data) {
     const is_status = data.status.is_active;
-    const user_id = data.user.id;
+    const user_id = new mongoose.Types.ObjectId(data.user.id);
     const department = data.user.department;
     try {
+      const all_length = await this.getAllLength(data)
       if (is_status === 1) {
-        return this.getAllInProcess(user_id);
+        const items = await this.getAllInProcess(user_id);
+        return { items, all_length }
       }
       if (is_status === 2) {
-        return this.AllSentFromPaint();
+        const items = await this.AllSentFromPaint();
+        return { items, all_length }
       }
       if (is_status === 4) {
-        return this.AllSentToSpinning({ id: user_id, department });
+        const items = await this.AllSentToSpinning(user_id);
+        return { items, all_length }
       }
       if (is_status === 5) {
-        return this.AllSentToProvide({ id: user_id, department });
+        const items = await this.AllSentToProvide({ id: user_id, department });
+        return { items, all_length }
       }
     } catch (error) {
       return error.message;
@@ -151,8 +168,8 @@ class DepWeavingService {
   }
   async getAllInProcess(id) {
     try {
-      const allInProcess = await InProcessModel.aggregate([
-        { $match: { author_id: id } },
+      const allInProcess = await InProcessWeavingModel.aggregate([
+        { $match: { author: id } },
         {
           $lookup: {
             from: "salecards",
@@ -182,8 +199,8 @@ class DepWeavingService {
 
   async AllSentFromPaint() {
     try {
-      const allInProcess = await InProcessModel.aggregate([
-        { $match: { department: "Bo'yoq" } },
+      const allInProcess = await InProcessPaintModel.aggregate([
+        { $match: { status: "Jarayonda" } },
         {
           $lookup: {
             from: "salecards",
@@ -210,43 +227,43 @@ class DepWeavingService {
       return error.message;
     }
   }
-  // async AllSentToWeaving(id) {
-  //   try {
-  //     const allInProcess = await SaleDepPaintCardModel.aggregate([
-  //       { $match: { author_id: id } },
-  //       {
-  //         $lookup: {
-  //           from: "salecards",
-  //           localField: "sale_order_id",
-  //           foreignField: "_id",
-  //           as: "in_process_detail",
-  //         },
-  //       },
-  //       {
-  //         $project: {
-  //           status_weaving: 1,
-  //           in_process_detail: {
-  //             $cond: {
-  //               if: { $isArray: "$in_process_detail" },
-  //               then: { $arrayElemAt: ["$in_process_detail", 0] },
-  //               else: null,
-  //             },
-  //           },
-  //         },
-  //       },
-  //     ]);
-  //     return allInProcess;
-  //   } catch (error) {
-  //     return error.message;
-  //   }
-  // }
+  async AllSentToSpinning(id) {
+    try {
+      const allInProcess = await SaleDepWeavingCardModel.aggregate([
+        { $match: { author: id } },
+        {
+          $lookup: {
+            from: "salecards",
+            localField: "sale_order_id",
+            foreignField: "_id",
+            as: "in_process_detail",
+          },
+        },
+        {
+          $project: {
+            status_spinning: 1,
+            in_process_detail: {
+              $cond: {
+                if: { $isArray: "$in_process_detail" },
+                then: { $arrayElemAt: ["$in_process_detail", 0] },
+                else: null,
+              },
+            },
+          },
+        },
+      ]);
+      return allInProcess;
+    } catch (error) {
+      return error.message;
+    }
+  }
 
   async AllSentToProvide(data) {
     try {
-      const allProvide = await SaleDepWeavingCardModel.aggregate([
+      const allProvide = await SaleDepProvideCardModel.aggregate([
         {
           $match: {
-            $and: [{ author_id: data.id }, { department: data.department }],
+            $and: [{ author: data.id }, { department: data.department }],
           },
         },
       ]);
@@ -279,7 +296,7 @@ class DepWeavingService {
   async getOne(id) {
     let ID = new mongoose.Types.ObjectId(id);
     try {
-      const allInProcess = await InProcessModel.aggregate([
+      const allInProcess = await InProcessPaintModel.aggregate([
         { $match: { _id: ID } },
         {
           $lookup: {
@@ -308,9 +325,17 @@ class DepWeavingService {
     }
   }
   async getOneFromInProcess(payload) {
-    const data = await InProcessModel.findById(payload.id);
+    const data = await InProcessWeavingModel.findById(payload.id);
     const reportArray = data.order_report_at_progress;
-    return reportArray;
+    return { reportArray, order_id: data.order_id };
+  }
+
+  async addDayReportInProcess(data) {
+    let order_report_at_progress = []
+    order_report_at_progress.push(data.items)
+    const ID = data.id;
+    const newData = await InProcessWeavingModel.findByIdAndUpdate(ID, { order_report_at_progress }, { new: true });
+    return newData;
   }
 }
 
