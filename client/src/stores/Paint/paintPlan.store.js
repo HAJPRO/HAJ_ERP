@@ -27,9 +27,8 @@ export const PaintPlanStore = defineStore("paintPlanStore", {
         },
         async GetModel() {
             try {
-                const data = await SaleLegalService.getModel();
+                const data = await PaintService.getModel();
                 this.model = data.data
-
             } catch (err) {
                 console.log(err);
             }

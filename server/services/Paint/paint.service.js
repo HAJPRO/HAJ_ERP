@@ -4,21 +4,25 @@ const SaleDepPaintCardModel = require("../../models/saleDepPaintCard.model");
 const SaleDepProvideCardModel = require("../../models/saleDepProvideCard.model.js");
 const userModel = require("../../models/user.model");
 const InProcessPaintModel = require("../../models/Paint/InProcess.model.js");
-const InProcessWeavingModel = require('../../models/Weaving/InProcess.model.js')
+const InProcessWeavingtModel = require("../../models/Weaving/InProcess.model.js");
+const SaleDepWeavingCardModel = require("../../models/saleDepWeavingCard.model.js");
 
 // const fileService = require("./file.service");
 
 class DepPaintService {
   async getModel() {
-    const model = {
+    const ModelForProvide = {
       pus: "",
       fike: "",
       color_code: "",
       duration_time: "",
-      raw_cloth_quantity: "",
+    };
+    const ModelForWeaving = {
+      weaving_cloth_quantity: "",
+      weaving_delivery_time: ""
     };
 
-    return model;
+    return { ModelForProvide, ModelForWeaving };
   }
   async cancelReason(data, author) {
     try {
@@ -50,66 +54,70 @@ class DepPaintService {
   }
   async create(data, author) {
     try {
-      const user = await userModel.findById(author);
-      const box_item = {
-        pus: data.items.pus,
-        fike: data.items.fike,
-        color_code: data.items.color_code,
-        raw_cloth_quantity: data.items.raw_cloth_quantity,
-        duration_time: data.items.duration_time,
-      };
-      const newDataForProvide = {
-        department: user.department,
-        delivery_product_box: box_item,
-        author: author,
-        proccess_status: {
-          confirm: true,
-          reason: "",
-          status: "Taminotga yuborildi",
-        },
-      };
-      const provideData = await SaleDepProvideCardModel.create(newDataForProvide);
-
-      if (provideData) {
-        const provide_id = provideData._id;
-        const paint_process_status = {
-          author: author,
-          is_confirm: { status: true, reason: "" },
-          sent_time: new Date(),
+      if (data.items.ModelForProvide && data.items.ModelForWeaving) {
+        const user = await userModel.findById(author);
+        const box_item = {
+          pus: data.items.ModelForProvide.pus,
+          fike: data.items.ModelForProvide.fike,
+          color_code: data.items.ModelForProvide.color_code,
+          duration_time: data.items.ModelForProvide.duration_time,
         };
-
-        const Data = await SaleDepPaintCardModel.create({
-          author,
-          sale_order_id: data.card_id,
-          paint_process_status,
-          provide_id,
-        });
-        const LegalDataById = await SaleLegalCardModel.findById(data.card_id);
-        const newLegalData = LegalDataById;
-        newLegalData.order_status = "To'quvga yuborildi";
-        newLegalData.in_department_order = "To'quv";
-        newLegalData.isConfirm = "Bo'yoq tasdiqladi";
-        newLegalData.process_status.push({
+        const newDataForProvide = {
           department: user.department,
-          author: user.username,
-          is_confirm: { status: true, reason: "" },
-          status: "To'quvga yuborildi",
-          sent_time: new Date(),
-        });
+          delivery_product_box: box_item,
+          author: author,
+          proccess_status: {
+            confirm: true,
+            reason: "",
+            status: "Taminotga yuborildi",
+          },
+        };
+        const provideData = await SaleDepProvideCardModel.create(newDataForProvide);
 
-        if (Data._id) {
-          newLegalData.dep_paint_data = Data._id;
-          const updateDataLegal = await SaleLegalCardModel.findByIdAndUpdate(
-            data.card_id,
-            newLegalData,
-            { new: true }
-          );
+        if (provideData) {
+          const provide_id = provideData._id;
+          const paint_process_status = {
+            author: author,
+            is_confirm: { status: true, reason: "" },
+            sent_time: new Date(),
+          };
           const in_process_data = {
             author: author,
             order_id: data.card_id,
             department: user.department,
           };
           const inProcess = await InProcessPaintModel.create(in_process_data);
+          const Data = await SaleDepPaintCardModel.create({
+            in_process_id: inProcess._id,
+            author,
+            sale_order_id: data.card_id,
+            paint_process_status,
+            provide_id,
+            weaving_cloth_quantity: data.items.ModelForWeaving.weaving_cloth_quantity,
+            weaving_delivery_time: data.items.ModelForWeaving.weaving_delivery_time,
+          });
+          const LegalDataById = await SaleLegalCardModel.findById(data.card_id);
+          const newLegalData = LegalDataById;
+          newLegalData.order_status = "To'quvga yuborildi";
+          newLegalData.in_department_order = "To'quv";
+          newLegalData.isConfirm = "Bo'yoq tasdiqladi";
+          newLegalData.process_status.push({
+            department: user.department,
+            author: user.username,
+            is_confirm: { status: true, reason: "" },
+            status: "To'quvga yuborildi",
+            sent_time: new Date(),
+          });
+
+          if (Data._id) {
+            newLegalData.dep_paint_data = Data._id;
+            const updateDataLegal = await SaleLegalCardModel.findByIdAndUpdate(
+              data.card_id,
+              newLegalData,
+              { new: true }
+            );
+
+          }
         }
       }
 
@@ -159,26 +167,31 @@ class DepPaintService {
   async getAllInProcess(id) {
     let ID = new mongoose.Types.ObjectId(id);
     try {
-      const allInProcess = await InProcessPaintModel.aggregate([
+      const allInProcess = await SaleDepPaintCardModel.aggregate([
         { $match: { author: ID } },
         {
           $lookup: {
             from: "salecards",
-            localField: "order_id",
+            localField: "sale_order_id",
             foreignField: "_id",
-            as: "in_process_detail",
+            as: "sale_order",
           },
         },
+
         {
           $project: {
             status: 1,
-            in_process_detail: {
+            weaving_cloth_quantity: 1,
+            weaving_delivery_time: 1,
+            status_inprocess: 1,
+            sale_order: {
               $cond: {
-                if: { $isArray: "$in_process_detail" },
-                then: { $arrayElemAt: ["$in_process_detail", 0] },
+                if: { $isArray: "$sale_order" },
+                then: { $arrayElemAt: ["$sale_order", 0] },
                 else: null,
               },
             },
+
           },
         },
       ]);
@@ -208,19 +221,24 @@ class DepPaintService {
             from: "salecards",
             localField: "sale_order_id",
             foreignField: "_id",
-            as: "in_process_detail",
+            as: "sale_order",
           },
         },
+
         {
           $project: {
+            status: 1,
+            weaving_cloth_quantity: 1,
+            weaving_delivery_time: 1,
             status_weaving: 1,
-            in_process_detail: {
+            sale_order: {
               $cond: {
-                if: { $isArray: "$in_process_detail" },
-                then: { $arrayElemAt: ["$in_process_detail", 0] },
+                if: { $isArray: "$sale_order" },
+                then: { $arrayElemAt: ["$sale_order", 0] },
                 else: null,
               },
             },
+
           },
         },
       ]);
@@ -271,12 +289,13 @@ class DepPaintService {
     return data;
   }
   async getOneFromInProcess(payload) {
-    const data = await InProcessPaintModel.findById(payload.id);
-    if (data.order_id) {
-      const item = await InProcessWeavingModel.aggregate([{ $match: { order_id: data.order_id } }, {
+    console.log(payload);
+    const data = await SaleDepPaintCardModel.findById(payload.id);
+    if (data.sale_order_id) {
+      const item = await SaleDepWeavingCardModel.aggregate([{ $match: { order_id: data.order_id } }, {
         $lookup: {
           from: "salecards",
-          localField: "order_id",
+          localField: "sale_order_id",
           foreignField: "_id",
           as: "in_process_detail",
         },
@@ -284,6 +303,7 @@ class DepPaintService {
       {
         $project: {
           order_report_at_progress: 1,
+          weaving_cloth_quantity: 1,
           in_process_detail: {
             $cond: {
               if: { $isArray: "$in_process_detail" },
@@ -293,10 +313,11 @@ class DepPaintService {
           },
         },
       },]);
-      console.log({ report: item[0].order_report_at_progress, customer_name: item[0].in_process_detail.customer_name, order_number: item[0].in_process_detail.order_number });
+      console.log(item);
+      return { report: item[0].order_report_at_progress, customer_name: item[0].in_process_detail.customer_name, order_number: item[0].in_process_detail.order_number, weaving_cloth_quantity: item[0].weaving_cloth_quantity };
     }
-    // const reportArray = data.order_report_at_progress;
-    // return { reportArray, order_id: data.order_id };
+
+
   }
   async addDayReportInProcess(data) {
     let order_report_at_progress = []

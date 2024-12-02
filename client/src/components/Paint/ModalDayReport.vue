@@ -4,9 +4,13 @@ import { PaintPlanStore } from "../../stores/Paint/paintPlan.store";
 const store = PaintPlanStore();
 import { storeToRefs } from "pinia";
 const { is_report_modal, order_report } = storeToRefs(store);
-// const addDayReportInProcess = async () => {
-//   await store.addDayReportInProcess(model.value);
-// };
+console.log(order_report.value);
+const initialValue = ref(0);
+const Done = order_report.value.report.reduce(
+  (accumulator, currentValue) => accumulator + Number(currentValue.quantity),
+  initialValue.value
+);
+
 const model = ref({
   quantity: "",
   unit: "",
@@ -40,10 +44,26 @@ const validate = async (formRef) => {
 <template>
   <el-dialog
     v-model="is_report_modal"
-    title="Kunlik ishlab chiqarilgan mahsulot hisbot oynasi "
+    :title="`Kunlik ishlab chiqarilgan mahsulot hisbot oynasi: №${order_report.order_number}`"
     width="800"
   >
     <span>
+      <div
+        class="flex justify-between flex-wrap font-semibold text-[13px] mb-2 p-1 bg-slate-100 shadow rounded border-t-[1px] border-[#36d887]"
+      >
+        <div>Buyurtmachi: {{ order_report.customer_name }}</div>
+
+        <div
+          class="bg-red-50 p-1 rounded text-[11px] border-[1px] border-red-500"
+        >
+          {{
+            Number(order_report.weaving_cloth_quantity) - Done === 0
+              ? "Yakunlandi"
+              : "Jarayonda"
+          }}
+        </div>
+        <div>Miqdori: {{ order_report.weaving_cloth_quantity }}</div>
+      </div>
       <div class="shadow-md rounded min-h-[15px]">
         <el-table
           load
@@ -51,11 +71,11 @@ const validate = async (formRef) => {
           header-align="center"
           hight="5"
           empty-text="Mahsulot tanlanmagan... "
-          :data="order_report.reportArray"
+          :data="order_report.report"
           border
           style="width: 100%"
-          min-height="300"
-          max-height="350"
+          min-height="250"
+          max-height="250"
         >
           <el-table-column
             header-align="center"
@@ -69,72 +89,54 @@ const validate = async (formRef) => {
 
           <el-table-column
             header-align="center"
-            prop="customer_name"
-            label="Buyurtmachi"
+            prop="quantity"
+            label="Miqdori"
             width="180"
           />
-
           <el-table-column
             header-align="center"
-            prop="order_number"
-            label="Buyurtma nomeri"
+            prop="unit"
+            label="Birligi"
             width="150"
           />
           <el-table-column
-            prop="pro_type"
-            label="Turi"
-            width="100"
             header-align="center"
-            align="center"
+            prop="date"
+            label="Sana"
+            width="250"
           />
           <el-table-column
-            prop="pro_name"
-            label="Nomi"
-            width="100"
-            header-align="center"
-            align="center"
-          />
-          <el-table-column
-            prop="pro_color"
-            label="Rangi"
-            width="100"
-            header-align="center"
-            align="center"
-          />
-          <el-table-column
-            prop="pro_width"
-            label="Eni"
-            width="100"
-            header-align="center"
-            align="center"
-          />
-          <el-table-column
-            prop="grammaj"
-            label="Gramaji"
-            width="100"
-            header-align="center"
-            align="center"
-          />
-          <el-table-column
-            prop="order_quantity"
-            label="Miqdori"
             fixed="right"
-            width="100"
+            label=""
+            width="127"
             header-align="center"
             align="center"
-          />
-          <el-table-column
-            prop="delivery_time"
-            label="Yetkazish vaqti"
-            width="200"
-            header-align="center"
-            align="center"
-          />
+          >
+            <template #default="scope">
+              <router-link
+                to=""
+                class="inline-flex items-center mt-4 ml-2 text-red bg-[#eedc36] hover:bg-yellow-400 font-medium rounded-md text-sm w-full sm:w-auto px-2 py-3 text-center"
+              >
+                <i class="text-red fa-solid fa-check fa-xs fa- fa-xs"></i>
+              </router-link>
+            </template>
+          </el-table-column>
         </el-table>
+      </div>
+      <div
+        class="flex justify-between flex-wrap font-semibold text-[13px] mb-2 p-1 bg-slate-100 shadow rounded"
+      >
+        <div>Bajarildi: {{ Done }}</div>
+        <div>Qoldi: {{ Number(order_report.order_quantity) - Done }}</div>
       </div>
       <div
         class="text-[15px] font-semibold bg-white rounded shadow hover:shadow-md mt-2"
       >
+        <div
+          class="bg-slate-100 p-2 mt-2 align-center text-center shadow rounded border-t-[1px] border-[#36d887]"
+        >
+          Hisobot qo'shish
+        </div>
         <el-form
           ref="formRef"
           :model="model"

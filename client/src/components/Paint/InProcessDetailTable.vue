@@ -5,6 +5,7 @@ const store_paint = PaintPlanStore();
 import { storeToRefs } from "pinia";
 const { items, is_active } = storeToRefs(store_paint);
 const openReportModalById = async (id) => {
+  console.log(id);
   await store_paint.OpenReportModalById({ id });
 };
 </script>
@@ -39,68 +40,73 @@ const openReportModalById = async (id) => {
       <el-table-column
         header-align="center"
         sortable
-        prop="in_process_detail.customer_name"
+        prop="sale_order.customer_name"
         label="Buyurtmachi nomi"
         width="200"
       />
       <el-table-column
         header-align="center"
         sortable
-        prop="in_process_detail.order_number"
+        prop="sale_order.order_number"
         label="Buyurtma miqdori"
         width="200"
       />
       <el-table-column
-        prop="in_process_detail.pro_type"
+        prop="sale_order.pro_type"
         label="Mahsulot turi"
         width="180"
         header-align="center"
         align="center"
       />
       <el-table-column
-        prop="in_process_detail.pro_name"
+        prop="sale_order.pro_name"
         label="Mahsulot nomi"
         width="180"
         header-align="center"
         align="center"
       />
       <el-table-column
-        prop="in_process_detail.pro_color"
+        prop="sale_order.pro_color"
         label="Mahsulot rangi"
         width="180"
         header-align="center"
         align="center"
       />
       <el-table-column
-        prop="in_process_detail.order_quantity"
+        prop="sale_order.order_quantity"
         label="Buyurtma miqdori"
         width="180"
         header-align="center"
         align="center"
       />
-      <!-- <el-table-column
-        prop="in_process_detail.order_quantity"
-        label="Tayyor mahsulot"
+      <el-table-column
+        v-show="weaving_cloth_quantity"
+        prop="weaving_cloth_quantity"
+        label="To'quvga yuborilgan"
         width="180"
         header-align="center"
         align="center"
-      />
+      >
+        <template #default="scope">
+          {{ scope.row.weaving_cloth_quantity }}
+        </template>
+      </el-table-column>
       <el-table-column
-        prop="in_process_detail.order_quantity"
-        label="Tayyorlanishi kerak"
-        width="180"
-        header-align="center"
-        align="center"
-      /> -->
-      <el-table-column
-        prop="in_process_detail.delivery_time"
-        sortable
+        fixed="right"
+        prop="sale_order.delivery_time"
         label="Muddati"
         width="190"
         header-align="center"
         align="center"
-      />
-
+      >
+        <template #default="scope">
+          {{
+            scope.row.status_inprocess
+              ? scope.row.sale_order.delivery_time
+              : scope.row.weaving_delivery_time
+          }}
+        </template>
+      </el-table-column>
       <el-table-column
         fixed="right"
         prop="status"
@@ -114,7 +120,11 @@ const openReportModalById = async (id) => {
             to=""
             class="inline-flex items-center text-red bg-[#e4e9e9] hover:bg-[#d7ebeb] font-medium rounded-md text-[12px] w-ful p-[5px] sm:w-auto text-center"
           >
-            {{ scope.row.status ? scope.row.status : scope.row.status_weaving }}
+            {{
+              scope.row.status_inprocess
+                ? scope.row.status_inprocess
+                : scope.row.status_weaving
+            }}
           </router-link>
         </template>
       </el-table-column>
@@ -128,7 +138,6 @@ const openReportModalById = async (id) => {
       >
         <template #default="scope">
           <router-link
-            v-show="scope.row.status === `To'quv tasdiqladi`"
             to=""
             @click="openReportModalById(scope.row._id)"
             class="inline-flex items-center ml-2 text-red bg-[#36d887] hover:bg-[#3dcc84] font-medium rounded-md text-sm w-full sm:w-auto px-3 py-3 text-center"

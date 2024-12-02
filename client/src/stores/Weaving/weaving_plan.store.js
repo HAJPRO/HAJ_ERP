@@ -25,9 +25,8 @@ export const WeavingPlanStore = defineStore("WeavingPlan", {
     actions: {
         async GetModel() {
             try {
-                const data = await SaleLegalService.getModel();
+                const data = await WeavingService.getModel();
                 this.model = data.data
-
             } catch (err) {
                 console.log(err);
             }

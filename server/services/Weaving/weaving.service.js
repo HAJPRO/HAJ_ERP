@@ -11,15 +11,18 @@ const InProcessWeavingModel = require("../../models/Weaving/InProcess.model");
 // const fileService = require("./file.service");
 class DepWeavingService {
   async getModel() {
-    const model = {
+    const ModelForProvide = {
       likra: "",
       polister: "",
       melaks_yarn: "",
-      yarn_wrap: "",
       duration_time: "",
     };
+    const ModelForSpinning = {
+      spinning_yarn_wrap_quantity: "",
+      spinning_delivery_time: ""
+    };
 
-    return model;
+    return { ModelForProvide, ModelForSpinning };
   }
 
   async cancelReason(data, author) {
@@ -334,8 +337,11 @@ class DepWeavingService {
     let order_report_at_progress = []
     order_report_at_progress.push(data.items)
     const ID = data.id;
-    const newData = await InProcessWeavingModel.findByIdAndUpdate(ID, { order_report_at_progress }, { new: true });
-    return newData;
+    const Data = await InProcessWeavingModel.findById(ID);
+    const newData = Data
+    newData.order_report_at_progress.push(data.items)
+    const updateData = await InProcessWeavingModel.findByIdAndUpdate(ID, newData, { new: true });
+    return updateData;
   }
 }
 

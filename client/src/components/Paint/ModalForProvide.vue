@@ -15,7 +15,6 @@ const SaveToProvideValidate = async (formRef) => {
     }
   });
 };
-const date = ref();
 const SaveToProvide = async () => {
   await store.SaveToProvide({ id: card_id.value, data: model.value });
   is_provide.value = false;
@@ -35,7 +34,7 @@ const rules = ref({
     <span>
       <el-form
         ref="formRef"
-        :model="model"
+        :model="model.ModelForProvide"
         label-width="auto"
         class="filter-box bg-white md:grid md:grid-cols-8 gap-1 sm:flex sm:flex-wrap rounded shadow-sm p-2 mt-2 mb-2 text-[13px]"
         size="small"
@@ -44,7 +43,7 @@ const rules = ref({
         <div class="mb-1 col-span-4">
           <el-form-item label="Pus (kg)" prop="pus" :rules="rules">
             <el-input
-              v-model="model.pus"
+              v-model="model.ModelForProvide.pus"
               clearable
               class="w-[100%]"
               size="smal"
@@ -56,7 +55,7 @@ const rules = ref({
         <div class="mb-1 col-span-4">
           <el-form-item label="Fike (kg)" prop="fike" :rules="rules">
             <el-input
-              v-model="model.fike"
+              v-model="model.ModelForProvide.fike"
               clearable
               class="w-[100%]"
               size="smal"
@@ -68,7 +67,7 @@ const rules = ref({
         <div class="mb-1 col-span-4">
           <el-form-item label="Rang kodi" prop="color_code" :rules="rules">
             <el-input
-              v-model="model.color_code"
+              v-model="model.ModelForProvide.color_code"
               clearable
               class="w-[100%]"
               size="smal"
@@ -79,12 +78,42 @@ const rules = ref({
         </div>
         <div class="mb-1 col-span-4">
           <el-form-item
+            label="Tayyorlash muddati"
+            prop="duration_time"
+            :rules="rules"
+          >
+            <el-date-picker
+              style="width: 100%"
+              v-model="model.ModelForProvide.duration_time"
+              clearable
+              type="date"
+              placeholder="..."
+              size="smal"
+            />
+          </el-form-item>
+        </div>
+      </el-form>
+    </span>
+    <span class="">
+      <div class="text-[16px] text-gray-800">
+        To'quv uchun talabnoma qo'shish
+      </div>
+      <el-form
+        ref="formRef"
+        :model="model.ModelForWeaving"
+        label-width="auto"
+        class="filter-box bg-white md:grid md:grid-cols-8 gap-1 sm:flex sm:flex-wrap rounded shadow-sm p-2 mt-2 mb-2 text-[13px]"
+        size="small"
+        label-position="top"
+      >
+        <div class="mb-1 col-span-4">
+          <el-form-item
             label="Xom mato miqdori (kg)"
-            prop="raw_cloth_quantity"
+            prop="weaving_cloth_quantity"
             :rules="rules"
           >
             <el-input
-              v-model="model.raw_cloth_quantity"
+              v-model="model.ModelForWeaving.weaving_cloth_quantity"
               clearable
               class="w-[100%]"
               size="smal"
@@ -96,12 +125,12 @@ const rules = ref({
         <div class="mb-1 col-span-4">
           <el-form-item
             label="Tayyorlash muddati"
-            prop="raw_cloth_quantity"
+            prop="weaving_delivery_time"
             :rules="rules"
           >
             <el-date-picker
               style="width: 100%"
-              v-model="model.duration_time"
+              v-model="model.ModelForWeaving.weaving_delivery_time"
               clearable
               type="date"
               placeholder="..."
