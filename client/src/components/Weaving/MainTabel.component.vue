@@ -5,7 +5,7 @@ import { storeToRefs } from "pinia";
 const openModalById = async (id) => {
   await store.openModalById({ id, is_modal: true });
 };
-const { items } = storeToRefs(store);
+const { items, is_active } = storeToRefs(store);
 </script>
 <template>
   <div class="shadow-md rounded min-h-[15px]">
@@ -76,14 +76,22 @@ const { items } = storeToRefs(store);
         width="180"
         header-align="center"
         align="center"
-      />
+      >
+        <template #default="scope">{{
+          scope.row.weaving_cloth_quantity
+        }}</template>
+      </el-table-column>
       <el-table-column
         prop="in_process_detail.delivery_time"
         label="Muddati"
         width="180"
         header-align="center"
         align="center"
-      />
+      >
+        <template #default="scope">{{
+          scope.row.weaving_delivery_time
+        }}</template>
+      </el-table-column>
 
       <el-table-column
         fixed="right"

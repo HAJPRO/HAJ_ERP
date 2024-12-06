@@ -7,15 +7,25 @@ import { defineStore } from "pinia";
 export const SpinningPlanStore = defineStore("SpinningPlan", {
     state: () => {
         return {
-            items: "",
+            process_order_id: "",
+            order_id: "",
+            sale_order_id: "",
+            all_length: {},
             card_id: "",
             is_modal: false,
+            is_active: "",
             items: [],
+            item: [],
             model: "",
-            is_provide: false
+            is_provide: false,
+            is_report_modal: false,
+            order_report: []
         };
     },
     actions: {
+        IsActive(payload) {
+            this.is_active = payload.is_active
+        },
         async GetModel() {
             try {
                 const data = await SaleLegalService.getModel();
@@ -25,11 +35,22 @@ export const SpinningPlanStore = defineStore("SpinningPlan", {
                 console.log(err);
             }
         },
+        async GetAll(status) {
+            try {
+                const data = await SpinningService.getAll(status);
+                this.items = data.data.items;
+                this.all_length = data.data.all_length
+                console.log(data.data);
+            } catch (err) {
+                console.log(err);
+            }
+        },
         async openModalById(payload) {
             this.card_id = payload.id;
-            this.is_modal = payload.is_modal;
-            const data = await SaleLegalService.getOne(payload.id);
-            this.items = Array(data.data);
+            const data = await SpinningService.getOne(payload.id);
+            this.is_modal = true
+            this.item = data.data
+            this.sale_order_id = data.data[0].in_process_detail._id;
         },
 
         async cancelSendReason(payload) {
@@ -61,6 +82,7 @@ export const SpinningPlanStore = defineStore("SpinningPlan", {
                 const data = await SpinningService.create({
                     items: payload.data,
                     card_id: payload.id,
+                    order_id: this.sale_order_id
                 });
                 loader.hide();
                 const TimeOut = () => {
@@ -72,62 +94,20 @@ export const SpinningPlanStore = defineStore("SpinningPlan", {
                 console.log(err);
             }
         },
-        // async StatusModalById(payload) {
-        //     this.status_modal.id = payload.id;
-        //     this.status_modal.isModal = payload.is_modal;
-        //     // const data = await SaleLegalService.getOne(payload.id)
-        //     // this.model = data.data
-        // },
-        // async Update(payload) {
-        //     try {
-        //         const loader = loading.show();
-        //         const updateData = await SaleLegalService.Edit(this.card_id, payload);
-        //         loader.hide();
-        //         ToastifyService.ToastSuccess({
-        //             msg: updateData.data.msg,
-        //         });
-        //         const Refresh = () => {
-        //             window.location.href = "/explore/sale/legal";
-        //         };
-        //         setTimeout(Refresh, 1500);
-        //     } catch (error) {
-        //         return ToastifyService.ToastError({ msg: error.messages });
-        //     }
-        // },
+        async OpenReportModalById(payload) {
+            const data = await SpinningService.getOneFromInProcess({ id: payload.id })
+            this.process_order_id = payload.id
+            this.order_report = data.data
+            this.is_report_modal = true
+            this.order_id = data.data.sale_order_id
 
-        // async Confirm(id) {
-        //     try {
-        //         const loader = loading.show();
-        //         const confirmData = await SaleLegalService.confirm(id);
-        //         loader.hide();
-        //         ToastifyService.ToastSuccess({
-        //             msg: confirmData.data.msg,
-        //         });
-        //         const Refresh = () => {
-        //             window.location.href = "/explore/sale/legal";
-        //         };
-        //         setTimeout(Refresh, 1500);
-        //     } catch (error) {
-        //         return ToastifyService.ToastError({ msg: error.messages });
-        //     }
-        // },
+        },
 
-        // async DeleteById(id) {
-        //     try {
-        //         const loader = loading.show();
-        //         const data = await SaleLegalService.Delete(id);
-        //         loader.hide();
-        //         ToastifyService.ToastSuccess({
-        //             msg: data.data.msg,
-        //         });
-        //         const Refresh = () => {
-        //             window.location.href = "/explore/sale/legal";
-        //         };
-        //         setTimeout(Refresh, 1500);
-        //     } catch (error) {
-        //         return ToastifyService.ToastError({ msg: error.messages });
-        //     }
-        // },
+        async addDayReportInProcess(items) {
+            const data = await SpinningService.addDayReportInProcess({ items, id: this.order_id })
+            await this.OpenReportModalById({ id: this.process_order_id })
+        },
+
     },
 
 });

@@ -1,12 +1,13 @@
 <script setup>
 import { ref, onMounted } from "vue";
-import { PaintPlanStore } from "../../stores/Paint/paintPlan.store";
-const store_paint = PaintPlanStore();
+import { SpinningPlanStore } from "../../stores/Spinning/spinningPlan.store";
+const store_spinning = SpinningPlanStore();
 import { storeToRefs } from "pinia";
-const { items, is_active } = storeToRefs(store_paint);
-const OpenModalById = async (id) => {
-  await store_paint.openModalById({ id, is_modal: true });
-};
+const { items } = storeToRefs(store_spinning);
+console.log(items);
+// const OpenModalById = async (id) => {
+//   await store_paint.openModalById({ id, is_modal: true });
+// };
 </script>
 <template>
   <div class="shadow-md rounded min-h-[15px]">
@@ -39,29 +40,22 @@ const OpenModalById = async (id) => {
       <el-table-column
         header-align="center"
         sortable
-        prop="delivery_product_box.pus"
-        label="Pus"
+        prop="delivery_product_box.begunok"
+        label="Begunok (kg)"
         width="200"
       />
       <el-table-column
         header-align="center"
         sortable
-        prop="delivery_product_box.fike"
-        label="Fike"
+        prop="delivery_product_box.latun"
+        label="Latun (kg)"
         width="200"
-      />
-      <el-table-column
-        prop="delivery_product_box.color_code"
-        label="Rang kod"
-        width="180"
-        header-align="center"
-        align="center"
       />
 
       <el-table-column
         prop="delivery_product_box.duration_time"
         label="Yetkazish vaqti"
-        width="180"
+        width="300"
         header-align="center"
         align="center"
       />
@@ -69,7 +63,7 @@ const OpenModalById = async (id) => {
         fixed="right"
         prop="status"
         label="Holati"
-        width="150"
+        width="200"
         header-align="center"
         align="center"
       >

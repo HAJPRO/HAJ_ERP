@@ -18,8 +18,10 @@ export const WeavingPlanStore = defineStore("WeavingPlan", {
             paint_process_id: "",
             all_length: {},
             order_report: [],
+            report_weaving: [],
             is_report_modal: false,
-            update_process_id: ""
+            sale_order_id: ""
+
         };
     },
     actions: {
@@ -53,7 +55,6 @@ export const WeavingPlanStore = defineStore("WeavingPlan", {
 
 
         },
-
         async cancelSendReason(payload) {
             try {
                 const loader = loading.show();
@@ -105,14 +106,19 @@ export const WeavingPlanStore = defineStore("WeavingPlan", {
             const data = await WeavingService.getOneFromInProcess({ id: payload.id })
             this.order_report = data.data
             this.is_report_modal = true
-            this.update_process_id = payload.id
+            this.sale_order_id = data.data.sale_order_id
+            this.getDayReportFromWeaving(this.sale_order_id)
 
         },
         async addDayReportInProcess(items) {
-            const data = await WeavingService.addDayReportInProcess({ items, id: this.update_process_id })
+            const data = await WeavingService.addDayReportInProcess({ items, id: this.sale_order_id })
+            this.getDayReportFromWeaving(this.sale_order_id)
 
         },
-
+        async getDayReportFromWeaving(id) {
+            const data = await WeavingService.getDayReportFromWeaving(id)
+            this.report_weaving = data.data
+        },
         async Confirm(id) {
             try {
                 const loader = loading.show();
@@ -129,8 +135,6 @@ export const WeavingPlanStore = defineStore("WeavingPlan", {
                 return ToastifyService.ToastError({ msg: error.messages });
             }
         },
-
-
         // async Update(payload) {
         //     try {
         //         const loader = loading.show();
@@ -147,8 +151,6 @@ export const WeavingPlanStore = defineStore("WeavingPlan", {
         //         return ToastifyService.ToastError({ msg: error.messages });
         //     }
         // },
-
-
         // async DeleteById(id) {
         //     try {
         //         const loader = loading.show();

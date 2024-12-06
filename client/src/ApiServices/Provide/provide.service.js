@@ -14,8 +14,5 @@ export const ProvideService = {
     let url = "provide/provide_all";
     return api.post(url, status);
   },
-  getAllLength() {
-    let url = "provide/provide_all_length";
-    return api.get(url);
-  },
+
 };

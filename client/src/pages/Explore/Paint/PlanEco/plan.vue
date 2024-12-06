@@ -1,11 +1,6 @@
 <script setup>
 import { ref, onMounted } from "vue";
 import Title from "@/components/Title.vue";
-import { PaintPlanStore } from "../../../../stores/Paint/paintPlan.store";
-const store_paint = PaintPlanStore();
-import { SaleStore } from "../../../../stores/Sale/sale.store";
-const store_sale = SaleStore();
-import { storeToRefs } from "pinia";
 import HeaderTabLink from "../../../../components/Paint/HeaderTabLink.vue";
 import MainTable from "../../../../components/Paint/MainTable.vue";
 import ModalConfirm from "../../../../components/Paint/ModalConfirm.vue";
@@ -13,6 +8,9 @@ import ModalForProvide from "../../../../components/Paint/ModalForProvide.vue";
 import InProcessDetailTable from "../../../../components/Paint/InProcessDetailTable.vue";
 import ProvideTable from "../../../../components/Paint/ProvideTable.vue";
 import ModalDayReport from "../../../../components/Paint/ModalDayReport.vue";
+import { PaintPlanStore } from "../../../../stores/Paint/paintPlan.store";
+const store_paint = PaintPlanStore();
+import { storeToRefs } from "pinia";
 const { is_active, is_report_modal } = storeToRefs(store_paint);
 const getModel = async () => {
   await store_paint.GetModel();

@@ -2,15 +2,16 @@ const { Schema, model } = require("mongoose");
 
 const SaleDepSpinningCardSchema = new Schema(
     {
+        departmen: { type: String, default: "Yigiruv" },
         author: { type: Schema.ObjectId, ref: "User" },
         sale_order_id: { type: Schema.ObjectId, ref: "SaleCard" },
-        departmen: { type: String, default: "Yigiruv" },
-        latun: { type: Number },
-        begunok: { type: Number },
-        duration_time: { type: Date, default: new Date() },
-        status: { type: String, default: "Taminotga yuborildi" },
+        in_process_id: { type: Schema.ObjectId, ref: "InProcessSpinningModel" },
+        provide_id: { type: Schema.ObjectId, ref: "DepProvideCard" },
         spinning_process_status: { type: Array },
+        status_inprocess: { type: String, default: "Jarayonda" },
+        in_process_id: { type: Schema.ObjectId, ref: "InProcessSpinningModel" },
         state: { type: Boolean, default: true },
+        weaving_id: { type: Schema.ObjectId, ref: "DepWeavingCard" }
     },
     { timestamps: true }
 );

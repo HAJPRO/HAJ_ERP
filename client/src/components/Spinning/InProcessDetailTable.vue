@@ -1,11 +1,11 @@
 <script setup>
 import { ref, onMounted } from "vue";
-import { PaintPlanStore } from "../../stores/Paint/paintPlan.store";
-const store_paint = PaintPlanStore();
+import { SpinningPlanStore } from "../../stores/Spinning/spinningPlan.store";
+const store_spinning = SpinningPlanStore();
 import { storeToRefs } from "pinia";
-const { items, is_active } = storeToRefs(store_paint);
-const OpenModalById = async (id) => {
-  await store_paint.openModalById({ id, is_modal: true });
+const { items } = storeToRefs(store_spinning);
+const openReportModalById = async (id) => {
+  await store_spinning.OpenReportModalById({ id });
 };
 </script>
 <template>
@@ -39,35 +39,56 @@ const OpenModalById = async (id) => {
       <el-table-column
         header-align="center"
         sortable
-        prop="delivery_product_box.pus"
-        label="Pus"
+        prop="sale_order.customer_name"
+        label="Buyurtmachi nomi"
         width="200"
       />
       <el-table-column
         header-align="center"
         sortable
-        prop="delivery_product_box.fike"
-        label="Fike"
+        prop="sale_order.order_number"
+        label="Buyurtma miqdori"
         width="200"
       />
       <el-table-column
-        prop="delivery_product_box.color_code"
-        label="Rang kod"
+        prop="sale_order.pro_type"
+        label="Mahsulot turi"
+        width="180"
+        header-align="center"
+        align="center"
+      />
+      <el-table-column
+        prop="sale_order.pro_name"
+        label="Mahsulot nomi"
+        width="180"
+        header-align="center"
+        align="center"
+      />
+      <el-table-column
+        prop="sale_order.pro_color"
+        label="Mahsulot rangi"
+        width="180"
+        header-align="center"
+        align="center"
+      />
+      <el-table-column
+        prop="more.spinning_yarn_wrap_quantity"
+        label="Buyurtma miqdori"
         width="180"
         header-align="center"
         align="center"
       />
 
       <el-table-column
-        prop="delivery_product_box.duration_time"
-        label="Yetkazish vaqti"
-        width="180"
+        prop="more.spinning_delivery_time"
+        label="Muddati"
+        width="190"
         header-align="center"
         align="center"
       />
+
       <el-table-column
         fixed="right"
-        prop="status"
         label="Holati"
         width="150"
         header-align="center"
@@ -78,7 +99,7 @@ const OpenModalById = async (id) => {
             to=""
             class="inline-flex items-center text-red bg-[#e4e9e9] hover:bg-[#d7ebeb] font-medium rounded-md text-[12px] w-ful p-[5px] sm:w-auto text-center"
           >
-            {{ scope.row.status }}
+            {{ scope.row.status_inprocess }}
           </router-link>
         </template>
       </el-table-column>
@@ -91,6 +112,13 @@ const OpenModalById = async (id) => {
         align="center"
       >
         <template #default="scope">
+          <router-link
+            to=""
+            @click="openReportModalById(scope.row._id)"
+            class="inline-flex items-center ml-2 text-red bg-[#36d887] hover:bg-[#3dcc84] font-medium rounded-md text-sm w-full sm:w-auto px-3 py-3 text-center"
+          >
+            <i class="text-black fa-sharp fa-solid fa-file-lines fa-xs"></i>
+          </router-link>
           <router-link
             to=""
             class="inline-flex items-center ml-2 text-red bg-red-500 hover:bg-red-600 font-medium rounded-md text-sm w-full sm:w-auto px-3 py-3 text-center"

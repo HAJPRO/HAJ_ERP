@@ -1,7 +1,6 @@
 <script setup>
 import { ref, onMounted } from "vue";
 import { loading } from "../../utils/Loader";
-// import { SaleLegalService } from "../../ApiServices/Sale/saleLegal.service";
 import { WeavingPlanStore } from "../../stores/Weaving/weaving_plan.store";
 const store = WeavingPlanStore();
 import { storeToRefs } from "pinia";

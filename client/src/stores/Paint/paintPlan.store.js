@@ -15,10 +15,13 @@ export const PaintPlanStore = defineStore("paintPlanStore", {
             item: [],
             confirmed_orders: [],
             order_report: [],
+            report_paint: [],
             is_report_modal: false,
             model: "",
             is_provide: false,
-            is_active: ""
+            is_active: "",
+            sale_order_id: ""
+
         };
     },
     actions: {
@@ -139,8 +142,17 @@ export const PaintPlanStore = defineStore("paintPlanStore", {
         async OpenReportModalById(payload) {
             const data = await PaintService.getOneFromInProcess({ id: payload.id })
             this.order_report = data.data
-            this.is_report_modal = true
-
+            this.is_report_modal = true,
+                this.sale_order_id = data.data.sale_order_id
+            await this.getDayReportFromPaint(this.sale_order_id)
+        },
+        async addDayReportInProcess(items) {
+            const data = await PaintService.addDayReportInProcess({ items, id: this.sale_order_id })
+            await this.getDayReportFromPaint(this.sale_order_id)
+        },
+        async getDayReportFromPaint(id) {
+            const data = await PaintService.getDayReportFromPaint(id)
+            this.report_paint = data.data
         },
 
         async DeleteById(id) {

@@ -35,5 +35,10 @@ router.post(
   authMiddleware,
   DepPaintController.addDayReportInProcess
 );
+router.post(
+  "/paint_get_report",
+  authMiddleware,
+  DepPaintController.getDayReportFromPaint
+);
 
 module.exports = router;

@@ -1,52 +1,39 @@
 <script setup>
 import { ref, onMounted } from "vue";
-import { SaleLegalService } from "../../ApiServices/Sale/saleLegal.service";
 import { loading } from "../../utils/Loader";
-import { SaleStore } from "../../stores/Sale/sale.store";
+import { SpinningPlanStore } from "../../stores/Spinning/spinningPlan.store";
 import { storeToRefs } from "pinia";
-const StoreSale = SaleStore();
-const all_length = ref();
-const getAllLength = async () => {
-  const loader = loading.show();
-  const data = await SaleLegalService.getAllLength();
-  loader.hide();
-  all_length.value = data.data ? data.data : {};
-};
-
+const store_spinning = SpinningPlanStore();
+const { all_length } = storeToRefs(store_spinning);
 const getAll = async () => {
-  const items = await StoreSale.getAll();
+  const loader = loading.show();
+  await store_spinning.GetAll({ status: isActive.value });
   loader.hide();
+};
+const is_Active = () => {
+  store_spinning.IsActive({ is_active: isActive.value });
 };
 const isActive = ref(1);
 const ActiveTabLink = (num) => {
-  if (num === 0) {
-    isActive.value = 0;
-    return getAll();
-  }
   if (num === 1) {
     isActive.value = 1;
-    return getAll();
-  }
-  if (num === 2) {
-    isActive.value = 2;
-    return getAll();
-  }
-  if (num === 3) {
-    isActive.value = 3;
-    return getAll();
+    is_Active();
+    getAll();
   }
   if (num === 4) {
     isActive.value = 4;
-    return getAll();
+    is_Active();
+    getAll();
   }
   if (num === 5) {
     isActive.value = 5;
-    return getAll();
+    is_Active();
+    getAll();
   }
 };
 onMounted(async () => {
   try {
-    await getAllLength(), getAll();
+    await getAll(), is_Active();
   } catch (err) {
     console.log(err);
   }
@@ -69,7 +56,7 @@ onMounted(async () => {
             class="inline-flex items-center justify-center h-5 text-[11px] font-medium text-white bg-red-500 px-3 py-2 rounded"
           >
             <span class=" ">1</span>/{{
-              (all_length ? all_length.sale_length : 0) || 0
+              (all_length ? all_length.process_length : 0) || 0
             }}</span
           >
         </div>
@@ -85,7 +72,7 @@ onMounted(async () => {
           <span
             class="inline-flex items-center justify-center h-5 text-[11px] font-medium text-white bg-[#36d887] px-3 py-2 rounded"
             ><span class=" ">0</span>/{{
-              (all_length ? all_length.spinning_length : 0) || 0
+              (all_length ? all_length.weaving_length : 0) || 0
             }}</span
           >
         </div>
@@ -102,7 +89,7 @@ onMounted(async () => {
             class="inline-flex items-center justify-center h-5 text-[11px] font-medium text-white bg-[#36d887] px-3 py-2 rounded"
           >
             <span class=" ">0</span>/{{
-              (all_length ? all_length.provide_length_length : 0) || 0
+              (all_length ? all_length.provide_length : 0) || 0
             }}</span
           >
         </div>

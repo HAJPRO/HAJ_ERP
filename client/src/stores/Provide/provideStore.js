@@ -7,13 +7,13 @@ import { defineStore } from "pinia";
 export const ProvidePlanStore = defineStore("ProvidePlanStore", {
     state: () => {
         return {
-            items: "",
             card_id: "",
             is_modal: false,
             items: [],
             model: "",
             is_provide: false,
-            departmen: ""
+            departmen: "",
+            is_active: ""
         };
     },
     actions: {
@@ -26,10 +26,13 @@ export const ProvidePlanStore = defineStore("ProvidePlanStore", {
                 console.log(err);
             }
         },
+        IsActive(payload) {
+            this.is_active = payload.is_active
+        },
         async getAll(payload) {
             const res = await ProvideService.getAll(payload);
             this.items = res.data;
-            this.departmen = res.data.length ? res.data[0].departmen : " "
+
 
         },
 

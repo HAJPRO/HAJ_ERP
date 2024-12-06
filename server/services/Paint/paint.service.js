@@ -4,7 +4,6 @@ const SaleDepPaintCardModel = require("../../models/saleDepPaintCard.model");
 const SaleDepProvideCardModel = require("../../models/saleDepProvideCard.model.js");
 const userModel = require("../../models/user.model");
 const InProcessPaintModel = require("../../models/Paint/InProcess.model.js");
-const InProcessWeavingtModel = require("../../models/Weaving/InProcess.model.js");
 const SaleDepWeavingCardModel = require("../../models/saleDepWeavingCard.model.js");
 
 // const fileService = require("./file.service");
@@ -289,32 +288,50 @@ class DepPaintService {
     return data;
   }
   async getOneFromInProcess(payload) {
-    console.log(payload);
     const data = await SaleDepPaintCardModel.findById(payload.id);
     if (data.sale_order_id) {
-      const item = await SaleDepWeavingCardModel.aggregate([{ $match: { order_id: data.order_id } }, {
+      const paint_data = await SaleDepPaintCardModel.findOne({ sale_order_id: data.sale_order_id })
+      const item = await SaleDepWeavingCardModel.aggregate([{ $match: { sale_order_id: data.sale_order_id } },
+      {
+        $lookup: {
+          from: "inprocessweavingmodels",
+          localField: "in_process_id",
+          foreignField: "_id",
+          as: "report",
+        },
+      },
+      {
         $lookup: {
           from: "salecards",
           localField: "sale_order_id",
           foreignField: "_id",
-          as: "in_process_detail",
-        },
+          as: "order",
+        }
       },
       {
         $project: {
-          order_report_at_progress: 1,
-          weaving_cloth_quantity: 1,
-          in_process_detail: {
+          sale_order_id: 1,
+          report: {
             $cond: {
-              if: { $isArray: "$in_process_detail" },
-              then: { $arrayElemAt: ["$in_process_detail", 0] },
+              if: { $isArray: "$report" },
+              then: { $arrayElemAt: ["$report", 0] },
+              else: null,
+            },
+          },
+          order: {
+            $cond: {
+              if: { $isArray: "$order" },
+              then: { $arrayElemAt: ["$order", 0] },
               else: null,
             },
           },
         },
-      },]);
-      console.log(item);
-      return { report: item[0].order_report_at_progress, customer_name: item[0].in_process_detail.customer_name, order_number: item[0].in_process_detail.order_number, weaving_cloth_quantity: item[0].weaving_cloth_quantity };
+      },
+      ]);
+      if (item.length > 0) {
+        return { sale_order_id: item[0].sale_order_id, report: item[0].report.order_report_at_progress, customer_name: item[0].order.customer_name, order_number: item[0].order.order_number, weaving_cloth_quantity: paint_data.weaving_cloth_quantity, weaving_delivery_time: paint_data.weaving_delivery_time };
+      }
+
     }
 
 
@@ -323,9 +340,42 @@ class DepPaintService {
     let order_report_at_progress = []
     order_report_at_progress.push(data.items)
     const ID = data.id;
-    const newData = await InProcessPaintModel.findByIdAndUpdate(ID, { order_report_at_progress }, { new: true });
-    return newData;
+    const Data = await InProcessPaintModel.findOne({ order_id: ID });
+    const newData = Data
+    newData.order_report_at_progress.push(data.items)
+    const updateData = await InProcessPaintModel.findByIdAndUpdate(Data._id, newData, { new: true });
+    return updateData;
+  }
+  async getDayReportFromPaint(data) {
+    let ID = new mongoose.Types.ObjectId(data.id);
+    const item = await InProcessPaintModel.aggregate([{ $match: { order_id: ID } },
+    {
+      $lookup: {
+        from: "salecards",
+        localField: "order_id",
+        foreignField: "_id",
+        as: "order",
+      }
+    },
+    {
+      $project: {
+        order_report_at_progress: 1,
+        order: {
+          $cond: {
+            if: { $isArray: "$order" },
+            then: { $arrayElemAt: ["$order", 0] },
+            else: null,
+          },
+        },
+
+      },
+    },
+    ]);
+    if (item.length > 0) {
+      return { report: item[0].order_report_at_progress, customer_name: item[0].order.customer_name, order_number: item[0].order.order_number, order_quantity: item[0].order.order_quantity, delivery_time: item[0].order.delivery_time };
+    }
   }
 }
+
 
 module.exports = new DepPaintService();

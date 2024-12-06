@@ -1,7 +1,6 @@
 const SaleLegalCardModel = require("../../models/saleLegalCard.model");
 const SaleDepPaintCardModel = require("../../models/saleDepPaintCard.model");
 const SaleDepWeavingCardModel = require("../../models/saleDepWeavingCard.model");
-const SaleDepSpinningCardModel = require("../../models/saleDepWeavingCard.model");
 const SaleDepProvideCardModel = require("../../models/saleDepProvideCard.model");
 
 // const fileService = require("./file.service");
@@ -68,67 +67,131 @@ class DepProvideService {
   //   return newData;
   // }
   async getAllLength() {
-    try {
-      const Provide = await this.getAllProvide();
-      const provide_length = Provide ? Provide.length : 0;
-      const Paint = await this.getAllPaint();
-      const paint_length = Paint ? Paint.length : 0;
-      const Weaving = await this.getAllWeaving();
-      const weaving_length = Weaving ? Weaving.length : 0;
-      const Spinning = await this.getAllSpinning();
-      const spinning_length = Spinning ? Spinning.length : 0;
-      const allLength = {
-        provide_length,
-        paint_length,
-        weaving_length,
-        spinning_length,
-      };
-      return allLength;
-    } catch (error) {
-      return error.message;
-    }
+    // const process_length = await this.getAllInProcess().then((data) => data.length)
+    const paint_length = await this.getAllPaint().then((data) => data.length)
+    // const weaving_length = await this.getAllWeaving().then((data) => data.length)
+    // const spinning_length = await this.getAllSpinning().then((data) => data.length)
+    // return { process_length, weaving_length, paint_length, spinning_length }
   }
-  async getAll(num) {
-    try {
-      if (num === 1) {
-        return await this.getAllProvide();
-      }
-      if (num === 2) {
-        return await this.getAllPaint();
-      }
-      if (num === 3) {
-        return await this.getAllWeaving();
-      }
-      if (num === 4) {
-        return await this.getAllSpinning();
-      }
-    } catch (error) {
-      return error.message;
-    }
-  }
-  async getAllProvide() {
-    const allPosts = await SaleDepProvideCardModel.find({
-      $or: [
-        { status: "Jarayonda" },
-        { status: "Yetkazib berildi" },
-        { status: "Bekor qilindi" },
-      ],
-    }).populate(["author", "delivery_product_box_id"]);
+  async getAll(data) {
+    const is_status = data.status;
+    // const user_id = new mongoose.Types.ObjectId(data.user.id);
+    // const department = data.user.department;
 
-    return allPosts;
+    try {
+      const all_length = await this.getAllLength()
+      if (is_status === 1) {
+        const items = await this.getAllInProcess();
+        return { items, all_length }
+      }
+      if (is_status == 2) {
+        const items = await this.getAllPaint();
+        console.log(items);
+        return { items, all_length }
+      }
+
+      if (is_status == 3) {
+        const items = await this.getAllWeaving();
+        return { items, all_length }
+      }
+      if (is_status == 4) {
+        const items = await this.getAllSpinning();
+        return { items, all_length }
+      }
+    } catch (error) {
+      return error.message;
+    }
+  }
+  async getAllInProcess() {
+    try {
+      // const allInProcess = await SaleDepProvideCardModel.aggregate([
+      //   { $match: { author: id } },
+      //   {
+      //     $lookup: {
+      //       from: "salecards",
+      //       localField: "sale_order_id",
+      //       foreignField: "_id",
+      //       as: "sale_order",
+      //     },
+      //   },
+      //   {
+      //     $lookup: {
+      //       from: "depweavingcards",
+      //       localField: "weaving_id",
+      //       foreignField: "_id",
+      //       as: "more",
+      //     },
+      //   },
+      //   {
+      //     $project: {
+      //       status_inprocess: 1,
+      //       more: {
+      //         $cond: {
+      //           if: { $isArray: "$more" },
+      //           then: { $arrayElemAt: ["$more", 0] },
+      //           else: null,
+      //         },
+      //       },
+      //       sale_order: {
+      //         $cond: {
+      //           if: { $isArray: "$sale_order" },
+      //           then: { $arrayElemAt: ["$sale_order", 0] },
+      //           else: null,
+      //         },
+      //       },
+      //     },
+      //   },
+      // ]);
+      // return allInProcess;
+    } catch (error) {
+      return error.message;
+    }
   }
   async getAllPaint() {
-    const allPosts = await SaleDepPaintCardModel.find().populate(["author"]);
-    return allPosts;
+    try {
+      const allPaint = await SaleDepProvideCardModel.aggregate([
+        {
+          $match: {
+            $and: [{ status: "Tasdiqlanmagan" }, { department: "Bo'yoq" }]
+          },
+        },
+      ]);
+      return allPaint;
+    } catch (error) {
+      return error.message;
+    }
   }
   async getAllWeaving() {
-    const allPosts = await SaleDepWeavingCardModel.find().populate(["author"]);
-    return allPosts;
+    try {
+      const allWeaving = await SaleDepProvideCardModel.aggregate([
+        {
+          $match: {
+            $and: [{ status: "Tasdiqlanmagan" }, { department: "To'quv" }]
+          },
+        },
+      ]);
+
+      return allWeaving;
+    } catch (error) {
+      return error.message;
+    }
   }
+
   async getAllSpinning() {
-    const allPosts = await SaleDepSpinningCardModel.find().populate(["author"]);
-    return allPosts;
+    try {
+      const allSpinning = await SaleDepProvideCardModel.aggregate([
+        {
+          $match: {
+            $and: [{ status: "Tasdiqlanmagan" }, { department: "Yigiruv" }],
+          },
+        },
+      ]);
+      return allSpinning;
+    } catch (error) {
+      return error.message;
+    }
   }
+
 
   async delete(id) {
     const data = await SaleDepPaintCardModel.findByIdAndDelete(id);

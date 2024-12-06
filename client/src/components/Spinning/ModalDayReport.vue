@@ -1,29 +1,22 @@
 <script setup>
-import { ref, onMounted } from "vue";
-import { WeavingPlanStore } from "../../stores/Weaving/weaving_plan.store";
-const store = WeavingPlanStore();
+import { ref } from "vue";
+import { SpinningPlanStore } from "../../stores/Spinning/spinningPlan.store";
+const store_spinning = SpinningPlanStore();
 import { storeToRefs } from "pinia";
-const { is_report_modal, order_report, report_weaving } = storeToRefs(store);
-console.log(order_report.value);
+const { is_report_modal, order_report } = storeToRefs(store_spinning);
 const addDayReportInProcess = async () => {
-  await store.addDayReportInProcess(model.value);
+  await store_spinning.addDayReportInProcess(model.value);
 };
-const DoneSpinning = ref();
-if (order_report.value) {
-  const initialValueSpinning = ref(0);
-  DoneSpinning.value = order_report.value.report.reduce(
+
+const Done = ref();
+if (order_report.value.report.length) {
+  const initialValue = ref(0);
+  Done.value = order_report.value.report.reduce(
     (accumulator, currentValue) => accumulator + Number(currentValue.quantity),
-    initialValueSpinning.value
+    initialValue.value
   );
 }
-// const DoneWeaving = ref();
-// if (report_weaving.value) {
-//   const initialValueWeaving = ref(0);
-//   DoneWeaving.value = report_weaving.value.report.reduce(
-//     (accumulator, currentValue) => accumulator + Number(currentValue.quantity),
-//     initialValueWeaving.value
-//   );
-// }
+
 const model = ref({
   quantity: "",
   unit: "",
@@ -66,96 +59,28 @@ const validate = async (formRef) => {
     width="800"
   >
     <span>
-      <div
-        class="flex justify-between flex-wrap font-semibold text-[12px] p-1 bg-slate-100 shadow rounded border-t-[1px] border-[#36d887]"
-      >
-        <div>Buyurtmachi: {{ order_report.customer_name }}</div>
-
-        <div
-          class="bg-red-50 p-1 rounded text-[11px] border-[1px] border-red-500"
-        >
-          Yigiruvda jarayonda
-        </div>
-      </div>
-      <div class="shadow-md rounded min-h-[15px]">
-        <el-table
-          :data="order_report.report"
-          load
-          class="w-full"
-          header-align="center"
-          hight="5"
-          empty-text="Mahsulot tanlanmagan... "
-          border
-          style="width: 100%; font-size: 13px"
-          min-height="170"
-          max-height="170"
-        >
-          <el-table-column
-            header-align="center"
-            align="center"
-            type="index"
-            prop="index"
-            fixed="left"
-            label="№"
-            width="60"
-          />
-
-          <el-table-column
-            header-align="center"
-            prop="quantity"
-            label="Miqdori"
-            width="180"
-          />
-          <el-table-column
-            header-align="center"
-            prop="unit"
-            label="Birligi"
-            width="150"
-          />
-          <el-table-column
-            header-align="center"
-            prop="date"
-            label="Sana"
-            width="250"
-          />
-          <el-table-column
-            fixed="right"
-            label=""
-            width="127"
-            header-align="center"
-            align="center"
-          >
-            <template #default="scope">
-              <router-link
-                to=""
-                class="inline-flex items-center mt-4 ml-2 text-red bg-[#eedc36] hover:bg-yellow-400 font-medium rounded-md text-sm w-full sm:w-auto px-2 py-3 text-center"
-              >
-                <i class="text-red fa-solid fa-check fa-xs fa- fa-xs"></i>
-              </router-link>
-            </template>
-          </el-table-column>
-        </el-table>
-        <div
-          class="flex justify-between flex-wrap font-semibold text-[12px] p-1 bg-slate-100 shadow"
-        >
-          <div>
-            Buyurtma:
-            {{ order_report.quantity }}
-          </div>
-          <div>Bajarildi: {{ DoneSpinning ? DoneSpinning : 0 }}</div>
-          <div>
-            Qoldi:
-            {{ DoneSpinning ? order_report.quantity - DoneSpinning : 0 }}
-          </div>
-        </div>
-      </div>
       <div class="text-[14px] bg-white rounded shadow hover:shadow-md mt-2">
         <div
-          class="bg-slate-100 font-semibold p-1 mt-1 align-center text-center shadow rounded border-t-[1px] border-[#36d887]"
+          class="flex justify-between bg-slate-100 font-semibold p-1 mt-1 align-center text-center shadow rounded border-t-[1px] border-[#36d887]"
         >
-          To'quv hisobot qo'shish
+          <div class="text-[12px]">
+            Buyurtmachi: {{ order_report.customer_name }}
+          </div>
+          <div class="text-[15px]">To'quv hisobot qo'shish</div>
+
+          <div
+            class="bg-red-50 p-1 rounded text-[11px] border-[1px] border-red-500"
+          >
+            {{
+              Number(order_report.quantity) - Done === 0
+                ? "Yigiruv yakunladi"
+                : "Yigiruvda jarayonda"
+            }}
+          </div>
         </div>
+
         <el-form
+          :disabled="!order_report"
           ref="formRef"
           :model="model"
           label-width="auto"
@@ -196,19 +121,18 @@ const validate = async (formRef) => {
                 clearable
                 type="date"
                 placeholder="..."
-                :size="size"
               />
             </el-form-item>
           </div>
         </el-form>
         <div class="shadow-md rounded min-h-[15px]">
           <el-table
-            :data="report_weaving.report"
             load
             class="w-full"
             header-align="center"
             hight="5"
             empty-text="Mahsulot tanlanmagan... "
+            :data="order_report.report"
             border
             style="width: 100%; font-size: 13px"
             min-height="170"
@@ -264,14 +188,12 @@ const validate = async (formRef) => {
           >
             <div>
               Buyurtma:
-              {{ report_weaving.order_quantity }}
+              {{ order_report.quantity }}
             </div>
-            <div>Bajarildi: {{ DoneWeaving ? DoneWeaving : 0 }}</div>
+            <div>Bajarildi: {{ Done ? Done : 0 }}</div>
             <div>
               Qoldi:
-              {{
-                DoneWeaving ? report_weaving.order_quantity - DoneWeaving : 0
-              }}
+              {{ Done ? order_report.quantity - Done : 0 }}
             </div>
           </div>
         </div>
@@ -293,6 +215,16 @@ const validate = async (formRef) => {
           style="background-color: #36d887; color: white; border: none"
           ><i class="mr-2 fa-solid fa-check fa-sm"></i>Yuborish
         </el-button>
+
+        <!-- <router-link
+          v-show="is_cancel"
+          type=""
+          to=""
+          @click="sendReason()"
+          class="inline-flex text-[12px] items-center ml-2 px-3 py-1 mb-1 mt-2 text-sm font-medium text-center text-white bg-[#36d887] text-bold rounded"
+        >
+          <i class="mr-2 fa-solid fa-check fa-sm"></i>Yuborish</router-link
+        > -->
       </div>
     </template>
   </el-dialog>

@@ -3,9 +3,8 @@ import { ref, onMounted } from "vue";
 import { PaintPlanStore } from "../../stores/Paint/paintPlan.store";
 const store_paint = PaintPlanStore();
 import { storeToRefs } from "pinia";
-const { items, is_active } = storeToRefs(store_paint);
+const { items } = storeToRefs(store_paint);
 const openReportModalById = async (id) => {
-  console.log(id);
   await store_paint.OpenReportModalById({ id });
 };
 </script>
@@ -142,7 +141,7 @@ const openReportModalById = async (id) => {
             @click="openReportModalById(scope.row._id)"
             class="inline-flex items-center ml-2 text-red bg-[#36d887] hover:bg-[#3dcc84] font-medium rounded-md text-sm w-full sm:w-auto px-3 py-3 text-center"
           >
-            <i class="text-black fa-sharp fa-solid fa-plus fa-xs"></i>
+            <i class="text-black fa-sharp fa-solid fa-file-lines fa-xs"></i>
           </router-link>
           <router-link
             to=""

@@ -57,13 +57,7 @@ const { items, is_active } = storeToRefs(store_weaving);
         header-align="center"
         align="center"
       />
-      <el-table-column
-        prop="delivery_product_box.yarn_wrap"
-        label="Ip kalava"
-        width="180"
-        header-align="center"
-        align="center"
-      />
+
       <el-table-column
         prop="delivery_product_box.duration_time"
         label="Yetkazish vaqti"
@@ -71,6 +65,14 @@ const { items, is_active } = storeToRefs(store_weaving);
         header-align="center"
         align="center"
       />
+
+      <!-- <el-table-column
+        prop="delivery_product_box.duration_time"
+        label="Yetkazish vaqti"
+        width="180"
+        header-align="center"
+        align="center"
+      /> -->
       <el-table-column
         fixed="right"
         prop="status"

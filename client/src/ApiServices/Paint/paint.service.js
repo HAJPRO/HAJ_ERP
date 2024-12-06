@@ -22,5 +22,13 @@ export const PaintService = {
     let url = "paint/paint_get_inprocess";
     return api.post(url, id);
   },
+  addDayReportInProcess(data) {
+    let url = "paint/paint_add_day_report";
+    return api.post(url, data);
+  },
+  getDayReportFromPaint(id) {
+    let url = "paint/paint_get_report";
+    return api.post(url, { id });
+  },
 
 };

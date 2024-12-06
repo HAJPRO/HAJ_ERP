@@ -39,64 +39,49 @@ const openReportModalById = async (id) => {
       <el-table-column
         header-align="center"
         sortable
-        prop="in_process_detail.customer_name"
+        prop="sale_order.customer_name"
         label="Buyurtmachi nomi"
         width="200"
       />
       <el-table-column
         header-align="center"
         sortable
-        prop="in_process_detail.order_number"
+        prop="sale_order.order_number"
         label="Buyurtma miqdori"
         width="200"
       />
       <el-table-column
-        prop="in_process_detail.pro_type"
+        prop="sale_order.pro_type"
         label="Mahsulot turi"
         width="180"
         header-align="center"
         align="center"
       />
       <el-table-column
-        prop="in_process_detail.pro_name"
+        prop="sale_order.pro_name"
         label="Mahsulot nomi"
         width="180"
         header-align="center"
         align="center"
       />
       <el-table-column
-        prop="in_process_detail.pro_color"
+        prop="sale_order.pro_color"
         label="Mahsulot rangi"
         width="180"
         header-align="center"
         align="center"
       />
       <el-table-column
-        prop="in_process_detail.order_quantity"
+        prop="sale_order.order_quantity"
         label="Buyurtma miqdori"
         width="180"
         header-align="center"
         align="center"
       />
-      <!-- <el-table-column
-        prop="in_process_detail.order_quantity"
-        label="Tayyor mahsulot"
-        width="180"
-        header-align="center"
-        align="center"
-      />
       <el-table-column
-        prop="in_process_detail.order_quantity"
-        label="Tayyorlanishi kerak"
-        width="180"
-        header-align="center"
-        align="center"
-      /> -->
-      <el-table-column
-        prop="in_process_detail.delivery_time"
-        sortable
+        prop="sale_order.delivery_time"
         label="Muddati"
-        width="190"
+        width="150"
         header-align="center"
         align="center"
       />
@@ -115,7 +100,9 @@ const openReportModalById = async (id) => {
             class="inline-flex items-center text-red bg-[#e4e9e9] hover:bg-[#d7ebeb] font-medium rounded-md text-[12px] w-ful p-[5px] sm:w-auto text-center"
           >
             {{
-              scope.row.status ? scope.row.status : scope.row.status_spinning
+              scope.row.status_inprocess
+                ? scope.row.status_inprocess
+                : scope.row.status_spinning
             }}
           </router-link>
         </template>

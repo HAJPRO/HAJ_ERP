@@ -6,20 +6,13 @@ const userModel = require("../../models/user.model.js");
 class DepProvideController {
   async getAll(req, res, next) {
     try {
-      const all = await DepProvideService.getAll(req.body.status);
+      const all = await DepProvideService.getAll(req.body);
       res.status(200).json(all);
     } catch (error) {
       next(error);
     }
   }
-  async getAllLength(req, res, next) {
-    try {
-      const all = await DepProvideService.getAllLength();
-      res.status(200).json(all);
-    } catch (error) {
-      next(error);
-    }
-  }
+
   async create(req, res, next) {
     try {
       const userData = await userModel.findById(req.user.id);
