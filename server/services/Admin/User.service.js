@@ -1,5 +1,5 @@
 const UserModel = require("../../models/user.model");
-const bcrypt = require("bcrypt");
+const bcrypt = require("bcryptjs");
 
 class UserService {
   async CreateUser(data) {
@@ -34,7 +34,7 @@ class UserService {
   }
   async GetUsers(data) {
     try {
-      const users = await UserModel.find()
+      const users = await UserModel.find();
       // .then((items) => {
       // for (let i = 0; i <= items.length; i++) {
 
@@ -44,9 +44,9 @@ class UserService {
 
       // })
 
-      return users
+      return users;
     } catch (error) {
-      return error.messages
+      return error.messages;
     }
   }
 }

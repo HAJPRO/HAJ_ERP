@@ -3,7 +3,7 @@ const userModel = require("../models/user.model");
 const PermissionModel = require("../models/permission.model");
 const UserPermissonModel = require("../models/UserPermission.model");
 
-const bcrypt = require("bcrypt");
+const bcrypt = require("bcryptjs");
 const tokenService = require("../services/token.service");
 // const mailService = require('./mail.service')
 const BaseError = require("../errors/base.error");
