@@ -6,22 +6,17 @@ const DepProvideController = require("../../controllers/provide/provide.controll
 const router = express.Router();
 router.post("/provide_all", DepProvideController.getAll);
 router.post("/provide_create", authMiddleware, DepProvideController.create);
-router.delete(
-  "/provide_delete/:id",
-  authMiddleware,
-  DepProvideController.delete
-);
-router.put(
-  "/provide_edit/:id",
-  authMiddleware,
-  authorMiddleware,
-  DepProvideController.edit
-);
-router.get(
-  "/provide_get-one/:id",
-  authMiddleware,
-  authorMiddleware,
-  DepProvideController.getOne
-);
-
+// router.delete(
+//   "/provide_delete/:id",
+//   authMiddleware,
+//   DepProvideController.delete
+// );
+// router.put(
+//   "/provide_edit/:id",
+//   authMiddleware,
+//   authorMiddleware,
+//   DepProvideController.edit
+// );
+router.post("/provide_get_one", authMiddleware, DepProvideController.getOne);
+router.post("/confirm", authMiddleware, DepProvideController.Confirm);
 module.exports = router;

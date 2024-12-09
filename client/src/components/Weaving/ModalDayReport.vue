@@ -4,7 +4,7 @@ import { WeavingPlanStore } from "../../stores/Weaving/weaving_plan.store";
 const store = WeavingPlanStore();
 import { storeToRefs } from "pinia";
 const { is_report_modal, order_report, report_weaving } = storeToRefs(store);
-console.log(order_report.value);
+console.log(report_weaving);
 const addDayReportInProcess = async () => {
   await store.addDayReportInProcess(model.value);
 };
@@ -79,7 +79,7 @@ const validate = async (formRef) => {
       </div>
       <div class="shadow-md rounded min-h-[15px]">
         <el-table
-          :data="order_report.report"
+          :data="order_report ? order_report.report : []"
           load
           class="w-full"
           header-align="center"
@@ -125,7 +125,7 @@ const validate = async (formRef) => {
             header-align="center"
             align="center"
           >
-            <template #default="scope">
+            <template #default="">
               <router-link
                 to=""
                 class="inline-flex items-center mt-4 ml-2 text-red bg-[#eedc36] hover:bg-yellow-400 font-medium rounded-md text-sm w-full sm:w-auto px-2 py-3 text-center"
@@ -156,6 +156,7 @@ const validate = async (formRef) => {
           To'quv hisobot qo'shish
         </div>
         <el-form
+          :disabled="DoneSpinning === 0"
           ref="formRef"
           :model="model"
           label-width="auto"
@@ -249,7 +250,7 @@ const validate = async (formRef) => {
               header-align="center"
               align="center"
             >
-              <template #default="scope">
+              <template #default="">
                 <router-link
                   to=""
                   class="inline-flex items-center mt-4 ml-2 text-red bg-[#eedc36] hover:bg-yellow-400 font-medium rounded-md text-sm w-full sm:w-auto px-2 py-3 text-center"

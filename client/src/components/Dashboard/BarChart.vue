@@ -1,6 +1,61 @@
 <script setup>
 import { ref } from "vue";
 import { Chart, Grid, Line, Responsive, Pie, Tooltip } from "vue3-charts";
+import { use } from "echarts/core";
+import { CanvasRenderer } from "echarts/renderers";
+import { PieChart, BarChart } from "echarts/charts";
+import {
+  TitleComponent,
+  TooltipComponent,
+  LegendComponent,
+} from "echarts/components";
+
+import VChart, { THEME_KEY } from "vue-echarts";
+
+use([
+  CanvasRenderer,
+  PieChart,
+  BarChart,
+  TitleComponent,
+  TooltipComponent,
+  LegendComponent,
+]);
+
+const option = ref({
+  title: {
+    left: "center",
+  },
+  tooltip: {
+    trigger: "item",
+    formatter: "{a} <br/>{b} : {c} ({d}%)",
+  },
+  legend: {
+    orient: "vertical",
+    left: "left",
+    data: ["Bo'yoq", "To'quv", "Yigiruv", "Tikuv", "Sotuv"],
+  },
+  series: [
+    {
+      type: "pie",
+      radius: "55%",
+      center: ["50%", "60%"],
+      data: [
+        { value: 335, name: "Bo'yoq" },
+        { value: 310, name: "To'quv" },
+        { value: 234, name: "Yigiruv" },
+        { value: 135, name: "Tikuv" },
+        { value: 1548, name: "Sotuv" },
+      ],
+      emphasis: {
+        itemStyle: {
+          shadowBlur: 10,
+          shadowOffsetX: 0,
+          shadowColor: "rgba(0, 0, 0, 0.5)",
+        },
+      },
+    },
+  ],
+});
 
 const data = ref([
   { name: "Jan", pl: 1000, avg: 500, inc: 300 },
@@ -40,78 +95,16 @@ const margin = ref({
   <div class="grid grid-cols-8 gap-2 grid-rows-1">
     <div class="w-full col-span-3 row-span-1 shadow bg-white p-2">
       <div class="shadow p-1 mb-2">
-        <div class="shadow p-1 text-center align-center bg-slate-100">
+        <div class="shadow p-1 text-center mb-3 align-center bg-slate-100">
           Bo'limlar bo'yicha
         </div>
-        <Responsive class="h-auto w-full">
-          <template #main="{ width }">
-            <Chart
-              direction="circular"
-              :data="data"
-              :margin="{
-                left: Math.round((width - 400) / 2),
-                top: 40,
-                right: 0,
-                bottom: 10,
-              }"
-            >
-              <template #layers>
-                <Pie
-                  :dataKeys="['name', 'pl']"
-                  :pie-style="{ innerRadius: 100, padAngle: 0.05 }"
-                />
-              </template>
-              <template #widgets>
-                <Tooltip
-                  :config="{
-                    name: { hide: false },
-                    avg: { hide: false },
-                    pl: { label: 'value' },
-                    inc: { hide: false },
-                  }"
-                  hideLine
-                />
-              </template>
-            </Chart>
-          </template>
-        </Responsive>
+        <v-chart class="chart col-span-1" :option="option" autoresize />
       </div>
       <div class="shadow p-1 mt-2">
-        <div class="shadow p-1 text-center align-center bg-slate-100">
+        <div class="shadow p-1 text-center mb-3 align-center bg-slate-100">
           Mijozlar bo'yicha
         </div>
-        <Chart
-          :axis="axis"
-          :size="{ width: 590, height: 420 }"
-          :data="data"
-          :margin="margin"
-          direction="horizontal"
-        >
-          <template #layers>
-            <Grid strokeDasharray="2,2" />
-            <Bar :dataKeys="['name', 'pl']" :barStyle="{ fill: '#90e0ef' }" />
-            <Bar :dataKeys="['name', 'avg']" :barStyle="{ fill: '#0096c7' }" />
-            <Bar :dataKeys="['name', 'inc']" :barStyle="{ fill: '#48cae4' }" />
-            <Marker
-              :value="1000"
-              label="Avg."
-              color="#e76f51"
-              strokeWidth="2"
-              strokeDasharray="6 6"
-            />
-          </template>
-
-          <template #widgets>
-            <Tooltip
-              borderColor="#48CAE4"
-              :config="{
-                pl: { color: '#90e0ef' },
-                avg: { color: '#0096c7' },
-                inc: { color: '#48cae4' },
-              }"
-            />
-          </template>
-        </Chart>
+        <v-chart class="chart col-span-1" :option="option" autoresize />
       </div>
     </div>
 
@@ -121,8 +114,8 @@ const margin = ref({
           Sotuv statistikasi
         </div>
         <Chart
-          class="w-[100%] col-span-1 shadow bg-white p-2"
-          :size="{ width: 650, height: 300 }"
+          class="w-[100%] col-span-1 bg-white p-2"
+          :size="{ width: 650, height: 310 }"
           :data="data"
           :margin="margin"
           direction="horizontal"
@@ -263,5 +256,9 @@ const margin = ref({
 <style scoped>
 #app {
   color: #2ecc71;
+}
+.chart {
+  height: 45vh;
+  width: 50vh;
 }
 </style>

@@ -14,5 +14,12 @@ export const ProvideService = {
     let url = "provide/provide_all";
     return api.post(url, status);
   },
-
+  getOne(id) {
+    let url = "provide/provide_get_one";
+    return api.post(url, { id });
+  },
+  Confirm(id) {
+    let url = "provide/confirm";
+    return api.post(url, { id });
+  },
 };

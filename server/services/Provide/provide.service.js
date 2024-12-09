@@ -63,40 +63,46 @@ class DepProvideService {
   //     );
   //   }
 
-
   //   return newData;
   // }
   async getAllLength() {
-    // const process_length = await this.getAllInProcess().then((data) => data.length)
-    const paint_length = await this.getAllPaint().then((data) => data.length)
-    // const weaving_length = await this.getAllWeaving().then((data) => data.length)
-    // const spinning_length = await this.getAllSpinning().then((data) => data.length)
-    // return { process_length, weaving_length, paint_length, spinning_length }
+    const process_length = await this.getAllInProcess().then((data) => {
+      if (data) {
+        return data.length;
+      } else {
+        return 0;
+      }
+    });
+    const paint_length = await this.getAllPaint().then((data) => data.length);
+    const weaving_length = await this.getAllWeaving().then(
+      (data) => data.length
+    );
+    const spinning_length = await this.getAllSpinning().then(
+      (data) => data.length
+    );
+
+    return { process_length, weaving_length, paint_length, spinning_length };
   }
   async getAll(data) {
     const is_status = data.status;
-    // const user_id = new mongoose.Types.ObjectId(data.user.id);
-    // const department = data.user.department;
-
     try {
-      const all_length = await this.getAllLength()
+      const all_length = await this.getAllLength();
       if (is_status === 1) {
         const items = await this.getAllInProcess();
-        return { items, all_length }
+        return { items, all_length };
       }
       if (is_status == 2) {
         const items = await this.getAllPaint();
-        console.log(items);
-        return { items, all_length }
+        return { items, all_length };
       }
 
       if (is_status == 3) {
         const items = await this.getAllWeaving();
-        return { items, all_length }
+        return { items, all_length };
       }
       if (is_status == 4) {
         const items = await this.getAllSpinning();
-        return { items, all_length }
+        return { items, all_length };
       }
     } catch (error) {
       return error.message;
@@ -104,45 +110,37 @@ class DepProvideService {
   }
   async getAllInProcess() {
     try {
-      // const allInProcess = await SaleDepProvideCardModel.aggregate([
-      //   { $match: { author: id } },
-      //   {
-      //     $lookup: {
-      //       from: "salecards",
-      //       localField: "sale_order_id",
-      //       foreignField: "_id",
-      //       as: "sale_order",
-      //     },
-      //   },
-      //   {
-      //     $lookup: {
-      //       from: "depweavingcards",
-      //       localField: "weaving_id",
-      //       foreignField: "_id",
-      //       as: "more",
-      //     },
-      //   },
-      //   {
-      //     $project: {
-      //       status_inprocess: 1,
-      //       more: {
-      //         $cond: {
-      //           if: { $isArray: "$more" },
-      //           then: { $arrayElemAt: ["$more", 0] },
-      //           else: null,
-      //         },
-      //       },
-      //       sale_order: {
-      //         $cond: {
-      //           if: { $isArray: "$sale_order" },
-      //           then: { $arrayElemAt: ["$sale_order", 0] },
-      //           else: null,
-      //         },
-      //       },
-      //     },
-      //   },
-      // ]);
-      // return allInProcess;
+      const allProcess = await SaleDepProvideCardModel.aggregate([
+        {
+          $match: {
+            $or: [{ status: "Jarayonda" }, { status: "Yetkazildi" }],
+          },
+        },
+        {
+          $lookup: {
+            from: "users",
+            localField: "author",
+            foreignField: "_id",
+            as: "author",
+          },
+        },
+
+        {
+          $project: {
+            status: 1,
+            delivery_product_box: 1,
+            status: 1,
+            author: {
+              $cond: {
+                if: { $isArray: "$author" },
+                then: { $arrayElemAt: ["$author", 0] },
+                else: null,
+              },
+            },
+          },
+        },
+      ]);
+      return allProcess;
     } catch (error) {
       return error.message;
     }
@@ -152,7 +150,7 @@ class DepProvideService {
       const allPaint = await SaleDepProvideCardModel.aggregate([
         {
           $match: {
-            $and: [{ status: "Tasdiqlanmagan" }, { department: "Bo'yoq" }]
+            $and: [{ status: "Tasdiqlanmagan" }, { department: "Bo'yoq" }],
           },
         },
       ]);
@@ -166,7 +164,7 @@ class DepProvideService {
       const allWeaving = await SaleDepProvideCardModel.aggregate([
         {
           $match: {
-            $and: [{ status: "Tasdiqlanmagan" }, { department: "To'quv" }]
+            $and: [{ status: "Tasdiqlanmagan" }, { department: "To'quv" }],
           },
         },
       ]);
@@ -192,7 +190,6 @@ class DepProvideService {
     }
   }
 
-
   async delete(id) {
     const data = await SaleDepPaintCardModel.findByIdAndDelete(id);
     return data;
@@ -213,8 +210,17 @@ class DepProvideService {
     return updatedData;
   }
 
-  async getOne(id) {
-    const data = await SaleDepPaintCardModel.findById(id);
+  async getOne(payload) {
+    const data = await SaleDepProvideCardModel.findOne({ _id: payload.id });
+    return { box: data.delivery_product_box };
+  }
+  async Confirm(id) {
+    const data = await SaleDepProvideCardModel.findByIdAndUpdate(
+      id,
+      { status: "Jarayonda" },
+      { new: true }
+    );
+
     return data;
   }
 }

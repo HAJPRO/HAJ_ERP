@@ -130,7 +130,7 @@ const validate = async (formRef) => {
             header-align="center"
             align="center"
           >
-            <template #default="scope">
+            <template #default="">
               <router-link
                 to=""
                 class="inline-flex items-center mt-4 ml-2 text-red bg-[#eedc36] hover:bg-yellow-400 font-medium rounded-md text-sm w-full sm:w-auto px-2 py-3 text-center"
@@ -165,7 +165,7 @@ const validate = async (formRef) => {
           Bo'yoq hisobot qo'shish
         </div>
         <el-form
-          :disabled="!order_report"
+          :disabled="Done === 0"
           ref="formRef"
           :model="model"
           label-width="auto"
@@ -258,7 +258,7 @@ const validate = async (formRef) => {
               header-align="center"
               align="center"
             >
-              <template #default="scope">
+              <template #default="">
                 <router-link
                   to=""
                   class="inline-flex items-center mt-4 ml-2 text-red bg-[#eedc36] hover:bg-yellow-400 font-medium rounded-md text-sm w-full sm:w-auto px-2 py-3 text-center"

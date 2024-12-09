@@ -1,22 +1,21 @@
 <script setup>
 import { ProvidePlanStore } from "../../stores/Provide/provideStore.js";
-const StoreProvide = ProvidePlanStore();
+const store_provide = ProvidePlanStore();
 import { storeToRefs } from "pinia";
-const openModalById = async (id) => {
-  await StoreProvide.openModalById({ id, is_modal: true });
+const { data, is_active } = storeToRefs(store_provide);
+const OpenModalById = async (id) => {
+  await store_provide.openModalById({ id });
 };
-const { items, departmen } = storeToRefs(StoreProvide);
 </script>
 <template>
-  <div v-show="departmen === `Bo'yoq`" class="shadow-md rounded min-h-[15px]">
+  <div v-if="is_active === 2" class="shadow-md rounded min-h-[15px]">
     <el-table
       load
       class="w-full"
       header-align="center"
       hight="5"
       empty-text="Mahsulot tanlanmagan... "
-      :default-sort="[{ prop: 'duration_time', order: 'descending' }]"
-      :data="items"
+      :data="data"
       border
       style="width: 100%"
       min-height="300"
@@ -32,35 +31,29 @@ const { items, departmen } = storeToRefs(StoreProvide);
         width="80"
       />
       <el-table-column
-        prop="pus"
+        prop="delivery_product_box.pus"
         label="Pus (kg)"
         width="180"
         header-align="center"
         align="center"
       />
       <el-table-column
-        prop="fike"
+        prop="delivery_product_box.fike"
         label="Fike (kg)"
         width="180"
         header-align="center"
         align="center"
       />
       <el-table-column
-        prop="color_code"
+        prop="delivery_product_box.color_code"
         label="Rang kod"
         width="200"
         header-align="center"
         align="center"
       />
+
       <el-table-column
-        prop="raw_cloth_quantity"
-        label="Xom mato"
-        width="180"
-        header-align="center"
-        align="center"
-      />
-      <el-table-column
-        prop="duration_time"
+        prop="delivery_product_box.duration_time"
         sortable
         label="Yetkazish vaqti"
         width="180"
@@ -78,7 +71,7 @@ const { items, departmen } = storeToRefs(StoreProvide);
         <template #default="scope">
           <router-link
             to=""
-            class="inline-flex items-center text-red bg-[#f3e77b] hover:bg-[#eedc36] focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-md text-[12px] w-ful p-[5px] sm:w-auto text-center"
+            class="inline-flex items-center text-red bg-[#e4e9e9] hover:bg-[#d7ebeb] focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-md text-[12px] w-ful p-[5px] sm:w-auto text-center"
           >
             {{ scope.row.status }}
           </router-link>
@@ -95,7 +88,7 @@ const { items, departmen } = storeToRefs(StoreProvide);
         <template #default="scope">
           <router-link
             to=""
-            @click="openModalById(scope.row._id)"
+            @click="OpenModalById(scope.row._id)"
             class="inline-flex items-center mt-4 ml-2 text-red bg-[#eedc36] hover:bg-yellow-400 font-medium rounded-md text-sm w-full sm:w-auto px-2 py-3 text-center"
           >
             <i class="text-red fa-solid fa-check fa-xs fa- fa-xs"></i>

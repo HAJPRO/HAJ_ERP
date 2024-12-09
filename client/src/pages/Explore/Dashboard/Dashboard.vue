@@ -6,13 +6,13 @@
       </template>
     </Title>
   </div>
+
   <BarChart />
 </template>
 
 <script setup>
 import Title from "@/components/Title.vue";
 import BarChart from "../../../components/Dashboard/BarChart.vue";
-
 import { onMounted, ref } from "vue";
 </script>
 

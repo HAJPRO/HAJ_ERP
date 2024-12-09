@@ -4,7 +4,7 @@ import { loading } from "../../utils/Loader";
 import { ProvidePlanStore } from "../../stores/Provide/provideStore.js";
 const store_provide = ProvidePlanStore();
 import { storeToRefs } from "pinia";
-const all_length = ref();
+const { all_length } = storeToRefs(store_provide);
 const getAll = async () => {
   const loader = loading.show();
   await store_provide.getAll({ status: isActive.value });
@@ -63,7 +63,7 @@ onMounted(async () => {
             class="inline-flex items-center justify-center h-5 text-[11px] font-medium text-white bg-red-500 px-3 py-2 rounded"
           >
             <span class=" ">1</span>/{{
-              (all_length ? all_length.provide_length : 0) || 0
+              (all_length ? all_length.process_length : 0) || 0
             }}</span
           >
         </div>
