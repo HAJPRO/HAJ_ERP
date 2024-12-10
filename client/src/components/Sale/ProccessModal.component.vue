@@ -22,58 +22,32 @@ const download = () => {
   html2pdf().set(opt).from(element).save();
   html2pdf(element, opt);
 };
-import { ref, onMounted, onBeforeUpdate } from "vue";
-import { SaleLegalService } from "../../ApiServices/Sale/saleLegal.service";
+import { ref } from "vue";
 import { SaleStore } from "../../stores/Sale/sale.store";
-const store = SaleStore();
+const store_sale = SaleStore();
 import { storeToRefs } from "pinia";
-const { id, isModal } = storeToRefs(store.proccess_modal);
+const { proccess_modal, proccess_data } = storeToRefs(store_sale);
 const isDepInfo = ref(false);
-const proccess = ref([]);
-const customer_name = ref();
-const order_quantity = ref();
-const order_number = ref();
-const dep_paint_data = ref([]);
-const author = ref();
-const AllOrderProccessById = async () => {
-  try {
-    const items = await SaleLegalService.AllOrderProccessById(
-      store.proccess_modal.id
-    );
-    proccess.value = items.data.process_status;
-    customer_name.value = items.data.customer_name;
-    order_quantity.value = items.data.order_quantity;
-    order_number.value = items.data.order_number;
-    dep_paint_data.value = Array(items.data.dep_paint_data);
-    author.value = items.data.author;
-  } catch (error) {
-    return error.message;
-  }
-};
-onBeforeUpdate(async () => {
-  try {
-    await AllOrderProccessById();
-  } catch (err) {
-    console.log(err);
-  }
-});
 </script>
 
 <template>
   <el-dialog
     id="content"
-    v-model="store.proccess_modal.isModal"
+    v-model="proccess_modal"
     title="Buyurtmani ishlab chiqarish jarayoni bo'yicha malumotlari"
     width="800"
   >
     <div class="">
       <div class="Pragress flex gap-1">
-        <div v-for="itim in proccess" :key="itim.index">
+        <div
+          v-for="item in proccess_data.order[0].process_status"
+          :key="item.index"
+        >
           <span
             to=""
             class="cursor-pointer inline-flex items-center px-1.5 py-1.5 mb-1 text-[10px] font-semibold text-center text-white bg-[#36d887] text-bold rounded"
           >
-            {{ itim.status }} =>
+            {{ item.status }} =>
           </span>
         </div>
       </div>
@@ -85,21 +59,22 @@ onBeforeUpdate(async () => {
             <h5
               class="font-semibold text-[12px] text-gray-800 dark:text-gray-100"
             >
-              Buyurtmachi nomi : {{ customer_name }}
+              Buyurtmachi nomi : {{ proccess_data.order[0].customer_name }}
             </h5>
           </header>
           <header class="py-2 border-b border-gray-100 dark:border-gray-700/60">
             <h5
               class="font-semibold text-[12px] text-gray-800 dark:text-gray-100"
             >
-              Buyurtma raqami : {{ order_number }}
+              Buyurtma raqami : {{ proccess_data.order[0].order_number }}
             </h5>
           </header>
           <header class="py-2 border-b border-gray-100 dark:border-gray-700/60">
             <h5
               class="font-semibold text-[12px] text-gray-800 dark:text-gray-100"
             >
-              Buyurtmachi miqdori : {{ order_quantity }} kg
+              Buyurtmachi miqdori :
+              {{ proccess_data.order[0].order_quantity }} kg
             </h5>
           </header>
         </div>
@@ -142,8 +117,7 @@ onBeforeUpdate(async () => {
                           hight="5"
                           style="width: 100%"
                           empty-text="Mahsulot topilmadi... "
-                          :default-sort="[]"
-                          :data="dep_paint_data"
+                          :data="proccess_data.paint"
                           border
                           min-height="200"
                           max-height="200"
@@ -157,56 +131,30 @@ onBeforeUpdate(async () => {
                             label="№"
                             width="60"
                           />
+
                           <el-table-column
                             header-align="center"
-                            prop="pus"
-                            label="Pus"
-                            width="90"
+                            prop="quantity"
+                            label="Miqdori"
+                            width="250"
                           />
                           <el-table-column
-                            header-align="center"
-                            prop="fike"
-                            label="Fike"
-                            width="90"
-                          />
-                          <el-table-column
-                            prop="color_code"
-                            label="Rang kode"
-                            width="100"
+                            prop="unit"
+                            label="Birligi"
+                            width="200"
                             header-align="center"
                             align="center"
                           />
                           <el-table-column
-                            prop="raw_cloth_quantity"
-                            label="Mato"
-                            width="100"
+                            prop="date"
+                            label="Vaqt"
+                            width="260"
                             header-align="center"
                             align="center"
-                          />
-                          <el-table-column
-                            prop="duration_time"
-                            label="Muddati"
-                            width="180"
-                            header-align="center"
-                            align="center"
-                          />
-                          <el-table-column
-                            fixed="right"
-                            prop="order_status"
-                            label="Holati"
-                            width="150"
-                            header-align="center"
-                            align="center"
+                            ><template #default="scope">{{
+                              String(scope.row.date).substring(0, 10)
+                            }}</template></el-table-column
                           >
-                            <template #default="scope">
-                              <router-link
-                                to=""
-                                class="inline-flex items-center text-red bg-[#e4e9e9] hover:bg-[#f7efa9] focus:ring-blue-300 font-medium rounded-md text-[12px] w-ful p-[5px] sm:w-auto text-center"
-                              >
-                                {{ scope.row.paint_status }}
-                              </router-link>
-                            </template>
-                          </el-table-column>
                         </el-table>
                         <!-- // -->
                       </div>
@@ -242,8 +190,7 @@ onBeforeUpdate(async () => {
                           hight="5"
                           style="width: 100%"
                           empty-text="Mahsulot topilmadi... "
-                          :default-sort="[]"
-                          :data="dep_paint_data"
+                          :data="proccess_data.weaving"
                           border
                           min-height="200"
                           max-height="200"
@@ -257,56 +204,30 @@ onBeforeUpdate(async () => {
                             label="№"
                             width="60"
                           />
+
                           <el-table-column
                             header-align="center"
-                            prop="pus"
-                            label="Pus"
-                            width="90"
+                            prop="quantity"
+                            label="Miqdori"
+                            width="250"
                           />
                           <el-table-column
-                            header-align="center"
-                            prop="fike"
-                            label="Fike"
-                            width="90"
-                          />
-                          <el-table-column
-                            prop="color_code"
-                            label="Rang kode"
-                            width="100"
+                            prop="unit"
+                            label="Birligi"
+                            width="200"
                             header-align="center"
                             align="center"
                           />
                           <el-table-column
-                            prop="raw_cloth_quantity"
-                            label="Mato"
-                            width="100"
+                            prop="date"
+                            label="Vaqt"
+                            width="260"
                             header-align="center"
                             align="center"
-                          />
-                          <el-table-column
-                            prop="duration_time"
-                            label="Muddati"
-                            width="180"
-                            header-align="center"
-                            align="center"
-                          />
-                          <el-table-column
-                            fixed="right"
-                            prop="order_status"
-                            label="Holati"
-                            width="150"
-                            header-align="center"
-                            align="center"
+                            ><template #default="scope">{{
+                              String(scope.row.date).substring(0, 10)
+                            }}</template></el-table-column
                           >
-                            <template #default="scope">
-                              <router-link
-                                to=""
-                                class="inline-flex items-center text-red bg-[#e4e9e9] hover:bg-[#f7efa9] focus:ring-blue-300 font-medium rounded-md text-[12px] w-ful p-[5px] sm:w-auto text-center"
-                              >
-                                {{ scope.row.paint_status }}
-                              </router-link>
-                            </template>
-                          </el-table-column>
                         </el-table>
                         <!-- // -->
                       </div>
@@ -342,8 +263,7 @@ onBeforeUpdate(async () => {
                           hight="5"
                           style="width: 100%"
                           empty-text="Mahsulot topilmadi... "
-                          :default-sort="[]"
-                          :data="dep_paint_data"
+                          :data="proccess_data.spinning"
                           border
                           min-height="200"
                           max-height="200"
@@ -357,156 +277,30 @@ onBeforeUpdate(async () => {
                             label="№"
                             width="60"
                           />
+
                           <el-table-column
                             header-align="center"
-                            prop="pus"
-                            label="Pus"
-                            width="90"
+                            prop="quantity"
+                            label="Miqdori"
+                            width="250"
                           />
                           <el-table-column
-                            header-align="center"
-                            prop="fike"
-                            label="Fike"
-                            width="90"
-                          />
-                          <el-table-column
-                            prop="color_code"
-                            label="Rang kode"
-                            width="100"
+                            prop="unit"
+                            label="Birligi"
+                            width="200"
                             header-align="center"
                             align="center"
                           />
                           <el-table-column
-                            prop="raw_cloth_quantity"
-                            label="Mato"
-                            width="100"
+                            prop="date"
+                            label="Vaqt"
+                            width="260"
                             header-align="center"
                             align="center"
-                          />
-                          <el-table-column
-                            prop="duration_time"
-                            label="Muddati"
-                            width="180"
-                            header-align="center"
-                            align="center"
-                          />
-                          <el-table-column
-                            fixed="right"
-                            prop="order_status"
-                            label="Holati"
-                            width="150"
-                            header-align="center"
-                            align="center"
+                            ><template #default="scope">{{
+                              String(scope.row.date).substring(0, 10)
+                            }}</template></el-table-column
                           >
-                            <template #default="scope">
-                              <router-link
-                                to=""
-                                class="inline-flex items-center text-red bg-[#e4e9e9] hover:bg-[#f7efa9] focus:ring-blue-300 font-medium rounded-md text-[12px] w-ful p-[5px] sm:w-auto text-center"
-                              >
-                                {{ scope.row.paint_status }}
-                              </router-link>
-                            </template>
-                          </el-table-column>
-                        </el-table>
-                        <!-- // -->
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="Taminot">
-                <div class="flex gap-2 mb-2 mt-2">
-                  <div class="w-8 h-8 rounded-full shrink-0 bg-red-500">
-                    <svg
-                      class="w-8 h-8 fill-current text-white"
-                      viewBox="0 0 36 36"
-                    >
-                      <path
-                        d="M25 24H11a1 1 0 01-1-1v-5h2v4h12v-4h2v5a1 1 0 01-1 1zM14 13h8v2h-8z"
-                      />
-                    </svg>
-                  </div>
-                  <div class="mt-1 mr-3 text-[15px] font-semibold">Taminot</div>
-                </div>
-                <div
-                  class="col-span-full xl:col-span-6 bg-white dark:bg-gray-800 shadow-sm rounded-xl"
-                >
-                  <div class="">
-                    <!-- Table -->
-                    <div class="overflow-x-auto">
-                      <div class="shadow-md rounded min-h-[15px]">
-                        <el-table
-                          load
-                          class="w-full"
-                          header-align="center"
-                          hight="5"
-                          style="width: 100%"
-                          empty-text="Mahsulot topilmadi... "
-                          :default-sort="[]"
-                          :data="dep_paint_data"
-                          border
-                          min-height="200"
-                          max-height="200"
-                        >
-                          <el-table-column
-                            header-align="center"
-                            align="center"
-                            type="index"
-                            prop="index"
-                            fixed="left"
-                            label="№"
-                            width="60"
-                          />
-                          <el-table-column
-                            header-align="center"
-                            prop="pus"
-                            label="Pus"
-                            width="90"
-                          />
-                          <el-table-column
-                            header-align="center"
-                            prop="fike"
-                            label="Fike"
-                            width="90"
-                          />
-                          <el-table-column
-                            prop="color_code"
-                            label="Rang kode"
-                            width="100"
-                            header-align="center"
-                            align="center"
-                          />
-                          <el-table-column
-                            prop="raw_cloth_quantity"
-                            label="Mato"
-                            width="100"
-                            header-align="center"
-                            align="center"
-                          />
-                          <el-table-column
-                            prop="duration_time"
-                            label="Muddati"
-                            width="180"
-                            header-align="center"
-                            align="center"
-                          />
-                          <el-table-column
-                            fixed="right"
-                            prop="order_status"
-                            label="Holati"
-                            width="150"
-                            header-align="center"
-                            align="center"
-                          >
-                            <template #default="scope">
-                              <router-link
-                                to=""
-                                class="inline-flex items-center text-red bg-[#e4e9e9] hover:bg-[#f7efa9] focus:ring-blue-300 font-medium rounded-md text-[12px] w-ful p-[5px] sm:w-auto text-center"
-                              >
-                                {{ scope.row.paint_status }}
-                              </router-link>
-                            </template>
-                          </el-table-column>
                         </el-table>
                         <!-- // -->
                       </div>

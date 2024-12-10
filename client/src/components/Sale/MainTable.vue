@@ -2,10 +2,9 @@
 const today = ref(new Date());
 import { ref } from "vue";
 import { SaleStore } from "../../stores/Sale/sale.store";
-const store = SaleStore();
+const store_sale = SaleStore();
 import { storeToRefs } from "pinia";
-const { items } = storeToRefs(store);
-console.log(items);
+const { items } = storeToRefs(store_sale);
 const isModal = ref(false);
 const getByIdForUpdate = async (id) => {
   const is_modal = !isModal.value;
@@ -13,21 +12,19 @@ const getByIdForUpdate = async (id) => {
 };
 
 const confirm = async (id) => {
-  await store.Confirm(id);
+  await store_sale.Confirm(id);
 };
 const deleteById = async (id) => {
-  await store.DeleteById(id);
+  await store_sale.DeleteById(id);
 };
-const isProccessModal = ref(false);
-const proccessModalById = (id) => {
-  const is_modal = !isProccessModal.value;
-  store.ProccessModalById({ is_modal, id });
+const proccessModalById = async (id) => {
+  await store_sale.AllOrderProccessById(id);
 };
-const isStatusModal = ref(false);
-const statusModalById = (id) => {
-  const is_modal = !isStatusModal.value;
-  store.StatusModalById({ is_modal, id });
-};
+// const isStatusModal = ref(false);
+// const statusModalById = (id) => {
+//   const is_modal = !isStatusModal.value;
+//   store_sale.StatusModalById({ is_modal, id });
+// };
 </script>
 <template>
   <div class="shadow-md rounded min-h-[15px]">
@@ -105,6 +102,13 @@ const statusModalById = (id) => {
         align="center"
       />
       <el-table-column
+        prop="unit"
+        label="Birligi"
+        width="100"
+        header-align="center"
+        align="center"
+      />
+      <el-table-column
         prop="delivery_time"
         sortable
         label="Muddati"
@@ -120,26 +124,8 @@ const statusModalById = (id) => {
             clearable
             type="date"
             placeholder=""
-            :size="size"
+            size="smal"
           />
-          <!-- {{ String(scope.row.delivery_time).substr(0, 10) }} -->
-          <!-- {{
-            `${
-              String(scope.row.delivery_time).substr(0, 4) -
-                today.getFullYear() <
-                0 ||
-              String(scope.row.delivery_time).substr(5, 2) -
-                (today.getMonth() + 1) <
-                0 ||
-              (String(scope.row.delivery_time).substr(5, 2) -
-                (today.getMonth() + 1) ===
-                0 &&
-                String(scope.row.delivery_time).substr(8, 2) - today.getDate() <
-                  0)
-                ? "Muddat tugadi"
-                : String(scope.row.delivery_time).substr(0, 10)
-            } `
-          }} -->
         </template>
       </el-table-column>
 
@@ -155,7 +141,7 @@ const statusModalById = (id) => {
         <template #default="scope">
           <router-link
             to=""
-            @click="statusModalById(scope.row.id)"
+            @click="statusModalById(scope.row._id)"
             :class="{ status_bg: scope.row.order_status === 'Tasdiqlanmagan' }"
             class="cursor-pointer inline-flex items-center text-red bg-[#e4e9e9] hover:bg-[#d7ebeb] font-medium rounded-md text-[12px] w-ful p-[5px] sm:w-auto text-center"
           >

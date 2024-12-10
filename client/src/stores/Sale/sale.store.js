@@ -11,27 +11,45 @@ export const SaleStore = defineStore("saleStore", {
       card_id: "",
       is_modal: false,
       model: "",
-      proccess_modal: {
-        id: "",
-        isModal: false,
+      proccess_modal: false,
+      proccess_data: {
+        order: [],
+        paint: [],
+        weaving: [],
+        spinning: [],
       },
-      status_modal: {
-        id: "",
-        isModal: false,
-      },
-      is_active: ""
+      paint_process: [],
+
+      is_active: "",
     };
   },
   actions: {
     IsActive(payload) {
-      this.is_active = payload.is_active
+      this.is_active = payload.is_active;
     },
     async getAll(payload) {
       const loader = loading.show();
       const res = await SaleLegalService.getAll(payload);
-      this.length = res.data.length
+      this.length = res.data.length;
       this.items = res.data.all;
       loader.hide();
+    },
+    async AllOrderProccessById(payload) {
+      const data = await SaleLegalService.AllOrderProccessById(payload);
+      this.proccess_modal = true;
+      this.proccess_data.order = data.data.order;
+      this.proccess_data.paint =
+        data.data.paint.length > 0
+          ? data.data.paint[0].paint_report.order_report_at_progress
+          : [];
+      this.proccess_data.weaving =
+        data.data.weaving.length > 0
+          ? data.data.weaving[0].weaving_report.order_report_at_progress
+          : [];
+      this.proccess_data.spinning =
+        data.data.spinning.length > 0
+          ? data.data.spinning[0].spinning_report.order_report_at_progress
+          : [];
     },
     async openModalById(payload) {
       this.card_id = payload.id;
@@ -39,18 +57,17 @@ export const SaleStore = defineStore("saleStore", {
       const data = await SaleLegalService.getOne(payload.id);
       this.model = data.data;
     },
-    async ProccessModalById(payload) {
-      this.proccess_modal.id = payload.id;
-      this.proccess_modal.isModal = payload.is_modal;
-      const data = await SaleLegalService.getOne(payload.id);
-      this.model = data.data;
-    },
-    async StatusModalById(payload) {
-      this.status_modal.id = payload.id;
-      this.status_modal.isModal = payload.is_modal;
-      // const data = await SaleLegalService.getOne(payload.id)
-      // this.model = data.data
-    },
+    // async ProccessModalById(payload) {
+    //   this.proccess_modal.id = payload.id;
+    //   this.proccess_modal.isModal = payload.is_modal;
+    //   const data = await SaleLegalService.getOne(payload.id);
+    //   this.model = data.data;
+    // },
+    // async StatusModalById(payload) {
+    //   this.status_modal.id = payload.id;
+    //   this.status_modal.isModal = payload.is_modal;
+
+    // },
     async Update(payload) {
       try {
         const loader = loading.show();

@@ -19,6 +19,8 @@ export const SaleLegalService = {
     return api.post(url, { id });
   },
   AllOrderProccessById(id) {
+    console.log(id);
+
     let url = `sale/legal_proccess/${id}`;
     return api.post(url);
   },

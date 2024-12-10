@@ -3,6 +3,9 @@ import { ProvidePlanStore } from "../../stores/Provide/provideStore";
 const store_provide = ProvidePlanStore();
 import { storeToRefs } from "pinia";
 const { data, is_active } = storeToRefs(store_provide);
+const OpenModalById = async (id) => {
+  await store_provide.openModalById({ id });
+};
 </script>
 <template>
   <div v-if="is_active === 4" class="shadow-md rounded min-h-[15px]">
@@ -45,7 +48,7 @@ const { data, is_active } = storeToRefs(store_provide);
         prop="delivery_product_box.duration_time"
         sortable
         label="Yetkazish vaqti"
-        width="220"
+        width="250"
         header-align="center"
         align="center"
       />
@@ -76,18 +79,12 @@ const { data, is_active } = storeToRefs(store_provide);
       >
         <template #default="scope">
           <router-link
+            v-if="scope.row.status === `Tasdiqlanmagan`"
             to=""
-            @click="openModalById(scope.row._id)"
+            @click="OpenModalById(scope.row._id)"
             class="inline-flex items-center mt-4 ml-2 text-red bg-[#eedc36] hover:bg-yellow-400 font-medium rounded-md text-sm w-full sm:w-auto px-2 py-3 text-center"
           >
             <i class="text-red fa-solid fa-check fa-xs fa- fa-xs"></i>
-          </router-link>
-          <router-link
-            to="/explore/sale/legal/create"
-            @click="DeleteFromTable(scope.row._id)"
-            class="inline-flex items-center mt-4 ml-2 text-red bg-[#36d887] hover:bg-[#39c07c] font-medium rounded-md text-sm w-full sm:w-auto px-3 py-3 text-center"
-          >
-            <i class="text-black fa-sharp fa-solid fa-info fa-xs"></i>
           </router-link>
         </template>
       </el-table-column>

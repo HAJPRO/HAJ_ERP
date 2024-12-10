@@ -1,11 +1,11 @@
 <script setup>
 import { ProvidePlanStore } from "../../stores/Provide/provideStore";
-const StoreProvide = ProvidePlanStore();
+const store_provide = ProvidePlanStore();
 import { storeToRefs } from "pinia";
-// const openModalById = async (id) => {
-//   await StoreProvide.openModalById({ id, is_modal: true });
-// };
-const { data, is_active } = storeToRefs(StoreProvide);
+const delivered = async (id) => {
+  await store_provide.Delivered({ id, reason: "Yetkazib berildi" });
+};
+const { data, is_active } = storeToRefs(store_provide);
 </script>
 <template>
   <div class="shadow-md rounded min-h-[15px]">
@@ -34,7 +34,6 @@ const { data, is_active } = storeToRefs(StoreProvide);
         header-align="center"
         align="center"
         sortable
-        prop="departmen"
         label="Xodim"
         width="180"
         ><template #default="scope">
@@ -47,7 +46,6 @@ const { data, is_active } = storeToRefs(StoreProvide);
         header-align="center"
         align="center"
         sortable
-        prop="departmen"
         label="Bo'lim"
         width="180"
         ><template #default="scope">
@@ -61,7 +59,6 @@ const { data, is_active } = storeToRefs(StoreProvide);
         header-align="center"
         align="center"
         sortable
-        prop="departmen"
         label="Yetkazish vaqti"
         width="250"
         ><template #default="scope">
@@ -95,8 +92,9 @@ const { data, is_active } = storeToRefs(StoreProvide);
         header-align="center"
         align="center"
       >
-        <template #default="">
+        <template #default="scope">
           <router-link
+            @click="delivered(scope.row._id)"
             to=""
             class="inline-flex items-center ml-2 text-red bg-yellow-300 hover:bg-yellow-400 font-medium rounded-md text-sm w-full sm:w-auto px-3 py-3 text-center"
           >

@@ -2,6 +2,7 @@ const SaleLegalCardModel = require("../../models/saleLegalCard.model");
 const SaleDepPaintCardModel = require("../../models/saleDepPaintCard.model");
 const SaleDepWeavingCardModel = require("../../models/saleDepWeavingCard.model");
 const SaleDepProvideCardModel = require("../../models/saleDepProvideCard.model");
+const userModel = require("../../models/user.model");
 
 // const fileService = require("./file.service");
 
@@ -113,7 +114,7 @@ class DepProvideService {
       const allProcess = await SaleDepProvideCardModel.aggregate([
         {
           $match: {
-            $or: [{ status: "Jarayonda" }, { status: "Yetkazildi" }],
+            $or: [{ status: "Jarayonda" }, { status: "Yetkazib berildi" }],
           },
         },
         {
@@ -150,7 +151,7 @@ class DepProvideService {
       const allPaint = await SaleDepProvideCardModel.aggregate([
         {
           $match: {
-            $and: [{ status: "Tasdiqlanmagan" }, { department: "Bo'yoq" }],
+            department: "Bo'yoq",
           },
         },
       ]);
@@ -164,7 +165,7 @@ class DepProvideService {
       const allWeaving = await SaleDepProvideCardModel.aggregate([
         {
           $match: {
-            $and: [{ status: "Tasdiqlanmagan" }, { department: "To'quv" }],
+            department: "To'quv",
           },
         },
       ]);
@@ -180,7 +181,7 @@ class DepProvideService {
       const allSpinning = await SaleDepProvideCardModel.aggregate([
         {
           $match: {
-            $and: [{ status: "Tasdiqlanmagan" }, { department: "Yigiruv" }],
+            department: "Yigiruv",
           },
         },
       ]);
@@ -209,11 +210,34 @@ class DepProvideService {
     );
     return updatedData;
   }
-
   async getOne(payload) {
     const data = await SaleDepProvideCardModel.findOne({ _id: payload.id });
+
     return { box: data.delivery_product_box };
   }
+  async cancelReason(data, author) {
+    const id = data.card_id;
+    const reason = data.reason;
+    try {
+      const userData = await userModel.findById({ _id: author });
+      const proccess_status = {
+        author: userData.username,
+        confirm: false,
+        reason,
+        status: "Bekor qilindi",
+        sent_time: new Date(),
+      };
+      const data = await SaleDepProvideCardModel.findByIdAndUpdate(
+        id,
+        { proccess_status, status: "Bekor qilindi" },
+        { new: true }
+      );
+      return data;
+    } catch (error) {
+      return error.message;
+    }
+  }
+
   async Confirm(id) {
     const data = await SaleDepProvideCardModel.findByIdAndUpdate(
       id,
@@ -222,6 +246,28 @@ class DepProvideService {
     );
 
     return data;
+  }
+  async Delivered(data, author) {
+    const id = data.card_id;
+    const reason = data.reason;
+    try {
+      const userData = await userModel.findById({ _id: author });
+      const proccess_status = {
+        author: userData.username,
+        confirm: true,
+        reason,
+        status: "Yetkazib berildi",
+        sent_time: new Date(),
+      };
+      const data = await SaleDepProvideCardModel.findByIdAndUpdate(
+        id,
+        { proccess_status, status: "Yetkazib berildi" },
+        { new: true }
+      );
+      return data;
+    } catch (error) {
+      return error.message;
+    }
   }
 }
 

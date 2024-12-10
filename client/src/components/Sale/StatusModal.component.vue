@@ -1,4 +1,4 @@
-<script setup>
+<!-- <script setup>
 import { SaleStore } from "../../stores/Sale/sale.store";
 const store = SaleStore();
 import { storeToRefs } from "pinia";
@@ -36,4 +36,4 @@ import { storeToRefs } from "pinia";
 
         </template>
     </el-dialog>
-</template>
+</template> -->

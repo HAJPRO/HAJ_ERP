@@ -1,9 +1,11 @@
+const mongoose = require("mongoose");
 const SaleLegalCardModel = require("../models/saleLegalCard.model");
-// const fileService = require("./file.service");
 const XLSX = require("xlsx");
-const saleLegalCardModel = require("../models/saleLegalCard.model");
 const randomstring = require("randomstring");
 const InProcessPaintModel = require("../models/Paint/InProcess.model");
+const SaleDepPaintCardModel = require("../models/saleDepPaintCard.model");
+const SaleDepWeavingCardModel = require("../models/saleDepWeavingCard.model");
+const SaleDepSpinningCardModel = require("../models/SaleDepSpinningCardModel.model");
 
 class SaleLegalService {
   async getModel() {
@@ -20,6 +22,7 @@ class SaleLegalService {
       pro_width: "",
       grammaj: "",
       order_quantity: "",
+      unit: "",
       delivery_time: "",
     };
 
@@ -83,15 +86,100 @@ class SaleLegalService {
   }
   async AllOrderProccessById(id) {
     try {
-      const itims = await saleLegalCardModel
-        .findById(id)
-        .populate([
-          "author",
-          "dep_paint_data",
-          "dep_weaving_data",
-          "dep_provider_data",
-        ]);
-      return itims;
+      let ID = new mongoose.Types.ObjectId(id);
+      const order = await SaleLegalCardModel.aggregate([
+        { $match: { _id: ID } },
+        {
+          $project: {
+            process_status: 1,
+            order_quantity: 1,
+            customer_name: 1,
+            order_number: 1,
+          },
+        },
+      ]);
+      const dep_id = await SaleLegalCardModel.aggregate([
+        { $match: { _id: ID } },
+        {
+          $project: {
+            dep_paint_data: 1,
+            dep_weaving_data: 1,
+            dep_spinning_data: 1,
+          },
+        },
+      ]);
+
+      const paint_id = dep_id[0].dep_paint_data;
+      const weaving_id = dep_id[0].dep_weaving_data;
+      const spinning_id = dep_id[0].dep_spinning_data;
+      const paint = await SaleDepPaintCardModel.aggregate([
+        { $match: { _id: paint_id } },
+        {
+          $lookup: {
+            from: "inprocesspaintmodels",
+            localField: "in_process_id",
+            foreignField: "_id",
+            as: "paint_report",
+          },
+        },
+        {
+          $project: {
+            paint_report: {
+              $cond: {
+                if: { $isArray: "$paint_report" },
+                then: { $arrayElemAt: ["$paint_report", 0] },
+                else: null,
+              },
+            },
+          },
+        },
+      ]);
+      const weaving = await SaleDepWeavingCardModel.aggregate([
+        { $match: { _id: weaving_id } },
+        {
+          $lookup: {
+            from: "inprocessweavingmodels",
+            localField: "in_process_id",
+            foreignField: "_id",
+            as: "weaving_report",
+          },
+        },
+        {
+          $project: {
+            weaving_report: {
+              $cond: {
+                if: { $isArray: "$weaving_report" },
+                then: { $arrayElemAt: ["$weaving_report", 0] },
+                else: null,
+              },
+            },
+          },
+        },
+      ]);
+      const spinning = await SaleDepSpinningCardModel.aggregate([
+        { $match: { _id: spinning_id } },
+        {
+          $lookup: {
+            from: "inprocessspinningmodels",
+            localField: "in_process_id",
+            foreignField: "_id",
+            as: "spinning_report",
+          },
+        },
+        {
+          $project: {
+            spinning_report: {
+              $cond: {
+                if: { $isArray: "$spinning_report" },
+                then: { $arrayElemAt: ["$spinning_report", 0] },
+                else: null,
+              },
+            },
+          },
+        },
+      ]);
+
+      return { order, paint, weaving, spinning };
     } catch (error) {
       return error.message;
     }
@@ -286,33 +374,9 @@ class SaleLegalService {
 
   async getOne(id) {
     const data = await SaleLegalCardModel.findById(id);
+
     return data;
   }
-
-  // async export_excel(id) {
-  //   try {
-  //     const Data = await SaleLegalCardModel.findById(id);
-  //     // let temp = JSON.stringify(data);
-  //     const data = [
-  //       { name: "samir", age: 25 },
-  //       { name: "saman", age: 30 },
-  //     ];
-  //     const heading = [["name", "age"]];
-  //     let wb = XLSX.utils.book_new(); //new workbook
-  //     let ws = XLSX.utils.json_to_sheet(data);
-  //     XLSX.utils.sheet_add_aoa(ws, heading);
-  //     XLSX.utils.book_append_sheet(wb, ws, "sheet1");
-  //     const buffer = XLSX.write(wb, { bookType: "xlsx", type: "buffer" });
-  //     console.log(buffer);
-  //     // XLSX.writeFile(wb, down);
-  //     res.download(down);
-  //     res.attachment("data.elxs");
-  //     res.send(buffer);
-  //     return data;
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // }
 }
 
 module.exports = new SaleLegalService();

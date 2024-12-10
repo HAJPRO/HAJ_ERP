@@ -5,12 +5,18 @@ import { SaleLegalService } from "@/ApiServices/Sale/saleLegal.service";
 import { ToastifyService } from "../../../utils/Toastify.js";
 import { useRouter } from "vue-router";
 const router = useRouter();
-
+const units = ref([
+  { id: 1, name: "Kg" },
+  { id: 2, name: "Metr" },
+  { id: 3, name: "Dona" },
+  { id: 4, name: "Pachka" },
+]);
 const model = ref({});
 const getModel = async () => {
   const data = await SaleLegalService.getModel();
   model.value = data.data;
 };
+
 const formRef = ref();
 const CreateValidate = async (formRef) => {
   await formRef.validate((valid) => {
@@ -165,7 +171,7 @@ const rules = ref({
       </div>
       <div class="mb-1 col-span-3">
         <el-form-item
-          label="Yetkazish miqdori"
+          label="Buyurtma miqdori"
           prop="order_quantity"
           :rules="rules"
         >
@@ -178,6 +184,25 @@ const rules = ref({
             type="Number"
             placeholder="..."
           />
+        </el-form-item>
+      </div>
+      <div class="mb-1 col-span-3">
+        <el-form-item label="Birligi" prop="unit" :rules="rules">
+          <el-select
+            required
+            size="smal"
+            v-model="model.unit"
+            clearable
+            placeholder="..."
+          >
+            <el-option
+              v-for="item in units"
+              :key="item.id"
+              :label="item.name"
+              :value="item.name"
+            >
+            </el-option>
+          </el-select>
         </el-form-item>
       </div>
       <div class="mb-1 col-span-3">

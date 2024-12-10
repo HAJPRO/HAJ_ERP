@@ -43,6 +43,25 @@ export const ProvidePlanStore = defineStore("ProvidePlanStore", {
       this.item = Array(data.data.box);
       this.card_id = payload.id;
     },
+    async cancelSendReason(payload) {
+      try {
+        const loader = loading.show();
+        const data = await ProvideService.cancelReason({
+          reason: payload.reason,
+          card_id: this.card_id,
+        });
+        loader.hide();
+        const Refresh = () => {
+          window.location.href = "/explore/department/provide/working/plan";
+        };
+        ToastifyService.ToastSuccess({ msg: data.data.msg });
+        setTimeout(Refresh, 1500);
+      } catch (error) {
+        ToastifyService.ToastError({
+          msg: error.message,
+        });
+      }
+    },
     async Confirm() {
       const loader = loading.show();
       const data = await ProvideService.Confirm(this.card_id);
@@ -54,6 +73,25 @@ export const ProvidePlanStore = defineStore("ProvidePlanStore", {
         window.location.href = "/explore/department/provide/working/plan";
       };
       setTimeout(Refresh, 1500);
+    },
+    async Delivered(payload) {
+      try {
+        const loader = loading.show();
+        const data = await ProvideService.Delivered({
+          reason: payload.reason,
+          card_id: payload.id,
+        });
+        loader.hide();
+        const Refresh = () => {
+          window.location.href = "/explore/department/provide/working/plan";
+        };
+        ToastifyService.ToastSuccess({ msg: data.data.msg });
+        setTimeout(Refresh, 1500);
+      } catch (error) {
+        ToastifyService.ToastError({
+          msg: error.message,
+        });
+      }
     },
 
     // async cancelSendReason(payload) {

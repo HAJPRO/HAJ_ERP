@@ -38,7 +38,7 @@ const option = ref({
     {
       type: "pie",
       radius: "55%",
-      center: ["50%", "60%"],
+      center: ["40%", "60%"],
       data: [
         { value: 335, name: "Bo'yoq" },
         { value: 310, name: "To'quv" },
@@ -93,24 +93,24 @@ const margin = ref({
 
 <template>
   <div class="grid grid-cols-8 gap-2 grid-rows-1">
-    <div class="w-full col-span-3 row-span-1 shadow bg-white p-2">
-      <div class="shadow p-1 mb-2">
-        <div class="shadow p-1 text-center mb-3 align-center bg-slate-100">
+    <div class="w-full col-span-3 row-span-1 bg-white p-2">
+      <div class="p-1 mb-2">
+        <div class="shadow p-1 text-center mb-3 align-center bg-slate-200">
           Bo'limlar bo'yicha
         </div>
         <v-chart class="chart col-span-1" :option="option" autoresize />
       </div>
-      <div class="shadow p-1 mt-2">
-        <div class="shadow p-1 text-center mb-3 align-center bg-slate-100">
+      <div class="p-1 mt-2">
+        <div class="shadow p-1 text-center mb-3 align-center bg-slate-200">
           Mijozlar bo'yicha
         </div>
         <v-chart class="chart col-span-1" :option="option" autoresize />
       </div>
     </div>
 
-    <div class="w-full flex-row col-span-5 row-span-1 shadow bg-white p-2">
+    <div class="w-full flex-row col-span-5 row-span-1 bg-white p-2">
       <div>
-        <div class="shadow p-1 mt-1 text-center align-center bg-slate-100">
+        <div class="shadow p-1 mt-1 text-center align-center bg-slate-200">
           Sotuv statistikasi
         </div>
         <Chart
@@ -163,7 +163,7 @@ const margin = ref({
         </Chart>
       </div>
       <div class="mt-2">
-        <div class="shadow p-1 text-center align-center bg-slate-100 mb-2">
+        <div class="shadow p-1 text-center align-center bg-slate-200 mb-2">
           Aktiv xodimlar
         </div>
         <div class="grid grid-cols-4 gap-1 text-[12px] flex-wrap">

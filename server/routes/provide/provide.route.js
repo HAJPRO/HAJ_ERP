@@ -6,6 +6,12 @@ const DepProvideController = require("../../controllers/provide/provide.controll
 const router = express.Router();
 router.post("/provide_all", DepProvideController.getAll);
 router.post("/provide_create", authMiddleware, DepProvideController.create);
+router.post(
+  "/cancel_reason",
+  authMiddleware,
+  DepProvideController.cencelReason
+);
+router.post("/delivered", authMiddleware, DepProvideController.Delivered);
 // router.delete(
 //   "/provide_delete/:id",
 //   authMiddleware,

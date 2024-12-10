@@ -11,6 +11,7 @@ const SaleLegalCardSchema = new Schema(
     pro_width: { type: Number, required: true },
     grammaj: { type: Number, required: true },
     order_quantity: { type: Number, required: true },
+    unit: { type: String, required: true },
     delivery_time: { type: Date, default: Date.now(), required: true },
     in_department_order: { type: String, default: "Sotuv" },
     isConfirm: { type: String },

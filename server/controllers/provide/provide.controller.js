@@ -11,6 +11,24 @@ class DepProvideController {
       next(error);
     }
   }
+  async cencelReason(req, res, next) {
+    try {
+      const data = await DepProvideService.cancelReason(req.body, req.user.id);
+      res.status(200).json({ msg: "Muvaffaqiyatli yuborildi !", data });
+    } catch (error) {
+      next(error);
+    }
+  }
+  async Delivered(req, res, next) {
+    console.log(req.body);
+
+    try {
+      const data = await DepProvideService.Delivered(req.body, req.user.id);
+      res.status(200).json({ msg: "Muvaffaqiyatli tasdiqlandi !", data });
+    } catch (error) {
+      next(error);
+    }
+  }
 
   async create(req, res, next) {
     try {
