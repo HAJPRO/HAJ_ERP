@@ -11,7 +11,10 @@ class DepPaintController {
   }
   async getAll(req, res, next) {
     try {
-      const data = await DepPaintService.getAll({ status: req.body, user: req.user });
+      const data = await DepPaintService.getAll({
+        status: req.body,
+        user: req.user,
+      });
       res.status(200).json(data);
     } catch (error) {
       next(error);
@@ -96,9 +99,17 @@ class DepPaintController {
       next(error);
     }
   }
-
-
+  async Finish(req, res, next) {
+    try {
+      const data = await DepPaintService.Finish({
+        id: req.body,
+        user: req.user,
+      });
+      res.status(200).json({ msg: "Yakunlandi !", data });
+    } catch (error) {
+      next(error);
+    }
+  }
 }
-
 
 module.exports = new DepPaintController();

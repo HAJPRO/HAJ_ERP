@@ -90,7 +90,7 @@ onMounted(async () => {
           >
         </div>
       </router-link>
-      <router-link
+      <!-- <router-link
         to=""
         @click="ActiveTabLink(4)"
         :class="{ activeTab: isActive === 4 }"
@@ -105,7 +105,7 @@ onMounted(async () => {
             }}</span
           >
         </div>
-      </router-link>
+      </router-link> -->
       <router-link
         to=""
         @click="ActiveTabLink(5)"

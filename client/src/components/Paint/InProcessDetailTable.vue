@@ -73,11 +73,26 @@ const openReportModalById = async (id) => {
       />
       <el-table-column
         prop="sale_order.order_quantity"
-        label="Buyurtma miqdori"
+        label="Miqdori (sotuv)"
         width="180"
         header-align="center"
         align="center"
       />
+      <el-table-column
+        prop="sale_order.delivery_time"
+        label="Muddati (sotuv)"
+        width="190"
+        header-align="center"
+        align="center"
+      >
+        <template #default="scope">
+          {{
+            scope.row.status_inprocess
+              ? scope.row.sale_order.delivery_time
+              : scope.row.weaving_delivery_time
+          }}
+        </template>
+      </el-table-column>
       <el-table-column
         v-show="weaving_cloth_quantity"
         prop="weaving_cloth_quantity"
@@ -91,19 +106,13 @@ const openReportModalById = async (id) => {
         </template>
       </el-table-column>
       <el-table-column
-        fixed="right"
-        prop="sale_order.delivery_time"
-        label="Muddati"
+        label="Muddati (to'quv)"
         width="190"
         header-align="center"
         align="center"
       >
         <template #default="scope">
-          {{
-            scope.row.status_inprocess
-              ? scope.row.sale_order.delivery_time
-              : scope.row.weaving_delivery_time
-          }}
+          {{ scope.row.weaving_delivery_time }}
         </template>
       </el-table-column>
       <el-table-column

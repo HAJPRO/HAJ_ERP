@@ -6,18 +6,60 @@
       </template>
     </Title>
   </div>
-
+  <Statistic />
   <BarChart />
 </template>
 
 <script setup>
 import Title from "@/components/Title.vue";
 import BarChart from "../../../components/Dashboard/BarChart.vue";
+import Statistic from "../../../components/Dashboard/Statistic.vue";
+
 import { onMounted, ref } from "vue";
 </script>
 
 <style>
-/* #app {
-  color: #2ecc71;
-} */
+:global(h2#card-usage ~ .example .example-showcase) {
+  background-color: var(--el-fill-color) !important;
+}
+
+.el-statistic {
+  --el-statistic-content-font-size: 28px;
+}
+
+.statistic-card {
+  height: 100%;
+  padding: 20px;
+  border-radius: 4px;
+  background-color: var(--el-bg-color-overlay);
+}
+
+.statistic-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  font-size: 12px;
+  color: var(--el-text-color-regular);
+  margin-top: 16px;
+}
+
+.statistic-footer .footer-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.statistic-footer .footer-item span:last-child {
+  display: inline-flex;
+  align-items: center;
+  margin-left: 4px;
+}
+
+.green {
+  color: var(--el-color-success);
+}
+.red {
+  color: var(--el-color-error);
+}
 </style>

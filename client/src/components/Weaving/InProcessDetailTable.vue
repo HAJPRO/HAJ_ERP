@@ -71,17 +71,46 @@ const openReportModalById = async (id) => {
         header-align="center"
         align="center"
       />
+
       <el-table-column
-        prop="sale_order.order_quantity"
-        label="Buyurtma miqdori"
+        prop="paint.weaving_cloth_quantity"
+        label="Miqdor (bo'yoq)"
         width="180"
         header-align="center"
         align="center"
       />
       <el-table-column
-        prop="sale_order.delivery_time"
-        label="Muddati"
+        prop="paint.weaving_delivery_time"
+        label="Muddati bo'yoq "
         width="150"
+        header-align="center"
+        align="center"
+      />
+
+      <el-table-column
+        prop="paint.weaving_cloth_quantity"
+        label="Miqdor (yigiruv)"
+        width="180"
+        header-align="center"
+        align="center"
+        ><template #default="scope">
+          {{ scope.row.spinning_yarn_wrap_quantity }}
+        </template></el-table-column
+      >
+      <el-table-column
+        prop="paint.weaving_delivery_time"
+        label="Muddati bo'yoq "
+        width="150"
+        header-align="center"
+        align="center"
+        ><template #default="scope">
+          {{ scope.row.spinning_delivery_time }}
+        </template></el-table-column
+      >
+      <el-table-column
+        prop="sale_order.unit"
+        label="Birligi"
+        width="180"
         header-align="center"
         align="center"
       />

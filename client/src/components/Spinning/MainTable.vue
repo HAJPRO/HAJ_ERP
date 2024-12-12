@@ -16,12 +16,7 @@ const OpenModalById = (id) => {
       class="w-full"
       header-align="center"
       hight="5"
-      empty-text="Mahsulot tanlanmagan... "
-      :default-sort="[
-        { prop: 'name', order: 'descending' },
-        { prop: 'count', order: 'descending' },
-        { prop: 'tranfer', order: 'descending' },
-      ]"
+      empty-text="Mahsulot tanlanmagan..."
       :data="items"
       border
       style="width: 100%"

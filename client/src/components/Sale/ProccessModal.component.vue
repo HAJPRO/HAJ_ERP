@@ -28,6 +28,7 @@ const store_sale = SaleStore();
 import { storeToRefs } from "pinia";
 const { proccess_modal, proccess_data } = storeToRefs(store_sale);
 const isDepInfo = ref(false);
+const active = ref(2);
 </script>
 
 <template>
@@ -38,8 +39,62 @@ const isDepInfo = ref(false);
     width="800"
   >
     <div class="">
-      <div class="Pragress flex gap-1">
-        <div
+      <section class="lg:py-1 xl:py-2">
+        <div class="mx-auto max-w-7xl">
+          <ul
+            class="mx-auto grid max-w-md grid-cols-1 gap-10 sm:mt-16 lg:mt-2 lg:max-w-5xl lg:grid-cols-4"
+          >
+            <li
+              v-for="item in proccess_data.order[0].process_status"
+              :key="item.index"
+              class="flex-start group relative flex lg:flex-col"
+            >
+              <span
+                class="absolute top-14 w-px bg-gray-300 lg:right-0 lg:left-auto lg:top-[20px] lg:h-px lg:w-[calc(100%_-_40px)]"
+                aria-hidden="true"
+              ></span>
+              <div
+                class="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-xl border border-gray-100 bg-[#36d887] transition-all duration-200 group-hover:bg-[#36d887]"
+              >
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  xmlns="http://www.w3.org/2000/svg"
+                  class="h-5 w-5 text-white group-hover:text-white"
+                >
+                  <path
+                    d="M21 12C21 13.6569 16.9706 15 12 15C7.02944 15 3 13.6569 3 12M21 5C21 6.65685 16.9706 8 12 8C7.02944 8 3 6.65685 3 5M21 5C21 3.34315 16.9706 2 12 2C7.02944 2 3 3.34315 3 5M21 5V19C21 20.6569 16.9706 22 12 22C7.02944 22 3 20.6569 3 19V5"
+                    stroke-width="1.5"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  ></path>
+                </svg>
+              </div>
+              <div class="lg:ml-0">
+                <h4 class="mt-1 text-[11px] text-gray-700">
+                  {{ item.status }}
+                </h4>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </section>
+      <!-- <el-steps
+        class=""
+        :space="150"
+        style="max-width: 800px"
+        :active="`${proccess_data.order[0].process_status.length}`"
+        finish-status="success"
+      >
+        <el-step
+          v-for="item in proccess_data.order[0].process_status"
+          :key="item.index"
+          :title="`${item.status}`"
+        />
+      </el-steps> -->
+      <!-- <div class="Pragress flex gap-1"> -->
+      <!-- <div
           v-for="item in proccess_data.order[0].process_status"
           :key="item.index"
         >
@@ -49,8 +104,8 @@ const isDepInfo = ref(false);
           >
             {{ item.status }} =>
           </span>
-        </div>
-      </div>
+        </div> -->
+      <!-- </div> -->
       <div class="Main bg-white dark:bg-gray-800 shadow-sm rounded-xl">
         <div
           class="Header flex justify-between gap-1 border-t-[1.5px] border-solid border-[#36d887]"

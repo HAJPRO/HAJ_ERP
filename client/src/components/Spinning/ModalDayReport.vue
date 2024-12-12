@@ -3,19 +3,20 @@ import { ref } from "vue";
 import { SpinningPlanStore } from "../../stores/Spinning/spinningPlan.store";
 const store_spinning = SpinningPlanStore();
 import { storeToRefs } from "pinia";
-const { is_report_modal, order_report } = storeToRefs(store_spinning);
+const { is_report_modal, order_report, DoneSpinning } =
+  storeToRefs(store_spinning);
 const addDayReportInProcess = async () => {
   await store_spinning.addDayReportInProcess(model.value);
 };
 
-const Done = ref();
-if (order_report.value.report.length) {
-  const initialValue = ref(0);
-  Done.value = order_report.value.report.reduce(
-    (accumulator, currentValue) => accumulator + Number(currentValue.quantity),
-    initialValue.value
-  );
-}
+// const Done = ref();
+// if (order_report.value.report.length) {
+//   const initialValue = ref(0);
+//   Done.value = order_report.value.report.reduce(
+//     (accumulator, currentValue) => accumulator + Number(currentValue.quantity),
+//     initialValue.value
+//   );
+// }
 
 const model = ref({
   quantity: "",
@@ -72,7 +73,7 @@ const validate = async (formRef) => {
             class="bg-red-50 p-1 rounded text-[11px] border-[1px] border-red-500"
           >
             {{
-              Number(order_report.quantity) - Done === 0
+              Number(order_report.quantity) - DoneSpinning === 0
                 ? "Yigiruv yakunladi"
                 : "Yigiruvda jarayonda"
             }}
@@ -80,7 +81,7 @@ const validate = async (formRef) => {
         </div>
 
         <el-form
-          :disabled="!order_report"
+          :disabled="order_report.quantity - DoneSpinning === 0"
           ref="formRef"
           :model="model"
           label-width="auto"
@@ -173,7 +174,7 @@ const validate = async (formRef) => {
               header-align="center"
               align="center"
             >
-              <template #default="scope">
+              <template #default="">
                 <router-link
                   to=""
                   class="inline-flex items-center mt-4 ml-2 text-red bg-[#eedc36] hover:bg-yellow-400 font-medium rounded-md text-sm w-full sm:w-auto px-2 py-3 text-center"
@@ -190,10 +191,10 @@ const validate = async (formRef) => {
               Buyurtma:
               {{ order_report.quantity }}
             </div>
-            <div>Bajarildi: {{ Done ? Done : 0 }}</div>
+            <div>Bajarildi: {{ DoneSpinning ? DoneSpinning : 0 }}</div>
             <div>
               Qoldi:
-              {{ Done ? order_report.quantity - Done : 0 }}
+              {{ DoneSpinning ? order_report.quantity - DoneSpinning : 0 }}
             </div>
           </div>
         </div>
@@ -210,21 +211,19 @@ const validate = async (formRef) => {
     <template #footer>
       <div class="dialog-footer">
         <el-button
+          v-if="parseInt(order_report.quantity - DoneSpinning) > 0"
           size="small"
           @click="validate(formRef)"
           style="background-color: #36d887; color: white; border: none"
           ><i class="mr-2 fa-solid fa-check fa-sm"></i>Yuborish
         </el-button>
-
-        <!-- <router-link
-          v-show="is_cancel"
-          type=""
-          to=""
-          @click="sendReason()"
-          class="inline-flex text-[12px] items-center ml-2 px-3 py-1 mb-1 mt-2 text-sm font-medium text-center text-white bg-[#36d887] text-bold rounded"
-        >
-          <i class="mr-2 fa-solid fa-check fa-sm"></i>Yuborish</router-link
-        > -->
+        <el-button
+          size="small"
+          v-if="parseInt(order_report.quantity - DoneSpinning) === 0"
+          @click="validate(formRef)"
+          style="background-color: #36d887; color: white; border: none"
+          ><i class="mr-2 fa-solid fa-check fa-sm"></i>Yakunlash
+        </el-button>
       </div>
     </template>
   </el-dialog>

@@ -81,7 +81,7 @@ onMounted(async () => {
         <i class="fa-solid fa-info mr-2 fa-xm"></i> Sotuv
         <div class="flex flex-shrink-0 ml-2">
           <span
-            class="inline-flex items-center justify-center h-5 text-[11px] font-medium text-white bg-red-500 px-3 py-2 rounded"
+            class="inline-flex items-center justify-center h-5 text-[11px] font-medium text-white bg-[#36d887] px-3 py-2 rounded"
           >
             <span class=" ">0</span>/{{
               (all_length ? all_length.sale_length : 0) || 0
@@ -89,7 +89,7 @@ onMounted(async () => {
           >
         </div>
       </router-link>
-      <router-link
+      <!-- <router-link
         to=""
         @click="ActiveTabLink(3)"
         :class="{ activeTab: isActive === 3 }"
@@ -104,7 +104,7 @@ onMounted(async () => {
             }}</span
           >
         </div>
-      </router-link>
+      </router-link> -->
       <router-link
         to=""
         @click="ActiveTabLink(5)"

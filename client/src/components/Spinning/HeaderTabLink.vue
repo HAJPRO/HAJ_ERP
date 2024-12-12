@@ -53,9 +53,9 @@ onMounted(async () => {
         <i class="fa-solid fa-info mr-2 fa-xm"></i> Jarayonda
         <div class="flex flex-shrink-0 ml-2">
           <span
-            class="inline-flex items-center justify-center h-5 text-[11px] font-medium text-white bg-red-500 px-3 py-2 rounded"
+            class="inline-flex items-center justify-center h-5 text-[11px] font-medium text-white bg-[#36d887] px-3 py-2 rounded"
           >
-            <span class=" ">1</span>/{{
+            <span class=" ">0</span>/{{
               (all_length ? all_length.process_length : 0) || 0
             }}</span
           >

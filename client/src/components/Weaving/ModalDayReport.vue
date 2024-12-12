@@ -3,7 +3,8 @@ import { ref, onMounted } from "vue";
 import { WeavingPlanStore } from "../../stores/Weaving/weaving_plan.store";
 const store = WeavingPlanStore();
 import { storeToRefs } from "pinia";
-const { is_report_modal, order_report, report_weaving } = storeToRefs(store);
+const { is_report_modal, order_report, report_weaving, DoneWeaving } =
+  storeToRefs(store);
 console.log(report_weaving);
 const addDayReportInProcess = async () => {
   await store.addDayReportInProcess(model.value);
@@ -16,14 +17,6 @@ if (order_report.value) {
     initialValueSpinning.value
   );
 }
-// const DoneWeaving = ref();
-// if (report_weaving.value) {
-//   const initialValueWeaving = ref(0);
-//   DoneWeaving.value = report_weaving.value.report.reduce(
-//     (accumulator, currentValue) => accumulator + Number(currentValue.quantity),
-//     initialValueWeaving.value
-//   );
-// }
 const model = ref({
   quantity: "",
   unit: "",
@@ -74,7 +67,11 @@ const validate = async (formRef) => {
         <div
           class="bg-red-50 p-1 rounded text-[11px] border-[1px] border-red-500"
         >
-          Yigiruvda jarayonda
+          {{
+            Number(order_report.quantity) - DoneSpinning === 0
+              ? "Yigiruv yakunladi"
+              : "Yigiruvda jarayonda"
+          }}
         </div>
       </div>
       <div class="shadow-md rounded min-h-[15px]">
@@ -156,7 +153,10 @@ const validate = async (formRef) => {
           To'quv hisobot qo'shish
         </div>
         <el-form
-          :disabled="DoneSpinning === 0"
+          v-if="
+            DoneSpinning !== 0 ||
+            parseInt(report_weaving.order_quantity - DoneWeaving) !== 0
+          "
           ref="formRef"
           :model="model"
           label-width="auto"
@@ -289,10 +289,17 @@ const validate = async (formRef) => {
     <template #footer>
       <div class="dialog-footer">
         <el-button
+          v-if="parseInt(report_weaving.order_quantity - DoneWeaving) > 0"
           size="small"
           @click="validate(formRef)"
           style="background-color: #36d887; color: white; border: none"
           ><i class="mr-2 fa-solid fa-check fa-sm"></i>Yuborish
+        </el-button>
+        <el-button
+          v-if="parseInt(report_weaving.order_quantity - DoneWeaving) === 0"
+          size="small"
+          style="background-color: #36d887; color: white; border: none"
+          ><i class="mr-2 fa-solid fa-check fa-sm"></i>Yakunlash
         </el-button>
       </div>
     </template>

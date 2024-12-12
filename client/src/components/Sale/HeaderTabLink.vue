@@ -75,9 +75,9 @@ onMounted(async () => {
         <i class="fa-solid fa-info mr-2 fa-xm"></i> Sotuv
         <div class="flex flex-shrink-0 ml-2">
           <span
-            class="inline-flex items-center justify-center h-5 text-[11px] font-medium text-white bg-red-500 px-3 py-2 rounded"
+            class="inline-flex items-center justify-center h-5 text-[11px] font-medium text-white bg-[#36d887] px-3 py-2 rounded"
           >
-            <span class=" ">1</span>/{{
+            <span class=" ">0</span>/{{
               (sale_length ? sale_length : 0) || 0
             }}</span
           >
@@ -100,55 +100,6 @@ onMounted(async () => {
           >
         </div>
       </router-link>
-      <!-- <router-link
-        to=""
-        @click="ActiveTabLink(3)"
-        :class="{ activeTab: isActive === 3 }"
-        class="inline-flex text-[13px] items-center mr-1 px-4 py-1 mb-1 font-medium text-center text-red hover:border-b-2 border-solid border-[#36d887] bg-[#e4e9e9] text-bold rounded"
-      >
-        <i class="fa-solid fa-info mr-2 fa-xm"></i> To'quv
-        <div class="flex flex-shrink-0 ml-2">
-          <span
-            class="inline-flex items-center justify-center h-5 text-[11px] font-medium text-white bg-[#36d887] px-3 py-2 rounded"
-            ><span class=" ">0</span>/{{
-              (weaving_length ? weaving_length : 0) || 0
-            }}</span
-          >
-        </div>
-      </router-link>
-      <router-link
-        to=""
-        @click="ActiveTabLink(4)"
-        :class="{ activeTab: isActive === 4 }"
-        class="inline-flex text-[13px] items-center mr-1 px-4 py-1 mb-1 font-medium text-center text-red hover:border-b-2 border-solid border-[#36d887] bg-[#e4e9e9] text-bold rounded"
-      >
-        <i class="fa-solid fa-info mr-2 fa-xm"></i> Yigiruv
-        <div class="flex flex-shrink-0 ml-2">
-          <span
-            class="inline-flex items-center justify-center h-5 text-[11px] font-medium text-white bg-[#36d887] px-3 py-2 rounded"
-            ><span class=" ">0</span>/{{
-              (spinning_length ? spinning_length : 0) || 0
-            }}</span
-          >
-        </div>
-      </router-link>
-      <router-link
-        to=""
-        @click="ActiveTabLink(5)"
-        :class="{ activeTab: isActive === 5 }"
-        class="inline-flex text-[13px] items-center px-4 py-1 mb-1 font-medium text-center text-red hover:border-b-2 border-solid border-[#36d887] bg-[#e4e9e9] text-bold rounded"
-      >
-        <i class="fa-solid fa-info mr-2 fa-xm"></i> Taminot
-        <div class="flex flex-shrink-0 ml-2">
-          <span
-            class="inline-flex items-center justify-center h-5 text-[11px] font-medium text-white bg-[#36d887] px-3 py-2 rounded"
-          >
-            <span class=" ">0</span>/{{
-              (provide_length ? provide_length : 0) || 0
-            }}</span
-          >
-        </div>
-      </router-link> -->
     </div>
     <div class="row-span-1 flex justify-end flex-wrap col-span-3 grid-flow-col">
       <div class="col-span-2"></div>

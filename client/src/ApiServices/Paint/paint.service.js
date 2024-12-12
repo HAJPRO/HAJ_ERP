@@ -30,5 +30,8 @@ export const PaintService = {
     let url = "paint/paint_get_report";
     return api.post(url, { id });
   },
-
+  Finish(id) {
+    let url = "paint/report_finish";
+    return api.post(url, { id });
+  },
 };

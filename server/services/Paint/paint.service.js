@@ -359,6 +359,9 @@ class DepPaintService {
   }
   async getDayReportFromPaint(data) {
     let ID = new mongoose.Types.ObjectId(data.id);
+    const paint = await SaleDepPaintCardModel.findOne({
+      sale_order_id: data.id,
+    });
     const item = await InProcessPaintModel.aggregate([
       { $match: { order_id: ID } },
       {
@@ -382,6 +385,7 @@ class DepPaintService {
         },
       },
     ]);
+
     if (item.length > 0) {
       return {
         report: item[0].order_report_at_progress,
@@ -389,8 +393,31 @@ class DepPaintService {
         order_number: item[0].order.order_number,
         order_quantity: item[0].order.order_quantity,
         delivery_time: item[0].order.delivery_time,
+        status: paint.status_inprocess,
       };
     }
+  }
+  async Finish(data) {
+    const order_id = data.id.id;
+    const author = data.user;
+    const Data = await SaleDepPaintCardModel.findOne({
+      sale_order_id: order_id,
+    });
+    const newData = Data;
+    const process_status = {
+      author,
+      is_confirm: { status: true, reason: "Yakunlandi" },
+      sent_time: new Date(),
+    };
+    newData.paint_process_status.push(process_status);
+    newData.status_inprocess = "Yakunlandi";
+    const updateData = await SaleDepPaintCardModel.findByIdAndUpdate(
+      Data._id,
+      newData,
+      { new: true }
+    );
+
+    return updateData;
   }
 }
 

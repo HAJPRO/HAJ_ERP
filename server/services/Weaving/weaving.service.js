@@ -90,6 +90,17 @@ class DepWeavingService {
             department: user.department,
           };
           const inProcess = await InProcessWeavingModel.create(in_process_data);
+          const PaintData = await SaleDepPaintCardModel.findOne({
+            sale_order_id: data.order_id,
+          });
+          const newPaintData = PaintData;
+          newPaintData.status_weaving = "To'quv tasdiqladi";
+          const updateInProcessPaint =
+            await SaleDepPaintCardModel.findByIdAndUpdate(
+              PaintData._id,
+              newPaintData,
+              { new: true }
+            );
           const Data = await SaleDepWeavingCardModel.create({
             in_process_id: inProcess._id,
             author,
@@ -100,6 +111,7 @@ class DepWeavingService {
               data.items.ModelForSpinning.spinning_yarn_wrap_quantity,
             spinning_delivery_time:
               data.items.ModelForSpinning.spinning_delivery_time,
+            paint_id: PaintData._id,
           });
           const LegalDataById = await SaleLegalCardModel.findById(
             data.order_id
@@ -123,17 +135,6 @@ class DepWeavingService {
               newLegalData,
               { new: true }
             );
-            const PaintData = await SaleDepPaintCardModel.findOne({
-              sale_order_id: data.order_id,
-            });
-            const newPaintData = PaintData;
-            newPaintData.status_weaving = "To'quv tasdiqladi";
-            const updateInProcessPaint =
-              await SaleDepPaintCardModel.findByIdAndUpdate(
-                PaintData._id,
-                newPaintData,
-                { new: true }
-              );
           }
         }
       }
@@ -200,6 +201,14 @@ class DepWeavingService {
           },
         },
         {
+          $lookup: {
+            from: "deppaintcards",
+            localField: "paint_id",
+            foreignField: "_id",
+            as: "paint",
+          },
+        },
+        {
           $project: {
             status: 1,
             spinning_delivery_time: 1,
@@ -209,6 +218,13 @@ class DepWeavingService {
               $cond: {
                 if: { $isArray: "$sale_order" },
                 then: { $arrayElemAt: ["$sale_order", 0] },
+                else: null,
+              },
+            },
+            paint: {
+              $cond: {
+                if: { $isArray: "$paint" },
+                then: { $arrayElemAt: ["$paint", 0] },
                 else: null,
               },
             },
@@ -255,7 +271,7 @@ class DepWeavingService {
   }
   async AllSentToSpinning(id) {
     try {
-      const allInProcess = await SaleDepWeavingCardModel.aggregate([
+      const allSpinning = await SaleDepWeavingCardModel.aggregate([
         { $match: { author: id } },
         {
           $lookup: {
@@ -280,7 +296,9 @@ class DepWeavingService {
           },
         },
       ]);
-      return allInProcess;
+      console.log(allSpinning);
+
+      return allSpinning;
     } catch (error) {
       return error.message;
     }

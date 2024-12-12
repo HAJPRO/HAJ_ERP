@@ -1,29 +1,24 @@
 <script setup>
 import { ref } from "vue";
 import { PaintPlanStore } from "../../stores/Paint/paintPlan.store";
-const store = PaintPlanStore();
+const store_paint = PaintPlanStore();
 import { storeToRefs } from "pinia";
-const { is_report_modal, order_report, report_paint } = storeToRefs(store);
+const { is_report_modal, order_report, report_paint, DonePaint, paint_status } =
+  storeToRefs(store_paint);
 const addDayReportInProcess = async () => {
-  await store.addDayReportInProcess(model.value);
+  await store_paint.addDayReportInProcess(model.value);
 };
-
-const Done = ref();
+const toFinish = async () => {
+  await store_paint.Finish();
+};
+const DoneWeaving = ref();
 if (order_report.value) {
   const initialValue = ref(0);
-  Done.value = order_report.value.report.reduce(
+  DoneWeaving.value = order_report.value.report.reduce(
     (accumulator, currentValue) => accumulator + Number(currentValue.quantity),
     initialValue.value
   );
 }
-// const DonePaint = ref();
-// if (report_paint.value.report) {
-//   const initialValuePaint = ref(0);
-//   DonePaint.value = report_paint.value.report.reduce(
-//     (a, b) => a + Number(b.quantity),
-//     initialValuePaint.value
-//   );
-// }
 
 const model = ref({
   quantity: "",
@@ -76,7 +71,7 @@ const validate = async (formRef) => {
           class="bg-red-50 p-1 rounded text-[11px] border-[1px] border-red-500"
         >
           {{
-            Number(order_report.weaving_cloth_quantity) - Done === 0
+            Number(order_report.weaving_cloth_quantity) - DoneWeaving === 0
               ? "To'quv yakunladi"
               : "To'quvda jarayonda"
           }}
@@ -152,10 +147,14 @@ const validate = async (formRef) => {
               : 0
           }}
         </div>
-        <div>Bajarildi: {{ Done ? Done : 0 }}</div>
+        <div>Bajarildi: {{ DoneWeaving ? DoneWeaving : 0 }}</div>
         <div>
           Qoldi:
-          {{ Done ? Number(order_report.weaving_cloth_quantity) - Done : 0 }}
+          {{
+            DoneWeaving
+              ? Number(order_report.weaving_cloth_quantity) - DoneWeaving
+              : 0
+          }}
         </div>
       </div>
       <div class="text-[14px] bg-white rounded shadow hover:shadow-md mt-2">
@@ -165,7 +164,10 @@ const validate = async (formRef) => {
           Bo'yoq hisobot qo'shish
         </div>
         <el-form
-          :disabled="Done === 0"
+          :disabled="
+            DoneWeaving === 0 ||
+            parseInt(report_paint.order_quantity - DonePaint) === 0
+          "
           ref="formRef"
           :model="model"
           label-width="auto"
@@ -299,23 +301,28 @@ const validate = async (formRef) => {
       <span>Cancel And Of Reason</span>
     </el-dialog>
     <template #footer>
-      <div class="dialog-footer">
+      <div class="dialog-footer flex justify-end gap-4">
         <el-button
           size="small"
+          v-if="parseInt(report_paint.order_quantity - DonePaint) > 0"
           @click="validate(formRef)"
           style="background-color: #36d887; color: white; border: none"
           ><i class="mr-2 fa-solid fa-check fa-sm"></i>Yuborish
         </el-button>
-
-        <!-- <router-link
-          v-show="is_cancel"
-          type=""
-          to=""
-          @click="sendReason()"
-          class="inline-flex text-[12px] items-center ml-2 px-3 py-1 mb-1 mt-2 text-sm font-medium text-center text-white bg-[#36d887] text-bold rounded"
+        <div
+          v-if="paint_status === 'Yakunlandi'"
+          class="bg-red-50 p-1 rounded text-[11px] font-bold border-[1px] border-red-500"
         >
-          <i class="mr-2 fa-solid fa-check fa-sm"></i>Yuborish</router-link
-        > -->
+          Bo'yoq yakunladi
+        </div>
+        <el-button
+          :disabled="paint_status === 'Yakunlandi'"
+          v-if="parseInt(report_paint.order_quantity - DonePaint) === 0"
+          size="small"
+          @click="toFinish()"
+          style="background-color: #36d887; color: white; border: none"
+          ><i class="mr-2 fa-solid fa-check fa-sm"></i>Yakunlash
+        </el-button>
       </div>
     </template>
   </el-dialog>
