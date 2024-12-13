@@ -164,10 +164,7 @@ const validate = async (formRef) => {
           Bo'yoq hisobot qo'shish
         </div>
         <el-form
-          :disabled="
-            DoneWeaving === 0 ||
-            parseInt(report_paint.order_quantity - DonePaint) === 0
-          "
+          :disabled="parseInt(report_paint.order_quantity - DonePaint) < 0"
           ref="formRef"
           :model="model"
           label-width="auto"

@@ -36,18 +36,18 @@ const active = ref(2);
     id="content"
     v-model="proccess_modal"
     title="Buyurtmani ishlab chiqarish jarayoni bo'yicha malumotlari"
-    width="800"
+    width="900"
   >
     <div class="">
       <section class="lg:py-1 xl:py-2">
         <div class="mx-auto max-w-7xl">
           <ul
-            class="mx-auto grid max-w-md grid-cols-1 gap-10 sm:mt-16 lg:mt-2 lg:max-w-5xl lg:grid-cols-4"
+            class="mx-auto grid w-full grid-cols-8 gap-1 lg:mt-2 lg:max-w-5xl"
           >
             <li
               v-for="item in proccess_data.order[0].process_status"
               :key="item.index"
-              class="flex-start group relative flex lg:flex-col"
+              class="flex-start group relative"
             >
               <span
                 class="absolute top-14 w-px bg-gray-300 lg:right-0 lg:left-auto lg:top-[20px] lg:h-px lg:w-[calc(100%_-_40px)]"
@@ -56,20 +56,53 @@ const active = ref(2);
               <div
                 class="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-xl border border-gray-100 bg-[#36d887] transition-all duration-200 group-hover:bg-[#36d887]"
               >
-                <svg
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  xmlns="http://www.w3.org/2000/svg"
-                  class="h-5 w-5 text-white group-hover:text-white"
-                >
-                  <path
-                    d="M21 12C21 13.6569 16.9706 15 12 15C7.02944 15 3 13.6569 3 12M21 5C21 6.65685 16.9706 8 12 8C7.02944 8 3 6.65685 3 5M21 5C21 3.34315 16.9706 2 12 2C7.02944 2 3 3.34315 3 5M21 5V19C21 20.6569 16.9706 22 12 22C7.02944 22 3 20.6569 3 19V5"
-                    stroke-width="1.5"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                  ></path>
-                </svg>
+                <span class="svg-icon text-white svg-icon-muted svg-icon-2hx"
+                  ><svg
+                    width="18"
+                    height="18"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M11 2.375L2 9.575V20.575C2 21.175 2.4 21.575 3 21.575H9C9.6 21.575 10 21.175 10 20.575V14.575C10 13.975 10.4 13.575 11 13.575H13C13.6 13.575 14 13.975 14 14.575V20.575C14 21.175 14.4 21.575 15 21.575H21C21.6 21.575 22 21.175 22 20.575V9.575L13 2.375C12.4 1.875 11.6 1.875 11 2.375Z"
+                      fill="currentColor"
+                    />
+                  </svg>
+                </span>
+              </div>
+              <div class="lg:ml-0">
+                <h4 class="mt-1 text-[11px] text-gray-700">
+                  {{ item.status }}
+                </h4>
+              </div>
+            </li>
+            <li
+              v-for="item in proccess_data.order[0].process_status"
+              :key="item.index"
+              class="flex-start group relative"
+            >
+              <span
+                class="absolute top-14 w-px bg-gray-300 lg:right-0 lg:left-auto lg:top-[20px] lg:h-px lg:w-[calc(100%_-_40px)]"
+                aria-hidden="true"
+              ></span>
+              <div
+                class="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-xl border border-gray-100 bg-[#36d887] transition-all duration-200 group-hover:bg-[#36d887]"
+              >
+                <span class="svg-icon text-white svg-icon-muted svg-icon-2hx"
+                  ><svg
+                    width="18"
+                    height="18"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M11 2.375L2 9.575V20.575C2 21.175 2.4 21.575 3 21.575H9C9.6 21.575 10 21.175 10 20.575V14.575C10 13.975 10.4 13.575 11 13.575H13C13.6 13.575 14 13.975 14 14.575V20.575C14 21.175 14.4 21.575 15 21.575H21C21.6 21.575 22 21.175 22 20.575V9.575L13 2.375C12.4 1.875 11.6 1.875 11 2.375Z"
+                      fill="currentColor"
+                    />
+                  </svg>
+                </span>
               </div>
               <div class="lg:ml-0">
                 <h4 class="mt-1 text-[11px] text-gray-700">
@@ -80,32 +113,7 @@ const active = ref(2);
           </ul>
         </div>
       </section>
-      <!-- <el-steps
-        class=""
-        :space="150"
-        style="max-width: 800px"
-        :active="`${proccess_data.order[0].process_status.length}`"
-        finish-status="success"
-      >
-        <el-step
-          v-for="item in proccess_data.order[0].process_status"
-          :key="item.index"
-          :title="`${item.status}`"
-        />
-      </el-steps> -->
-      <!-- <div class="Pragress flex gap-1"> -->
-      <!-- <div
-          v-for="item in proccess_data.order[0].process_status"
-          :key="item.index"
-        >
-          <span
-            to=""
-            class="cursor-pointer inline-flex items-center px-1.5 py-1.5 mb-1 text-[10px] font-semibold text-center text-white bg-[#36d887] text-bold rounded"
-          >
-            {{ item.status }} =>
-          </span>
-        </div> -->
-      <!-- </div> -->
+
       <div class="Main bg-white dark:bg-gray-800 shadow-sm rounded-xl">
         <div
           class="Header flex justify-between gap-1 border-t-[1.5px] border-solid border-[#36d887]"
@@ -184,14 +192,14 @@ const active = ref(2);
                             prop="index"
                             fixed="left"
                             label="№"
-                            width="60"
+                            width="70"
                           />
 
                           <el-table-column
                             header-align="center"
                             prop="quantity"
                             label="Miqdori"
-                            width="250"
+                            width="300"
                           />
                           <el-table-column
                             prop="unit"
@@ -203,7 +211,7 @@ const active = ref(2);
                           <el-table-column
                             prop="date"
                             label="Vaqt"
-                            width="260"
+                            width="300"
                             header-align="center"
                             align="center"
                             ><template #default="scope">{{
@@ -257,14 +265,14 @@ const active = ref(2);
                             prop="index"
                             fixed="left"
                             label="№"
-                            width="60"
+                            width="70"
                           />
 
                           <el-table-column
                             header-align="center"
                             prop="quantity"
                             label="Miqdori"
-                            width="250"
+                            width="300"
                           />
                           <el-table-column
                             prop="unit"
@@ -276,7 +284,7 @@ const active = ref(2);
                           <el-table-column
                             prop="date"
                             label="Vaqt"
-                            width="260"
+                            width="300"
                             header-align="center"
                             align="center"
                             ><template #default="scope">{{
@@ -330,14 +338,14 @@ const active = ref(2);
                             prop="index"
                             fixed="left"
                             label="№"
-                            width="60"
+                            width="70"
                           />
 
                           <el-table-column
                             header-align="center"
                             prop="quantity"
                             label="Miqdori"
-                            width="250"
+                            width="300"
                           />
                           <el-table-column
                             prop="unit"
@@ -349,7 +357,7 @@ const active = ref(2);
                           <el-table-column
                             prop="date"
                             label="Vaqt"
-                            width="260"
+                            width="300"
                             header-align="center"
                             align="center"
                             ><template #default="scope">{{

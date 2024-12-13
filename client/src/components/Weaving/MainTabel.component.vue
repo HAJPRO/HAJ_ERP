@@ -1,11 +1,11 @@
 <script setup>
 import { WeavingPlanStore } from "../../stores/Weaving/weaving_plan.store";
-const store = WeavingPlanStore();
+const store_weaving = WeavingPlanStore();
 import { storeToRefs } from "pinia";
 const openModalById = async (id) => {
-  await store.openModalById({ id, is_modal: true });
+  await store_weaving.openModalById({ id });
 };
-const { items, is_active } = storeToRefs(store);
+const { items, is_active } = storeToRefs(store_weaving);
 </script>
 <template>
   <div class="shadow-md rounded min-h-[15px]">
@@ -106,7 +106,7 @@ const { items, is_active } = storeToRefs(store);
             to=""
             class="inline-flex items-center text-red bg-[#e4e9e9] hover:bg-[#d7ebeb] focus:ring-blue-300 font-medium rounded-md text-[12px] w-ful p-[5px] sm:w-auto text-center"
           >
-            To'quvga yuborildi
+            {{ scope.row.status_weaving }}
           </router-link>
         </template>
       </el-table-column>
@@ -126,13 +126,13 @@ const { items, is_active } = storeToRefs(store);
           >
             <i class="text-red fa-solid fa-check fa-xs fa- fa-xs"></i>
           </router-link>
-          <router-link
+          <!-- <router-link
             to="/explore/sale/legal/create"
             @click="DeleteFromTable(scope.row._id)"
             class="inline-flex items-center mt-4 ml-2 text-red bg-[#36d887] hover:bg-[#39c07c] font-medium rounded-md text-sm w-full sm:w-auto px-3 py-3 text-center"
           >
             <i class="text-black fa-sharp fa-solid fa-info fa-xs"></i>
-          </router-link>
+          </router-link> -->
         </template>
       </el-table-column>
     </el-table>

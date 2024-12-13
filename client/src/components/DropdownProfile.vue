@@ -57,7 +57,15 @@
           <li>
             <router-link
               class="font-medium text-sm text-indigo-500 hover:text-indigo-600 dark:hover:text-indigo-400 flex items-center py-1 px-3"
-              to="/settings/account"
+              :to="{ name: 'profile_card' }"
+              >My profile</router-link
+            >
+          </li>
+
+          <li>
+            <router-link
+              :to="{ name: 'profile_settings' }"
+              class="font-medium text-sm text-indigo-500 hover:text-indigo-600 dark:hover:text-indigo-400 flex items-center py-1 px-3"
               @click="dropdownOpen = false"
               >Settings</router-link
             >

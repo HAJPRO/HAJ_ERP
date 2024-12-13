@@ -101,18 +101,31 @@ const isConfirm = () => {
           <el-table-column
             prop="in_process_detail.order_quantity"
             label="Miqdori"
-            fixed="right"
+            width="100"
+            header-align="center"
+            align="center"
+            ><template #default="scope">
+              {{ scope.row.weaving_cloth_quantity }}
+            </template></el-table-column
+          >
+          <el-table-column
+            prop="in_process_detail.unit"
+            label="Birligi"
             width="100"
             header-align="center"
             align="center"
           />
           <el-table-column
+            fixed="right"
             prop="in_process_detail.delivery_time"
             label="Yetkazish vaqti"
             width="200"
             header-align="center"
             align="center"
-          />
+            ><template #default="scope">
+              {{ String(scope.row.weaving_delivery_time).substring(0, 10) }}
+            </template></el-table-column
+          >
         </el-table>
       </div>
       <form

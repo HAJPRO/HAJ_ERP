@@ -1,10 +1,5 @@
 <template>
   <div class="mb-4">
-    <el-steps style="max-width: 200px" :active="active" finish-status="success">
-      <el-step title="Step 1" />
-      <el-step title="Step 2" />
-      <el-step title="Step 3" />
-    </el-steps>
     <el-row :gutter="16">
       <el-col :span="8">
         <div class="statistic-card">

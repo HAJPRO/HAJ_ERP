@@ -153,9 +153,9 @@ const validate = async (formRef) => {
           To'quv hisobot qo'shish
         </div>
         <el-form
-          v-if="
-            DoneSpinning !== 0 ||
-            parseInt(report_weaving.order_quantity - DoneWeaving) !== 0
+          :disabled="
+            DoneSpinning === 0 ||
+            parseInt(report_weaving.order_quantity - DoneWeaving) === 0
           "
           ref="formRef"
           :model="model"

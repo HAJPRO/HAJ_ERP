@@ -41,16 +41,17 @@ export const WeavingPlanStore = defineStore("WeavingPlan", {
         const data = await WeavingService.getAll(status);
         this.items = data.data.items;
         this.all_length = data.data.all_length;
-        console.log(data.data);
       } catch (err) {
         console.log(err);
       }
     },
     async openModalById(payload) {
       this.card_id = payload.id;
-      this.is_modal = payload.is_modal;
+      this.is_modal = true;
       const data = await WeavingService.getOne(payload.id);
       this.item = data.data;
+      console.log(data);
+
       this.order_id = data.data[0].in_process_detail._id;
       this.paint_process_id = data.data[0]._id;
     },

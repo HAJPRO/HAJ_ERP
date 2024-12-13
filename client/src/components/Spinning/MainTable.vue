@@ -45,7 +45,7 @@ const OpenModalById = (id) => {
         header-align="center"
         sortable
         prop="in_process_detail.order_number"
-        label="Buyurtma miqdori"
+        label="Buyurtma nomer"
         width="200"
       />
       <el-table-column
@@ -71,7 +71,7 @@ const OpenModalById = (id) => {
       />
 
       <el-table-column
-        label="Buyurtma miqdori"
+        label="Miqdori (to'quv)"
         width="180"
         header-align="center"
         align="center"
@@ -80,6 +80,13 @@ const OpenModalById = (id) => {
           {{ scope.row.spinning_yarn_wrap_quantity }}
         </template>
       </el-table-column>
+      <el-table-column
+        prop="in_process_detail.unit"
+        label="Birligi"
+        width="100"
+        header-align="center"
+        align="center"
+      />
       <el-table-column
         label="Muddati"
         width="180"

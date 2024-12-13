@@ -153,14 +153,11 @@ class DepWeavingService {
     const paint_length = await this.AllSentFromPaint().then(
       (data) => data.length
     );
-    const spinning_length = await this.AllSentToSpinning(user_id).then(
-      (data) => data.length
-    );
     const provide_length = await this.AllSentToProvide({
       id: user_id,
       department,
     }).then((data) => data.length);
-    return { process_length, paint_length, spinning_length, provide_length };
+    return { process_length, paint_length, provide_length };
   }
   async getAll(data) {
     const is_status = data.status.is_active;
@@ -176,10 +173,7 @@ class DepWeavingService {
         const items = await this.AllSentFromPaint();
         return { items, all_length };
       }
-      if (is_status === 4) {
-        const items = await this.AllSentToSpinning(user_id);
-        return { items, all_length };
-      }
+
       if (is_status === 5) {
         const items = await this.AllSentToProvide({ id: user_id, department });
         return { items, all_length };
@@ -269,40 +263,6 @@ class DepWeavingService {
       return error.message;
     }
   }
-  async AllSentToSpinning(id) {
-    try {
-      const allSpinning = await SaleDepWeavingCardModel.aggregate([
-        { $match: { author: id } },
-        {
-          $lookup: {
-            from: "salecards",
-            localField: "sale_order_id",
-            foreignField: "_id",
-            as: "sale_order",
-          },
-        },
-        {
-          $project: {
-            status_spinning: 1,
-            spinning_delivery_time: 1,
-            spinning_yarn_wrap_quantity: 1,
-            sale_order: {
-              $cond: {
-                if: { $isArray: "$sale_order" },
-                then: { $arrayElemAt: ["$sale_order", 0] },
-                else: null,
-              },
-            },
-          },
-        },
-      ]);
-      console.log(allSpinning);
-
-      return allSpinning;
-    } catch (error) {
-      return error.message;
-    }
-  }
 
   async AllSentToProvide(data) {
     try {
@@ -355,6 +315,9 @@ class DepWeavingService {
         {
           $project: {
             status: 1,
+            weaving_cloth_quantity: 1,
+            weaving_delivery_time: 1,
+            status_inprocess: 1,
             in_process_detail: {
               $cond: {
                 if: { $isArray: "$in_process_detail" },

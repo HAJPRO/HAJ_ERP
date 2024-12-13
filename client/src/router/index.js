@@ -1,5 +1,5 @@
 import { createRouter, createWebHistory } from "vue-router";
-import { ref } from "vue"
+import { ref } from "vue";
 import ExploreLayout from "../layouts/ExploreView.vue";
 import LandingLayout from "../layouts/LandingView.vue";
 import Cookies from "js-cookie";
@@ -11,7 +11,6 @@ const routes = [
     name: "home",
     component: LandingLayout,
     children: [
-
       {
         path: "/",
         name: "landingPage",
@@ -39,12 +38,12 @@ const routes = [
         name: "ForgetPassword",
         component: () => import("../pages/Landing/ForgetPassword.vue"),
         beforeEnter(to, from, next) {
-          if ((JSON.parse(Cookies.get("account")).role) === 1000) {
-            next()
+          if (JSON.parse(Cookies.get("account")).role === 1000) {
+            next();
           } else {
             window.location.href = "/login";
           }
-        }
+        },
       },
     ],
     beforeEnter(to, from, next) {
@@ -69,24 +68,35 @@ const routes = [
         name: "Users",
         component: () => import("../pages/Explore/Admin/users.vue"),
         beforeEnter(to, from, next) {
-          if ((JSON.parse(Cookies.get("account")).role) === 1000) {
-            next()
+          if (JSON.parse(Cookies.get("account")).role === 1000) {
+            next();
           } else {
             window.location.href = "/explore";
           }
-        }
+        },
       },
       {
         path: "admin/role",
         name: "Role",
         component: () => import("../pages/Explore/Admin/role.vue"),
         beforeEnter(to, from, next) {
-          if ((JSON.parse(Cookies.get("account")).role) === 1000) {
-            next()
+          if (JSON.parse(Cookies.get("account")).role === 1000) {
+            next();
           } else {
             window.location.href = "/explore";
           }
-        }
+        },
+      },
+      //Profile
+      {
+        path: "/profile",
+        name: "profile_card",
+        component: () => import("../pages/Explore/Profile/profile.vue"),
+      },
+      {
+        path: "/profile_settings",
+        name: "profile_settings",
+        component: () => import("../pages/Explore/Profile/Settings.vue"),
       },
       // Dashboard
       {
@@ -101,24 +111,30 @@ const routes = [
         name: "legal",
         component: () => import("../pages/Explore/Sale/legal.vue"),
         beforeEnter(to, from, next) {
-          if ((JSON.parse(Cookies.get("account")).role) === 1 || (JSON.parse(Cookies.get("account")).role) === 1000) {
-            next()
+          if (
+            JSON.parse(Cookies.get("account")).role === 1 ||
+            JSON.parse(Cookies.get("account")).role === 1000
+          ) {
+            next();
           } else {
             window.location.href = "/explore";
           }
-        }
+        },
       },
       {
         path: "sale/legal/create",
         name: "legal_create",
         component: () => import("../pages/Explore/Sale/legal.create.vue"),
         beforeEnter(to, from, next) {
-          if ((JSON.parse(Cookies.get("account")).role) === 1 || (JSON.parse(Cookies.get("account")).role) === 1000) {
-            next()
+          if (
+            JSON.parse(Cookies.get("account")).role === 1 ||
+            JSON.parse(Cookies.get("account")).role === 1000
+          ) {
+            next();
           } else {
             window.location.href = "/explore";
           }
-        }
+        },
       },
       //Bo'yoqlash bolimi
       {
@@ -126,12 +142,15 @@ const routes = [
         name: "pain",
         component: () => import("../pages/Explore/Paint/PlanEco/plan.vue"),
         beforeEnter(to, from, next) {
-          if ((JSON.parse(Cookies.get("account")).role) === 2 || (JSON.parse(Cookies.get("account")).role) === 1000) {
-            next()
+          if (
+            JSON.parse(Cookies.get("account")).role === 2 ||
+            JSON.parse(Cookies.get("account")).role === 1000
+          ) {
+            next();
           } else {
             window.location.href = "/explore";
           }
-        }
+        },
       },
 
       //To'quv bolimi
@@ -140,12 +159,15 @@ const routes = [
         name: "weaving",
         component: () => import("../pages/Explore/Weaving/PlanEco/plan.vue"),
         beforeEnter(to, from, next) {
-          if ((JSON.parse(Cookies.get("account")).role) === 3 || (JSON.parse(Cookies.get("account")).role) === 1000) {
-            next()
+          if (
+            JSON.parse(Cookies.get("account")).role === 3 ||
+            JSON.parse(Cookies.get("account")).role === 1000
+          ) {
+            next();
           } else {
             window.location.href = "/explore";
           }
-        }
+        },
       },
       //Yigiruv bolimi
       {
@@ -153,25 +175,32 @@ const routes = [
         name: "spinning",
         component: () => import("../pages/Explore/Spinning/plan.vue"),
         beforeEnter(to, from, next) {
-          if ((JSON.parse(Cookies.get("account")).role) === 4 || (JSON.parse(Cookies.get("account")).role) === 1000) {
-            next()
+          if (
+            JSON.parse(Cookies.get("account")).role === 4 ||
+            JSON.parse(Cookies.get("account")).role === 1000
+          ) {
+            next();
           } else {
             window.location.href = "/explore";
           }
-        }
+        },
       },
       //Tikuv bolimi
       {
         path: "department/seam/warehouse/raw_material",
         name: "seam",
-        component: () => import("../pages/Explore/Seam/warehouse/RawMaterial.vue.vue"),
+        component: () =>
+          import("../pages/Explore/Seam/warehouse/RawMaterial.vue.vue"),
         beforeEnter(to, from, next) {
-          if ((JSON.parse(Cookies.get("account")).role) === 5 || (JSON.parse(Cookies.get("account")).role) === 1000) {
-            next()
+          if (
+            JSON.parse(Cookies.get("account")).role === 5 ||
+            JSON.parse(Cookies.get("account")).role === 1000
+          ) {
+            next();
           } else {
             window.location.href = "/explore";
           }
-        }
+        },
       },
       //Taminot bolimi
       {
@@ -179,14 +208,16 @@ const routes = [
         name: "provide",
         component: () => import("../pages/Explore/Provide/PlanEco/plan.vue"),
         beforeEnter(to, from, next) {
-          if ((JSON.parse(Cookies.get("account")).role) === 6 || (JSON.parse(Cookies.get("account")).role) === 1000) {
-            next()
+          if (
+            JSON.parse(Cookies.get("account")).role === 6 ||
+            JSON.parse(Cookies.get("account")).role === 1000
+          ) {
+            next();
           } else {
             window.location.href = "/explore";
           }
-        }
+        },
       },
-
     ],
     beforeEnter(to, from, next) {
       if (!Cookies.get("token")) {
