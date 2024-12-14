@@ -33,18 +33,18 @@ const routes = [
         name: "Login",
         component: () => import("../pages/Landing/Login.vue"),
       },
-      {
-        path: "login/forget_password",
-        name: "ForgetPassword",
-        component: () => import("../pages/Landing/ForgetPassword.vue"),
-        beforeEnter(to, from, next) {
-          if (JSON.parse(Cookies.get("account")).role === 1000) {
-            next();
-          } else {
-            window.location.href = "/login";
-          }
-        },
-      },
+      // {
+      //   path: "login/forget_password",
+      //   name: "ForgetPassword",
+      //   component: () => import("../pages/Landing/ForgetPassword.vue"),
+      //   beforeEnter(to, from, next) {
+      //     if (JSON.parse(Cookies.get("account")).role === 1000) {
+      //       next();
+      //     } else {
+      //       window.location.href = "/login";
+      //     }
+      //   },
+      // },
     ],
     beforeEnter(to, from, next) {
       if (Cookies.get("token")) {

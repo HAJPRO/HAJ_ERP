@@ -16,7 +16,7 @@ let config = {
   headers: { Authorization: `Bearer ${Cookies.get("token")}` },
 };
 const api = axios.create({
-  baseURL: "http://localhost:3000/api/v1/",
+  baseURL: "http://161.35.212.13:3000/api/v1/",
   headers: {
     Authorization: `Bearer ${Cookies.get("token")}`,
   },
