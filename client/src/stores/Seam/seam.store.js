@@ -4,17 +4,14 @@ import { loading } from "../../utils/Loader";
 import { defineStore } from "pinia";
 
 export const SeamStore = defineStore("SeamPlan", {
-    state: () => {
-        return {
-            isActive: "",
-        };
+  state: () => {
+    return {
+      isActive: "",
+    };
+  },
+  actions: {
+    GetIsActive(payload) {
+      this.isActive = payload;
     },
-    actions: {
-        GetIsActive(payload) {
-            this.isActive = payload;
-        },
-        async ExportExcel(payload) {
-            const data = await SeamWarehouseService.ExportExcel(payload);
-        },
-    },
+  },
 });

@@ -4,9 +4,20 @@ const authorMiddleware = require("../../middlewares/author.middleware.js");
 const DepSeamWarehouseController = require("../../controllers/seam/warehouse/warehouse.controller.js");
 
 const router = express.Router();
-router.post("/image_qrcode", authMiddleware, DepSeamWarehouseController.getQRImage);
-router.post("/generate_qrcode", authMiddleware, DepSeamWarehouseController.GenerateQRCode);
-// router.post("/export_excel", authMiddleware, DepSeamWarehouseController.ExportExcel);
-router.get("/responsibles_model", authMiddleware, DepSeamWarehouseController.ResponsiblesModel);
+router.post(
+  "/image_qrcode",
+  authMiddleware,
+  DepSeamWarehouseController.getQRImage
+);
+router.post(
+  "/generate_qrcode",
+  authMiddleware,
+  DepSeamWarehouseController.GenerateQRCode
+);
+router.get(
+  "/responsibles_model",
+  authMiddleware,
+  DepSeamWarehouseController.ResponsiblesModel
+);
 
 module.exports = router;
