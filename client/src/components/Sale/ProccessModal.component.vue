@@ -397,6 +397,7 @@ const active = ref(2);
           </div>
         </div>
       </div>
+
       <el-dialog
         v-model="innerVisible"
         width="500"
@@ -406,7 +407,7 @@ const active = ref(2);
         <span>This is the inner Dialog</span>
       </el-dialog>
       <template #footer>
-        <div class="dialog-footer">
+        <div v-if="isDepInfo" class="dialog-footer">
           <div class="">
             <router-link
               @click="ExportExcel()"

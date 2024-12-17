@@ -36,6 +36,8 @@ export const SaleStore = defineStore("saleStore", {
     },
     async AllOrderProccessById(payload) {
       const data = await SaleLegalService.AllOrderProccessById(payload);
+      console.log(data.data.paint[0]);
+
       this.proccess_modal = true;
       this.proccess_data.order = data.data.order;
       this.proccess_data.paint =

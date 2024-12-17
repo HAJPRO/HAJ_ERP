@@ -1,66 +1,38 @@
 const DepSeamWarehouseService = require("../../../services/Seam/warehouse/warehouse.service.js");
 // const userModel = require("../../models/user.model.js");
 class DepSeamWarehouseController {
-    async ResponsiblesModel(req, res, next) {
-        try {
-            const model = await DepSeamWarehouseService.ResponsiblesModel();
-            res.status(200).json(model);
-        } catch (error) {
-            next(error);
-        }
+  async ResponsiblesModel(req, res, next) {
+    try {
+      const model = await DepSeamWarehouseService.ResponsiblesModel();
+      res.status(200).json(model);
+    } catch (error) {
+      next(error);
     }
-    async GenerateQRCode(req, res, next) {
-        try {
-            const { load, responsibles } = req.body
-            const author = req.user.id
-            const id = await DepSeamWarehouseService.GenerateQRCode({ load, responsibles, author })
-            res.status(201).json({ msg: "", id })
-        } catch (error) {
-            next(error);
-        }
-    };
-    async getQRImage(req, res, next) {
-        try {
-            const data = await DepSeamWarehouseService.getQRImage(req.body)
-            res.status(201).json({ msg: "", data })
-        } catch (error) {
-            next(error);
-        }
-    };
-    // async ExportExcel(req, res, next) {
-    //     try {
-    //         const data = await DepSeamWarehouseService.ExportExcel(req.body)
-    //         res.status(201).json({ msg: "", data })
-    //         res.download(data);
-    //     } catch (error) {
-    //         next(error);
-    //     }
-    // };
-};
+  }
+  async GenerateQRCode(req, res, next) {
+    try {
+      const { load, responsibles } = req.body;
+      const author = req.user.id;
+      const id = await DepSeamWarehouseService.GenerateQRCode({
+        load,
+        responsibles,
+        author,
+      });
+      res.status(201).json({ msg: "", id });
+    } catch (error) {
+      next(error);
+    }
+  }
+  async getQRImage(req, res, next) {
+    try {
+      const data = await DepSeamWarehouseService.getQRImage(req.body);
+      res.status(201).json({ msg: "", data });
+    } catch (error) {
+      next(error);
+    }
+  }
+}
 module.exports = new DepSeamWarehouseController();
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 // async create(req, res, next) {
 //     try {
@@ -103,7 +75,6 @@ module.exports = new DepSeamWarehouseController();
 //     }
 // }
 
-
 // async getAll(req, res, next) {
 //     try {
 //         const all = await DepProvideService.getAll(req.body.status);
@@ -120,7 +91,6 @@ module.exports = new DepSeamWarehouseController();
 //         next(error);
 //     }
 // }
-
 
 // async delete(req, res, next) {
 //     try {

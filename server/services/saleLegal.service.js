@@ -124,6 +124,8 @@ class SaleLegalService {
         },
         {
           $project: {
+            weaving_delivery_time: 1,
+            weaving_cloth_quantity: 1,
             paint_report: {
               $cond: {
                 if: { $isArray: "$paint_report" },
